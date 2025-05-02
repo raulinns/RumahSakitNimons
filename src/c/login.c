@@ -1,8 +1,4 @@
-#include "header/login.h"
-
-#define MAX_LINE_LENGTH 256
-#define MAX_FIELDS 20
-#define MAX_FIELD_LENGTH 100
+#include "../header/login.h"
 
 int login()
 {
@@ -84,4 +80,25 @@ int login()
     }
     
     return 0;
+}
+
+void Register(){
+    char user[1001], pass[1001];
+    printf("Username: ");
+    scanf("%s", &user);
+
+    if( IdxUser(user) != -1 ) // User dengan nama yang sama sudah ada
+    {
+        printf("Registrasi gagal! Pasien dengan nama Denis sudah terdaftar.\n");
+        return;
+    }
+
+    printf("Pass: ");
+    scanf("%s", &pass);
+
+    /* Menambahkan data user baru pada user.csv */
+    AddUser(&user,&pass);
+
+    printf("Selamat pagi %s! Ada keluhan apa ?\n", user);
+    return;
 }
