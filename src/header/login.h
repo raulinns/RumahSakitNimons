@@ -9,7 +9,7 @@
 #define MAX_FIELDS 20
 #define MAX_FIELD_LENGTH 100
 
-/* TODO : Tambahin penjelasan */
+/* Melakukan sequensial searching user.csv dan membandingkan username dan password dengan input */
 int login();
 
 /* Menambahkan user baru pada user.csv */
