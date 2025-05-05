@@ -13,9 +13,9 @@ int login()
     char line[MAX_LINE_LENGTH];
     char fields[MAX_FIELDS][MAX_FIELD_LENGTH];
     printf("Username: ");
-    scanf("%s", &user);
+    scanf("%s", user);
     printf("Password: ");
-    scanf("%s", &pass);
+    scanf("%s", pass);
 
     while (fgets(line, sizeof(line), userfile))
     {
@@ -85,7 +85,7 @@ int login()
 void Register(){
     char user[1001], pass[1001];
     printf("Username: ");
-    scanf("%s", &user);
+    scanf("%s", user);
 
     if( IdxUser(user) != -1 ) // User dengan nama yang sama sudah ada
     {
@@ -94,7 +94,7 @@ void Register(){
     }
 
     printf("Pass: ");
-    scanf("%s", &pass);
+    scanf("%s", pass);
 
     /* Menambahkan data user baru pada user.csv */
     AddUser(&user,&pass);

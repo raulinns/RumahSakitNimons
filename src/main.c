@@ -8,7 +8,7 @@ int main()
     char prompt[1001];
     printf("========================================\n");
     printf(">>> ");
-    scanf("%s", &prompt);
+    scanf("%s", prompt);
     if (strcmp(prompt,"LOGIN") == 0)
     {
         login();
