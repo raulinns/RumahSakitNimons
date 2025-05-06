@@ -13,7 +13,7 @@ CFLAGS = -g -Wall -I$(HEADER_DIR)
 # Find all source files
 SRCS = $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/adt/*.c)
 OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
-TARGET = $(BUILD_DIR)/main
+TARGET = $(BUILD_DIR)/main.exe
 MAIN_OBJ = $(BUILD_DIR)/main.o
 
 # This is default target that is used to compile the project.
@@ -29,6 +29,7 @@ $(MAIN_OBJ): $(MAIN_SRC) $(wildcard $(HEADER_DIR)/*.h)
 # Rule to compile each C file in src/c/ to an object file
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(HEADER_DIR)/%.h
 	@mkdir -p $(BUILD_DIR)
+	@mkdir -p $(BUILD_DIR)/adt
 	@echo "Compiling $<..."
 	$(CC) $(CFLAGS) -c $< -o $@
 

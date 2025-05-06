@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "header/login.h"
+#include "header/user.h"
+#include "header/password.h"
 
 int main()
 {
@@ -15,5 +17,9 @@ int main()
     }
     if( strcmp(prompt,"REGISTER") == 0){
         Register();
+    }
+	if (strcmp(prompt,"LUPA_PASSWORD") == 0)
+    {
+        passwordUpdate();
     }
 }
