@@ -9,6 +9,6 @@ typedef struct Node {
 } Node;
 
 /* Membuat node baru */
-Node* createNode();
+Node* createNode(int data);
 
 #endif

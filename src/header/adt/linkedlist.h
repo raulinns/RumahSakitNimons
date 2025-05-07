@@ -27,4 +27,8 @@ void linked_free(LinkedList* head);
    Mengembalikan 0 jika stack memiliki setidaknya satu elemen*/
 int linked_isEmpty(LinkedList head);
 
+/* Menghapus elemen ke-x di linked-list 
+   NOTE : zero based indexing */
+void linked_delete(LinkedList* head,int idx);
+
 #endif

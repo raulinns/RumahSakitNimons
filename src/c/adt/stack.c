@@ -1,4 +1,4 @@
-#include "../header/adt/stack.h"
+#include "../../header/adt/stack.h"
 
 Stack* stack_create(){
     Stack* newStack = malloc(sizeof(Stack));
@@ -14,6 +14,7 @@ void stack_push(Stack* s, int data){
     struct Node* newNode = createNode(data);
     if (s->top == NULL) {
         s->top = newNode;
+        s->size = s->size + 1;
         return;
     }
     newNode->next = s->top;
@@ -37,4 +38,8 @@ void stack_pop(Stack* s){
 
 int stack_isEmpty(Stack s){
     return s.size == 0;
+}
+
+void stack_clear(Stack* s){
+    while( s->size > 0 ) stack_pop(s);
 }
