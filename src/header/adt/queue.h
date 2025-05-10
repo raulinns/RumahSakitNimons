@@ -3,7 +3,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "../file/user.h"
 #include "node.h"
+
+/* ADT Queue ini menyimpan antrian pasien*/
 
 typedef struct Queue{
     struct Node* front;
@@ -12,7 +15,7 @@ typedef struct Queue{
 } Queue;
 
 /* Membuat node baru yang berisikan data dari parameter */
-Queue* queue_create();
+void queue_create(Queue* head);
 
 /* Menambahkan node baru di queue */
 void queue_push(Queue* head, int data);

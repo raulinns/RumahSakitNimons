@@ -11,7 +11,7 @@ typedef struct Stack{
 } Stack;
 
 /* Membuat node baru yang berisikan data dari parameter */
-Stack* stack_create();
+void stack_create(Stack* s);
 
 /* Menambahkan node baru di stack */
 void stack_push(Stack* s, int data);

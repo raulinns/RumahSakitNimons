@@ -3,6 +3,8 @@
 #include <string.h>
 #include "header/login.h"
 #include "header/denah.h"
+#include "header/user.h"
+#include "header/password.h"
 
 int main()
 {
@@ -27,5 +29,8 @@ int main()
     }
     if (strcmp(ParseData(prompt, i, ' '), "UBAH_DENAH") == 0) {
         UbahDenah(prompt, &denah);
+	if (strcmp(prompt,"LUPA_PASSWORD") == 0)
+    {
+        passwordUpdate();
     }
 }

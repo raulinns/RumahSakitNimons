@@ -1,4 +1,4 @@
-#include "../header/adt/node.h"
+#include "../../header/adt/node.h"
 
 Node* createNode(int data){
     Node* newNode = malloc(sizeof(Node));
