@@ -1,5 +1,15 @@
 #include "../header/user.h"
 
+char *ParseData(char *line, int *i, char token) {
+    char data[MAX_FIELD_LENGTH]; int ilog = i;
+    while (line[*i] != token || line[*i] != '\n' || line[*i] != '\0') {
+        data[*i - ilog] = line[*i];
+        i++;
+    }
+    i++;
+    return data;
+}
+
 int IdxUser(char *name){
     FILE *userfile = fopen("file/user.csv","r");
     if (userfile == NULL)
@@ -39,6 +49,21 @@ int IdxUser(char *name){
     fclose(userfile);
 
     return -1;
+}
+
+char *NamaUser(int idx) {
+    FILE *userFile = fopen("../file/user.csv", "r");
+    char name[MAX_FIELD_LENGTH], line[MAX_LINE_LENGTH];
+    int id, i;
+    while (id != idx) {
+        fgets(line, MAX_LINE_LENGTH, userFile);
+        i = 0;
+        id = atoi(ParseData(line, i, ';'));
+    }
+    fclose(userFile);
+    int temp = i;
+    strcpy(name, ParseData(line, i, ';'));
+    return name;
 }
 
 void AddUser(char *name, char *pass){
