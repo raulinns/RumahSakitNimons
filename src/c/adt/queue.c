@@ -1,18 +1,13 @@
 #include "../../header/adt/queue.h"
 
-Queue* queue_create(){
-    Queue* newQueue = malloc(sizeof(Queue));
-    if (!newQueue) {
-        printf("Memory allocation failed\n");
-        exit(1);
-    }
-    newQueue->front = NULL;
-    newQueue->tail = NULL;
-    return newQueue;
+void queue_create(Queue* q){
+    q->size = 0;
+    q->front = NULL;
+    q->tail = NULL;
 }
 
 void queue_push(Queue* q, int data){
-    struct Node* newNode = createNode(data);
+    Node* newNode = createNode(data);
     if (q->front == NULL) {
         q->front = newNode;
         q->tail = newNode;

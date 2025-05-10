@@ -1,13 +1,8 @@
 #include "../../header/adt/stack.h"
 
-Stack* stack_create(){
-    Stack* newStack = malloc(sizeof(Stack));
-    if (!newStack) {
-        printf("Memory allocation failed\n");
-        exit(1);
-    }
-    newStack->top = NULL;
-    return newStack;
+void stack_create(Stack* s){
+    s->size = 0;
+    s->top = NULL;
 }
 
 void stack_push(Stack* s, int data){

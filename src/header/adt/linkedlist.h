@@ -12,7 +12,7 @@ typedef struct LinkedList{
 } LinkedList;
 
 /* Membuat linked list baru */
-LinkedList* linked_create();
+void linked_create(LinkedList* newLinked);
 
 /* Menambahkan node baru di akhir list */
 void linked_insertEnd(LinkedList* head, int data);

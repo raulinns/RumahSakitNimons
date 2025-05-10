@@ -1,16 +1,9 @@
 #include "../../header/adt/linkedlist.h"
 
-LinkedList* linked_create(){
-    LinkedList* newLinked = malloc(sizeof(LinkedList));
-    if (!newLinked) {
-        printf("Memory allocation failed\n");
-        exit(1);
-    }
-
+void linked_create(LinkedList* newLinked){
     newLinked->size = 0;
     newLinked->head = NULL;
     newLinked->tail = NULL;
-
     return newLinked;
 }
 
