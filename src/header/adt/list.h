@@ -8,11 +8,17 @@
 
 typedef struct {
     int nEff;
-    int contents[CAPACITY];
+    char contents[100][CAPACITY];
 } List;
 
 /* I.S. l belum terdefinisi
    F.S. l sudah terdefinisi */
-void CreateList(List *l);
+void list_create(List *l);
+
+/*  Menambahkan user baru dengan nama 'name'
+    I.S. l tidak penuh
+    F.S. l berisikan user baru dengan nama 'name'
+*/
+void list_add(List *l,char *name);
 
 #endif

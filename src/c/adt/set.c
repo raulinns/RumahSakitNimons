@@ -1,32 +1,33 @@
 #include "../../header/adt/set.h"
+#include "string.h"
 
-void set_create(Set t, int key){
-    t->key = key;
-    t->prior = random_lcg(key,key);
+void set_create(Set t, char *key,int id){
+    strcpy(t->key,key);
+    t->prior = random_lcg(id,id);
     t->l = NULL;
     t->r = NULL;
 }
 
-Set set_findSet(Set t,int key){
+Set set_findSet(Set t, char *key){
     /* Jika t == NULL, maka key tidak ditemukan */
     if( t == NULL ) {
         return NULL;
     }
     /* Jika key sama, berarti prior ditemukan */
-    if( t->key == key ) return t;
+    if( strcmp(t->key,key) == 0 ) return t;
 
-    if( key < t->key ) return set_findSet(t->l,key);
+    if( strcmp(t->key,key) >= 0 ) return set_findSet(t->l,key);
     else return set_findSet(t->r,key);
 }
 
-void set_split(Set t, int key, pSet l, pSet r) {
+void set_split(Set t, char *key, pSet l, pSet r) {
     /* Jika sampai di leaf, berhenti*/
     if (t == NULL){
         *l = NULL;
         *r = NULL;
     }
     /* Jika key sekarang <= key_param split child kanan */
-    else if (t->key <= key){
+    else if ( strcmp(t->key,key) <= 0 ){
         set_split(t->r, key, &t->r, r);
         *l = t;
     }
@@ -58,26 +59,26 @@ void set_insertNewSet(pSet t, Set it){
         Jika tidak, traverse ke node kiri
     */
     else{
-        if( (*t)->key <= it->key ) set_insertNewSet(&(*t)->r, it);
+        if( strcmp((*t)->key,it->key) <= 0 ) set_insertNewSet(&(*t)->r, it);
         else set_insertNewSet(&(*t)->l, it);
     }
 }
 
-void set_insertData(pSet t, int idDokter, int idPasien) {
+void set_insertData(pSet t, char* name,int id) {
     /* Jika tidak terdapat set dengan id yang sesuai, buat node set baru*/
     if (*t == NULL) {
         *t = malloc(sizeof(NodeSet));
-        set_create(*t, idDokter);
+        set_create(*t, name,id);
         return;
     }
 
     /* Cari posisi set dengan id yang sesuai*/
-    Set mp = set_findSet(*t, idDokter);
+    Set mp = set_findSet(*t, name);
 
     /* Jika tidak terdapat set dengan id sesuai, buat node baru*/
     if (mp == NULL) {
         Set newSet = malloc(sizeof(NodeSet));
-        set_create(newSet, idDokter);
+        set_create(newSet, name, id);
         set_insertNewSet(t, newSet);
         mp = newSet;
     }

@@ -13,7 +13,7 @@ CFLAGS = -g -Wall -I$(HEADER_DIR)
 # Find all source files
 SRCS = $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/adt/*.c)
 OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
-TARGET = $(BUILD_DIR)/main.exe
+TARGET = main
 MAIN_OBJ = $(BUILD_DIR)/main.o
 
 # This is default target that is used to compile the project.

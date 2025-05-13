@@ -1,8 +1,12 @@
 #include "../../header/adt/map.h"
+#include "../header/adt/queue.h"
+#include <stdlib.h>
+#include "../header/random.h"
 
-void map_create(Map t, int key){
+void map_create(Map t, int key,int room){
     t->key = key;
     t->prior = random_lcg(key,key);
+    t->room = room;
     queue_create(&(t->data));
     t->l = NULL;
     t->r = NULL;
@@ -64,11 +68,11 @@ void map_insertNewMap(pMap t, Map it){
     }
 }
 
-void map_insertData(pMap t, int idDokter, int idPasien) {
+void map_insertData(pMap t, int idDokter, int idPasien, int room) {
     /* Jika tidak terdapat map dengan id yang sesuai, buat node map baru*/
     if (*t == NULL) {
         *t = malloc(sizeof(NodeMap));
-        map_create(*t, idDokter);
+        map_create(*t, idDokter, room);
         queue_push(&((*t)->data), idPasien);
         return;
     }
@@ -79,7 +83,7 @@ void map_insertData(pMap t, int idDokter, int idPasien) {
     /* Jika tidak terdapat map dengan id sesuai, buat node baru*/
     if (mp == NULL) {
         Map newMap = malloc(sizeof(NodeMap));
-        map_create(newMap, idDokter);
+        map_create(newMap, idDokter, room);
         map_insertNewMap(t, newMap);
         mp = newMap;
     }

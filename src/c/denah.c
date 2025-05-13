@@ -4,28 +4,51 @@
 #include <string.h>
 #include <stdlib.h>
 
-void CreateDenah(Denah *denah) {
-    FILE *configFile = fopen("../file/config.txt", "r");
+void CreateDenah(Denah *denah, const char* folder) {
+    // Bangun path ke config.txt: "../data/folder/config.txt"
+    char path[256];
+    sprintf(path, "data/%s/config.txt", folder);
+
+    FILE *configFile = fopen(path, "r");
+    if (!configFile) {
+        perror("Gagal membuka config.txt");
+        exit(1);
+    }
+
     char line[MAX_LINE_LENGTH];
-    int i = 0, j, k = 0;
+    int i = 0;
+    // Baris pertama: rows dan cols
     fgets(line, MAX_LINE_LENGTH, configFile);
-    int rows = atoi(ParseData(line, i, ' '));
-    int cols = atoi(ParseData(line, i, ' '));
+    int rowIdx = 0;
+    char *rowStr = ParseData(line, &rowIdx, ' ');
+    int rows = atoi(rowStr);
+    free(rowStr); // DEALLOC
+
+    char *colStr = ParseData(line, &rowIdx, ' ');
+    int cols = atoi(colStr);
+    free(colStr); // DEALLOC
+
     ROWS(MAT(*denah)) = rows;
     COLS(MAT(*denah)) = cols;
+
+    // Baris kedua: maxPasien
     fgets(line, MAX_LINE_LENGTH, configFile);
-    int nEff = atoi(ParseData(line, i, ' '));
-    NEFF(LIST(*denah)) = nEff + nEff * cols + nEff * cols * rows;
-    for (i = 0; i < rows; i++) {
-        for (j = 0; j < cols; j++) {
-            CNTN(MAT(*denah), i, j);
-            int l = 0;
-            for (k = 0; k < nEff && line[l] != '\0' && line[l] != '\n' && line[l] != '0'; k++) {
-                ELMT(LIST(*denah), i * cols * nEff + j * nEff + k) = ParseData(line, l, ' ');
-            }
+    int maxIdx = 0;
+    int maxPasien = atoi(ParseData(line, &maxIdx, ' '));
+    denah->maxPasien = maxPasien;
+    // Alokasi kapasitas list sesuai rumus
+    NEFF(LIST(*denah)) = maxPasien + maxPasien * cols + maxPasien * cols * rows;
+
+    // Inisialisasi semua isi ruangan (dokter dan pasien)
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            CNTN(MAT(*denah), i, j) = 0; // Default tidak ada dokter
         }
     }
+
+    fclose(configFile);
 }
+
 
 void PrintDenah(Denah denah) {
     int i, j;
@@ -55,7 +78,7 @@ void PrintRuang(char *ruang, Denah denah) {
     int i = 15;
     int row = (int)ruang[i] - (int)('A');
     i++;
-    int col = atoi(ParseData(ruang, i, ' ')) - 1;
+    int col = atoi(ParseData(ruang, &i, ' ')) - 1;
     if (row < ROWS(MAT(denah)) && row >= 0 && col < COLS(MAT(denah)) && col >= 0) {
         printf("--- Detail Ruangan %s ---\n", ruang);
         printf("Kapasitas  : %d\n", NEFF(LIST(denah)));
@@ -83,8 +106,8 @@ void PrintRuang(char *ruang, Denah denah) {
 void UbahDenah(char *luas, Denah *denah) {
     int i = 0;
     ParseData(luas, i, ' ');
-    int rows = atoi(ParseData(luas, i, ' '));
-    int cols = atoi(ParseData(luas, i, ' '));
+    int rows = atoi(ParseData(luas, &i, ' '));
+    int cols = atoi(ParseData(luas, &i, ' '));
     int valid = 1;
     if (ROWS(MAT(*denah)) > rows && COLS(MAT(*denah)) > cols) {
         for (int i = 0; i < ROWS(MAT(*denah)); i++) {

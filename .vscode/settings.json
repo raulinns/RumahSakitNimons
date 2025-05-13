@@ -1,6 +1,11 @@
 {
     "files.associations": {
         "login.h": "c",
-        "tes.h": "c"
-    }
+        "tes.h": "c",
+        "linkedlist.h": "c",
+        "list.h": "c",
+        "denah.h": "c",
+        "map.h": "c"
+    },
+    "C_Cpp.dimInactiveRegions": false
 }

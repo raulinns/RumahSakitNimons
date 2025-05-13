@@ -10,11 +10,12 @@
 typedef struct {
    Matrix M;
    List l;
+   int maxPasien;
 } Denah;
 
 /* I.S. denah belum terdefinisi
    F.S. denah terdefinisi dari file config.txt*/
-void CreateDenah(Denah *denah);
+void CreateDenah(Denah *denah, const char* folder);
 
 /* I.S. denah sudah terdefinisi
    F.S. denah rumah sakit tercetak*/

@@ -41,3 +41,20 @@ void queue_clear(Queue* q){
 int queue_isEmpty(Queue q){
     return q.size == 0;
 }
+
+void queue_print(Queue* q) {
+    if (queue_isEmpty(*q)) {
+        printf("Queue kosong.\n");
+        return;
+    }
+
+    Node* current = q->front;
+    printf("Isi queue (%d item):\n", q->size);
+    int i = 1;
+    while (current != NULL) {
+        printf("%d ", current->data); //
+        current = current->next;
+        i++;
+    }
+    printf("\n");
+}

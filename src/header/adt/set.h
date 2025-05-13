@@ -15,7 +15,7 @@
     *r -> pointer ke node child dikanan
 */
 typedef struct NodeSet {
-    int key;
+    char key[100];
     long prior;
     struct NodeSet *l, *r;
 } NodeSet;
@@ -24,14 +24,14 @@ typedef NodeSet* Set;
 typedef Set* pSet;
 
 /* Membuat set baru dengan key sesuai parameter */
-void set_create(Set t, int key);
+void set_create(Set t, char* key,int id);
 
 /*
     Mengembalikan pointer ke node set dengan key sesuai parameter.
     Jika tree kosong atau node dengan key yang sesuai tidak ditemukan,
     maka akan dikembalikan NULL.
 */
-Set set_findSet(Set t,int key);
+Set set_findSet(Set t,char* key);
 
 /*
     Melakukan split pada tree t, yang menghasilkan:
@@ -40,7 +40,7 @@ Set set_findSet(Set t,int key);
     I.S. t adalah node yang valid, key adalah id yang valid
     F.S. Terbentuk tree l dan r sesuai kriteria diatas
 */
-void set_split(Set t, int key, pSet l, pSet r);
+void set_split(Set t, char* key, pSet l, pSet r);
 
 /*
     Menyisipkan node set baru pada ADT set.
@@ -54,6 +54,6 @@ void set_insertNewSet(pSet t, Set it);
     I.S. idDokter valid
     F.S. antrian idDokter mendapatkan data baru di akhir antrian
 */
-void set_insertData(pSet t, int idDokter, int idPasien);
+void set_insertData(pSet t,char *name,int id);
 
 #endif

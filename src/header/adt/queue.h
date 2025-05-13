@@ -35,4 +35,7 @@ void queue_clear(Queue* q);
    Mengembalikan 0 jika queue memiliki setidaknya satu elemen*/
 int queue_isEmpty(Queue q);
 
+/* Output data pada queue mulai dari indeks terdepan*/
+void queue_print(Queue* q);
+
 #endif

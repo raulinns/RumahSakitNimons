@@ -1,14 +1,28 @@
 #include "../header/user.h"
 
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_FIELD_LENGTH 100
+
 char *ParseData(char *line, int *i, char token) {
-    char data[MAX_FIELD_LENGTH]; int ilog = i;
-    while (line[*i] != token || line[*i] != '\n' || line[*i] != '\0') {
-        data[*i - ilog] = line[*i];
-        i++;
+    char *data = (char *)malloc(MAX_FIELD_LENGTH * sizeof(char));
+    if (data == NULL) return NULL;
+
+    int idx = 0;
+    while (line[*i] != token && line[*i] != '\n' && line[*i] != '\0') {
+        data[idx++] = line[*i];
+        (*i)++;
     }
-    i++;
+
+    data[idx] = '\0'; // null-terminate
+    if (line[*i] == token) {
+        (*i)++; // lewati token
+    }
+
     return data;
 }
+
 
 int IdxUser(char *name){
     FILE *userfile = fopen("file/user.csv","r");

@@ -1,16 +1,13 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "queue.h"
-#include "../random.h"
-
 /* ADT map yang digunakan memiliki struktur treap */
 /* Setiap node pada treap memiliki key dan prior unik, dan menyimpan sebuah queue */
 
 typedef struct NodeMap {
     int key;
+    int room;
     long prior;
     Queue data;
     struct NodeMap *l, *r;
@@ -20,7 +17,7 @@ typedef NodeMap* Map;
 typedef Map* pMap;
 
 /* Membuat map baru dengan key sesuai parameter */
-void map_create(Map t, int key);
+void map_create(Map t, int key, int room);
 
 /*
     Mengembalikan pointer ke node map dengan key sesuai parameter.
@@ -50,7 +47,7 @@ void map_insertNewMap(pMap t, Map it);
     I.S. idDokter valid
     F.S. antrian idDokter mendapatkan data baru di akhir antrian
 */
-void map_insertData(pMap t, int idDokter, int idPasien);
+void map_insertData(pMap t, int idDokter, int idPasien,int room);
 
 /*
     Melakukan operasi pop pada antrian yang berisikan
