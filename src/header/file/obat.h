@@ -3,14 +3,12 @@
 
 #include "field.h"
 
-#define MAX_FIELDS 2
-
 #define id(x)                   (x).fields[0]
 #define nama_obat(x)            (x).fields[1]
 #define OBAT(l,x)               (l).contents[x]
 
 typedef struct Obat{
-    fields field[MAX_FIELDS];
+    fields field[2];
 } Obat;
 
 typedef struct ObatList{

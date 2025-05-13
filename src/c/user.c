@@ -25,7 +25,7 @@ char *ParseData(char *line, int *i, char token) {
 
 
 int IdxUser(char *name){
-    FILE *userfile = fopen("file/user.csv","r");
+    FILE *userfile = fopen("data/user.csv","r");
     if (userfile == NULL)
     {
         perror("Error opening file");
@@ -66,7 +66,7 @@ int IdxUser(char *name){
 }
 
 char *NamaUser(int idx) {
-    FILE *userFile = fopen("../file/user.csv", "r");
+    FILE *userFile = fopen("../data/user.csv", "r");
     char name[MAX_FIELD_LENGTH], line[MAX_LINE_LENGTH];
     int id, i;
     while (id != idx) {
@@ -81,7 +81,7 @@ char *NamaUser(int idx) {
 }
 
 void AddUser(char *name, char *pass){
-    FILE * fp = fopen("file/user.csv","a");
+    FILE * fp = fopen("data/user.csv","a");
     fprintf(fp, ";%s;%s;;;;;;;;;;;;;\n", name, pass);
     fclose(fp);
 }

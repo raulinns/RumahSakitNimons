@@ -4,8 +4,6 @@
 #include "field.h"
 #include "../adt/linkedlist.h"
 
-#define MAX_FIELDS 16
-
 #define id(x)           (x).fields[0]
 #define username(x)     (x).fields[1]
 #define password(x)     (x).fields[2]
@@ -25,7 +23,7 @@
 #define USER(l,x)       (l).contents[x]
 
 typedef struct User{
-    fields field[MAX_FIELDS];
+    fields field[16];
     LinkedList inventoryObat;
 } User;
 

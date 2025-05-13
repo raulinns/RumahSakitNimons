@@ -12,7 +12,7 @@
 /*Mengembalikan hasil encoding dari string*/
 char* runLengthEncoding(const char* a);
 
-/*Melakukan update data fields[replaceIndex] pada file username.csv*/
+/*Melakukan update data fields[replaceIndex] pada file user.csv*/
 void updateFile(const char* user, int replaceIndex, const char* newValue);
 
 #endif

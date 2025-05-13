@@ -3,8 +3,6 @@
 
 #include "field.h"
 
-#define MAX_FIELDS 20
-
 #define id(x)               (x).fields[0]
 #define penyakit(x)         (x).fields[1]
 #define suhu_min(x)         (x).fields[2]
@@ -28,7 +26,7 @@
 #define PENYAKIT(l,x)       (l).contents[x]
 
 typedef struct Penyakit{
-    fields field[MAX_FIELDS];
+    fields field[20];
 } Penyakit;
 
 typedef struct PenyakitList{

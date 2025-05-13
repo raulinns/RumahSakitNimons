@@ -201,7 +201,7 @@ int load_obatpenyakit(char* folder, ObatPenyakitList* l) {
 
 
 int addUserList(char *name, char *pass,UserList *Ulist){
-    FILE * fp = fopen("file/user.csv","a");
+    FILE * fp = fopen("data/user.csv","a");
     fprintf(fp, ";%s;%s;;;;;;;;;;;;;\n", name, pass);
     fclose(fp);
     return 0;

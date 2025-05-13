@@ -62,10 +62,11 @@ void PrintDenah(Denah denah) {
     }
     printf("\n");
     for (i = 0; i < ROWS(MAT(denah)); i++) {
-        printf(" %c  |", (char)(i + 65));
+        printf(" %c |", (char)(i + 65));
         for (j = 0; j < COLS(MAT(denah)); j++) {
             printf(" %c%d  |", (char)(i + 65), j + 1);
         }
+        printf("\n");
         printf("   +");
         for (j = 0; j < COLS(MAT(denah)); j++) {
             printf("-----+");

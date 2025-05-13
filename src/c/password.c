@@ -42,8 +42,8 @@ char* runLengthEncoding(const char* a){
     return encoding;   
 }
 void updateFile(const char* user, int replaceIndex, const char* newValue){
-    FILE *userfile = fopen("file/username.csv", "r");
-    FILE *temp = fopen("file/temp.csv", "w");    //File temp untuk salin isi file username.csv beserta updatenya
+    FILE *userfile = fopen("data/user.csv", "r");
+    FILE *temp = fopen("data/temp.csv", "w");    //File temp untuk salin isi file user.csv beserta updatenya
     char line[MAX_LINE_LENGTH];
     char fields[MAX_FIELDS][MAX_FIELD_LENGTH];
     while (fgets(line, sizeof(line), userfile))
@@ -79,7 +79,7 @@ void updateFile(const char* user, int replaceIndex, const char* newValue){
     }
     fclose(userfile);
     fclose(temp);
-    //Menjadikan file temp sebagai username.csv
-    remove("file/username.csv");
-    rename("file/temp.csv", "file/username.csv");
+    //Menjadikan file temp sebagai user.csv
+    remove("data/user.csv");
+    rename("data/temp.csv", "data/user.csv");
 }

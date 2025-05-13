@@ -1,5 +1,5 @@
 #ifndef SET_H
-#define MAP_H
+#define SET_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,7 +35,8 @@ Set set_findSet(Set t,char* key);
 
 /*
     Melakukan split pada tree t, yang menghasilkan:
-    - Tree l yang berisikan node dengan key <= key parameter
+    - Tree l yang berisikan node d   21 | } NodeSet;
+engan key <= key parameter
     - Tree r yang berisikan node dengan key > key parameter
     I.S. t adalah node yang valid, key adalah id yang valid
     F.S. Terbentuk tree l dan r sesuai kriteria diatas

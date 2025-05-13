@@ -1,16 +1,19 @@
-
 #include "../header/login.h"
-#include "../header/denah.h"
+#include "../header/password.h"
+#include <stdlib.h>
+
+char user[1001], pass[1001];
+
+
 int login()
 {
-    FILE *userfile = fopen("file/username.csv","r");
+    FILE *userfile = fopen("data/user.csv","r");
     if (userfile == NULL)
     {
         perror("Error opening file");
-        return 1;
+        return 0;
     }
     int validuser = 0,validpass = 0;
-    char user[1001], pass[1001];
     char line[MAX_LINE_LENGTH];
     char fields[MAX_FIELDS][MAX_FIELD_LENGTH];
     printf("Username: ");
@@ -58,29 +61,31 @@ int login()
             if (strcmp(fields[3],"Manager") == 0)
             {
                 printf("Selamat pagi Manager %s!\n",user);
+                return 1;
             }
             else if (strcmp(fields[3],"Dokter") == 0)
             {
                 printf("Selamat pagi Dokter %s!\n",user);
+                return 2;
             }
             else if (strcmp(fields[3],"Pasien") == 0)
             {
                 printf("Selamat pagi %s! Ada keluhan apa ?\n",user);
+                return 3;
             }
+
         }
-        else
+        else //Username found && Password not found
         {
             printf("Password salah untuk pengguna yang bernama %s!\n",user);
             login();
         }
     }
-    else
+    else//both Username && Password not found
     {
         printf("Tidak ada Manager, Dokter, atau pun Pasien yang bernama %s!\n",user);
         login();
     }
-    
-    return 0;
 }
 
 void Register(){
@@ -105,7 +110,7 @@ void Register(){
 }
 
 int passwordUpdate(){
-    FILE *userfile = fopen("file/username.csv","r");
+    FILE *userfile = fopen("data/user.csv","r");
     if (userfile == NULL)
     {
         perror("Error opening file");
