@@ -3,8 +3,8 @@
 
 #include "field.h"
 
-#define id(x)                   (x).fields[0]
-#define nama_obat(x)            (x).fields[1]
+#define id(x)                   (x).field[0]
+#define nama_obat(x)            (x).field[1]
 #define OBAT(l,x)               (l).contents[x]
 
 typedef struct Obat{
