@@ -79,7 +79,7 @@ void PrintRuang(char *ruang, Denah denah) {
     int i = 15;
     int row = (int)ruang[i] - (int)('A');
     i++;
-    int col = atoi(ParseData(ruang, &i, ' ')) - 1;
+    int col = atoi(ParseData(ruang, i, ' ')) - 1;
     if (row < ROWS(MAT(denah)) && row >= 0 && col < COLS(MAT(denah)) && col >= 0) {
         printf("--- Detail Ruangan %s ---\n", ruang);
         printf("Kapasitas  : %d\n", NEFF(LIST(denah)));

@@ -1,7 +1,5 @@
 #include "../header/file/user.h"
 #include "../header/user.h"
-<<<<<<< Updated upstream
-
 #include <stdlib.h>
 #include <string.h>
 
@@ -24,58 +22,6 @@ char *ParseData(char *line, int *i, char token) {
 
     return data;
 }
-
-
-int IdxUser(char *name){
-    FILE *userfile = fopen("data/user.csv","r");
-    if (userfile == NULL)
-    {
-        perror("Error opening file");
-        return -1;
-    }
-    char line[MAX_LINE_LENGTH];
-    char fields[MAX_FIELDS][MAX_FIELD_LENGTH];
-=======
-#include <stdlib.h>
-#include <string.h>
-
-#define MAX_FIELD_LENGTH 100
-
-char *ParseData(char *line, int *i, char token) {
-    char *data = (char *)malloc(MAX_FIELD_LENGTH * sizeof(char));
-    if (data == NULL) return NULL;
-
-    int idx = 0;
-    while (line[*i] != token && line[*i] != '\n' && line[*i] != '\0') {
-        data[idx++] = line[*i];
-        (*i)++;
-    }
-
-    data[idx] = '\0'; // null-terminate
-    if (line[*i] == token) {
-        (*i)++; // lewati token
-    }
-
-    return data;
-}
-
-<<<<<<< HEAD
-char *NamaUser(int idx) {
-    FILE *userFile = fopen("../data/user.csv", "r");
-    char name[MAX_FIELD_LENGTH], line[MAX_LINE_LENGTH];
-    int id, i;
-    while (id != idx) {
-        fgets(line, MAX_LINE_LENGTH, userFile);
-        i = 0;
-        id = atoi(ParseData(line, i, ';'));
-    }
-    fclose(userFile);
-    int temp = i;
-    strcpy(name, ParseData(line, i, ';'));
-    return name;
-}
-
-=======
 
 // int IdxUser(char *name){
 //     FILE *userfile = fopen("data/user.csv","r");
@@ -86,7 +32,6 @@ char *NamaUser(int idx) {
 //     }
 //     char line[MAX_LINE_LENGTH];
 //     char fields[MAX_FIELDS][MAX_FIELD_LENGTH];
->>>>>>> Stashed changes
 
 //     while (fgets(line, sizeof(line), userfile))
 //     {
@@ -119,13 +64,6 @@ char *NamaUser(int idx) {
 //     return -1;
 // }
 
-<<<<<<< Updated upstream
->>>>>>> fitur-load-save
-void AddUser(char *name, char *pass){
-    FILE * fp = fopen("data/user.csv","a");
-    fprintf(fp, ";%s;%s;;;;;;;;;;;;;\n", name, pass);
-    fclose(fp);
-=======
 char *NamaUser(int idx) {
     FILE *userFile = fopen("../data/user.csv", "r");
     char name[MAX_FIELD_LENGTH], line[MAX_LINE_LENGTH];
@@ -161,5 +99,4 @@ void AddUser(char *name, char *pass, UserList *uList){
 
     free(temp);
     uList->len = uList->len + 1;
->>>>>>> Stashed changes
 }

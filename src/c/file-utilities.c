@@ -71,7 +71,6 @@ int load_config(char* folder, Denah* denah, Map* map, UserList* Ulist){
     path(filePath, folder, "config.txt");
     FILE *fp = fopen(filePath, "r");
     if (fp == NULL) {
-        perror("Error opening config.txt");
         return 1;
     }
     int id, size;
@@ -390,13 +389,9 @@ int save_all(char* folderName,ObatList* obatList,ObatPenyakitList* obatPenyakitL
     }
     puts(folderName);
     save_obat(obatList);
-    puts("segfault 1");
     save_obatpenyakit(obatPenyakitList);
-    printf("segfault 2");
     save_penyakit(penyakitList);
-    printf("segfault 3");
     save_user(userList);
-    printf("segfault 4");
     printf("Berhasil menyimpan data di folder %s!\n", fullFolderPath);
     return 0;
 }

@@ -31,15 +31,9 @@ int main(int argc, char* argv[])
     if (argc < 2) {
         printf("Tidak ada nama folder yang diberikan!\n");
         printf("Usage : ./main <<nama_folder>>\n");
+		exit(0);
     }
-    if( strcmp(prompt,"REGISTER") == 0){
-        Register();
-    }
-	if (strcmp(prompt,"LUPA_PASSWORD") == 0)
-    {
-        passwordUpdate();
-    }
-}
+
     load_all(argv[1], &denah, &antrean, &Ulist, &Olist, &OPlist, &Plist);
     int exit = 0, loggedIn = 0, i;
     do {
@@ -71,7 +65,7 @@ int main(int argc, char* argv[])
 			}
 			else
 			{
-				passwordUpdate();
+				//passwordUpdate();
 			}
     	} else if (strcmp(prompt, "LIHAT_DENAH") == 0) {
 			if (loggedIn == 0) //melakukan register saat sudah loggedin
