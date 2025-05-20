@@ -10,7 +10,6 @@
 #include "header/adt/set.h"
 #include "header/adt/list.h"
 
-Set setUser;
 List listUser;
 UserList Ulist;
 ObatList Olist;
@@ -20,7 +19,7 @@ Denah denah;
 Map antrean;
 
 void init(){
-    setUser = NULL;
+	setUser = NULL;
     list_create(&listUser);
 }
 
@@ -99,6 +98,8 @@ int main(int argc, char* argv[])
 			{
 				printf("Anda tidak dapat melakukan perintah ini\n");
 			}
+		} else if(strcmp(prompt,"TAMBAH_DOKTER") == 0){
+			AddDokter(&Ulist);
 		} else if (strcmp(prompt,"HELP") == 0) {
 			printf("=========== HELP ===========\n");
 			switch (loggedIn)

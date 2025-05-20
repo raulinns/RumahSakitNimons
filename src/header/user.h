@@ -6,6 +6,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include "file/user.h"
+#include "adt/set.h"
+
+extern Set setUser;
 
 /* i adalah indeks awal data yang ingin di parse 
    token adalah char yang berfungsi sebagai MARK (untuk '\0' dan '\n' tidak perlu dibuat sebagai token)
@@ -21,7 +24,10 @@ int IdxUser(char *name);
  * Mengembalikan Username yang terdapat pada user.csv*/
 char *NamaUser(int idx);
 
-/* Menambahkan data user baru pada user.csv */
+/* Menambahkan data user baru pada user list */
 void AddUser(char *name, char *pass,UserList *uList);
+
+/* Menambahkan dokter baru ke user list */
+int AddDokter(UserList* uList)
 
 #endif

@@ -2,8 +2,11 @@
 #include "../header/user.h"
 #include <stdlib.h>
 #include <string.h>
+#include "../header/adt/set.h"
 
 #define MAX_FIELD_LENGTH 100
+
+Set setUser;
 
 char *ParseData(char *line, int *i, char token) {
     char *data = (char *)malloc(MAX_FIELD_LENGTH * sizeof(char));
@@ -99,4 +102,36 @@ void AddUser(char *name, char *pass, UserList *uList){
 
     free(temp);
     uList->len = uList->len + 1;
+}
+
+
+int AddDokter(UserList* uList){
+    char user[1001], pass[1001];
+    printf("Username: ");
+    scanf("%s", user);
+    if( set_contains(setUser, user) == 1 ) // User dengan nama yang sama sudah ada
+    {
+        printf("Sudah ada Dokter bernama %s!\n", user);
+        return 0;
+    }
+
+    printf("Pass: ");
+    scanf("%s", pass);
+
+    /* Menambahkan data user baru pada user.csv */
+    int len = uList->len;
+    char* temp = to_string(len);
+    User* newUser = &uList->contents[uList->len];
+    set_insertData(&setUser, user, uList->len);
+
+    strcpy( &newUser->field[0] , temp );
+    strcpy( &newUser->field[1] , user );
+    strcpy( &newUser->field[2] , pass );
+    strcpy( &newUser->field[3] , "Dokter" );
+
+    free(temp);
+    uList->len = uList->len + 1;
+
+    printf("Dokter %s berhasil ditambahkan!\n", user);
+    return 1;
 }
