@@ -5,6 +5,7 @@
 #include <string.h>
 #include "user.h"
 #include "password.h"
+#include "user.h"
 
 #define MAX_LINE_LENGTH 256
 #define MAX_FIELDS 20

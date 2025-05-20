@@ -68,7 +68,6 @@ int Register(UserList* uList){
 }
 
 int passwordUpdate(){
-    FILE *userfile = fopen("file/username.csv","r");
     int passwordUpdate(UserList uList){
     FILE *userfile = fopen("data/user.csv","r");
     if (userfile == NULL)
@@ -137,13 +136,19 @@ int passwordUpdate(){
             printf(">>> LOGIN\n");
             login(uList);      
         }
-        else{
-            printf("Kode unik salah!\n");
-            free(encoded);
+        else //Username found && Password not found
+        {
+            printf("Password salah untuk pengguna yang bernama %s!\n",user);
+            login();
         }
     } else{
         printf("Username tidak terdaftar!\n"); 
     }
-
+    else//both Username && Password not found
+    {
+        printf("Tidak ada Manager, Dokter, atau pun Pasien yang bernama %s!\n",user);
+        login();
+    }
+    
     return 0;
 }
