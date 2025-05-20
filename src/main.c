@@ -9,6 +9,8 @@
 #include "header/file-utilities.h"
 #include "header/adt/set.h"
 #include "header/adt/list.h"
+#include "header/diagnosis.h"
+#include "header/ngobatin.h"
 
 Set setUser;
 List listUser;
@@ -48,6 +50,18 @@ int main(int argc, char* argv[])
         	else 
         	{
         	    loggedIn = login(Ulist);
+        	}
+		} else if(strcmp(prompt,"LOGOUT") == 0) {
+        	if (loggedIn = 0) //melakukan logout saat belum loggedin
+        	{
+        	    printf("Anda belum login\n");
+        	}
+        	else
+        	{
+        	    setUser = NULL;
+				user = NULL;
+				pass = NULL;
+				loggedIn = 0;
         	}
     	} else if( strcmp(prompt,"REGISTER") == 0) { // NEED FIX (KLOCE)
         	if (loggedIn != 0) //melakukan register saat sudah loggedin
@@ -94,6 +108,42 @@ int main(int argc, char* argv[])
 			if (loggedIn == 1) //melakukan register saat sudah loggedin
 			{
 				UbahDenah(prompt, &denah);
+			}
+			else
+			{
+				printf("Anda tidak dapat melakukan perintah ini\n");
+			}
+		} else if (strcmp(prompt,"DIAGNOSIS") == 0) { // UNTESTED
+			if (loggedIn == 2)
+			{
+				User currentDokter;
+				for (int i = 0; i < Ulist.len; i++)
+				{
+					if (strcmp(Ulist.contents[i].field[1], user) == 0)
+					{
+						currentDokter = Ulist.contents[i];
+						break;
+					}
+				}
+				DIAGNOSIS(currentDokter, denah.ruang, &Ulist, &Plist);
+			}
+			else
+			{
+				printf("Anda tidak dapat melakukan perintah ini\n");
+			}
+		} else if (strcmp(prompt,"NGOBATIN") == 0) { // UNTESTED
+			if (loggedIn == 2)
+			{
+				User currentDokter;
+				for (int i = 0; i < Ulist.len; i++)
+				{
+					if (strcmp(Ulist.contents[i].field[1], user) == 0)
+					{
+						currentDokter = Ulist.contents[i];
+						break;
+					}
+				}
+				NGOBATIN(currentDokter, denah.ruang, &Ulist, &OPlist);
 			}
 			else
 			{
