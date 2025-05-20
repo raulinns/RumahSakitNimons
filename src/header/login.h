@@ -11,10 +11,10 @@
 #define MAX_FIELD_LENGTH 100
 
 /* Melakukan sequensial searching user.csv dan membandingkan username dan password dengan input */
-int login();
+int login(UserList uList);
 
 /* Menambahkan user baru pada user.csv */
-void Register();
+int Register(UserList* uList);
 
 /* Mengupdate password pada username.csv */
 int passwordUpdate();
