@@ -38,6 +38,12 @@ void set_split(Set t, char *key, pSet l, pSet r) {
     }
 }
 
+int set_contains(Set t, char* key){
+    Set iterator = set_findSet(t,key);
+    if( iterator == NULL ) return 0;
+    return 1;
+}
+
 void set_insertNewSet(pSet t, Set it){
     /* Jika berada di akhir tree, buat node baru*/
     if ( (*t) == NULL) *t = it;

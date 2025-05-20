@@ -1,8 +1,8 @@
 #include "../header/adt/map.h"
 #include "../header/file-utilities.h"
 #include "../header/denah.h"
+#include "../header/user.h"
 #include <string.h>
-
 
 void path(char* dest, const char* dir, const char* name){
     strcpy(dest, "data/");
@@ -71,7 +71,7 @@ int load_config(char* folder, Denah* denah, Map* map, UserList* Ulist){
     path(filePath, folder, "config.txt");
     FILE *fp = fopen(filePath, "r");
     if (fp == NULL) {
-        return 1;
+        return 1;Set setUser;
     }
     int id, size;
     CreateDenah(denah, folder);
@@ -179,6 +179,8 @@ int load_user(char* folder, UserList* l) {
 
     while (fgets(line, sizeof(line), fp)) {
         parser(line, USER(*l, cur).field, ';');
+        puts(username(USER(*l,cur)));
+        set_insertData(&setUser, username(USER(*l,cur)), atoi(id(USER(*l,cur))));
         cur++;
     }
     l->len = cur;
