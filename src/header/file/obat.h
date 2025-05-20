@@ -13,6 +13,7 @@ typedef struct Obat{
 
 typedef struct ObatList{
     Obat contents[MAX_USER];
+    int len;
 } ObatList;
 
 #endif

@@ -31,6 +31,7 @@ typedef struct Penyakit{
 
 typedef struct PenyakitList{
     Penyakit contents[MAX_USER];
+    int len;
 } PenyakitList;
 
 #endif

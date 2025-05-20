@@ -5,6 +5,7 @@
 #include <string.h>
 #include "user.h"
 #include "password.h"
+#include "user.h"
 
 #define MAX_LINE_LENGTH 256
 #define MAX_FIELDS 20
@@ -20,10 +21,10 @@ typedef enum LoggedIn //State of login
 extern LoggedIn loggedIn;
 
 /* Melakukan sequensial searching user.csv dan membandingkan username dan password dengan input */
-int login();
+int login(UserList uList);
 
 /* Menambahkan user baru pada user.csv */
-void Register();
+int Register(UserList* uList);
 
 /* Mengupdate password pada username.csv */
 int passwordUpdate();

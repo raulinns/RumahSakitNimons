@@ -46,6 +46,6 @@ int IdxUser(char *name);
 char *NamaUser(int idx);
 
 /* Menambahkan data user baru pada user.csv */
-void AddUser(char *name, char *pass);
+void AddUser(char *name, char *pass,UserList *uList);
 
 #endif

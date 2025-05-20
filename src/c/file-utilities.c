@@ -11,6 +11,14 @@ void path(char* dest, const char* dir, const char* name){
     strcat(dest, name);
 }
 
+int folder_exists(const char* path) {
+    FILE* fp = fopen(path, "r");
+    if (fp != NULL) {
+        fclose(fp);
+        return 1; // Ada
+    }
+    return 0; // Tidak ada
+}
 
 /*  Mengembalikan jumlah field yang terdapat pada line
     Melakukan parsing data dari line dengan token dan
@@ -32,7 +40,8 @@ int parser(char* line,fields* field,char token){
         }
         else
         {
-            field[fieldIdx][charIdx++] = line[i];
+            field[fieldIdx][charIdx] = line[i];
+            charIdx++;
         }
     }
     field[fieldIdx][charIdx] = '\0';
@@ -58,9 +67,9 @@ int load_all(char* folder, Denah* denah, Map* map, UserList* Ulist,
 
 
 int load_config(char* folder, Denah* denah, Map* map, UserList* Ulist){
-    char filepath[MAX_LINE_LENGTH];
-    path(filepath, folder, "config.txt");
-    FILE *fp = fopen(filepath, "r");
+    char filePath[MAX_LINE_LENGTH];
+    path(filePath, folder, "config.txt");
+    FILE *fp = fopen(filePath, "r");
     if (fp == NULL) {
         perror("Error opening config.txt");
         return 1;
@@ -114,9 +123,9 @@ int load_config(char* folder, Denah* denah, Map* map, UserList* Ulist){
 }
 
 int load_obat(char* folder, ObatList* l) {
-    char filepath[MAX_LINE_LENGTH];
-    path(filepath, folder, "obat.csv");
-    FILE *fp = fopen(filepath, "r");
+    char filePath[MAX_LINE_LENGTH];
+    path(filePath, folder, "obat.csv");
+    FILE *fp = fopen(filePath, "r");
     if (fp == NULL) {
         perror("Error opening obat.csv");
         return 1;
@@ -135,9 +144,9 @@ int load_obat(char* folder, ObatList* l) {
 }
 
 int load_penyakit(char* folder, PenyakitList* l) {
-    char filepath[MAX_LINE_LENGTH];
-    path(filepath, folder, "penyakit.csv");
-    FILE *fp = fopen(filepath, "r");
+    char filePath[MAX_LINE_LENGTH];
+    path(filePath, folder, "penyakit.csv");
+    FILE *fp = fopen(filePath, "r");
     if (fp == NULL) {
         perror("Error opening penyakit.csv");
         return 1;
@@ -157,9 +166,10 @@ int load_penyakit(char* folder, PenyakitList* l) {
 
 
 int load_user(char* folder, UserList* l) {
-    char filepath[MAX_LINE_LENGTH];
-    path(filepath, folder, "user.csv");
-    FILE *fp = fopen(filepath, "r");
+    char filePath[MAX_LINE_LENGTH];
+    path(filePath, folder, "user.csv");
+
+    FILE *fp = fopen(filePath, "r");
     if (fp == NULL) {
         perror("Error opening user.csv");
         return 1;
@@ -172,16 +182,16 @@ int load_user(char* folder, UserList* l) {
         parser(line, USER(*l, cur).field, ';');
         cur++;
     }
-
+    l->len = cur;
     fclose(fp);
     return 0;
 }
 
 
 int load_obatpenyakit(char* folder, ObatPenyakitList* l) {
-    char filepath[MAX_LINE_LENGTH];
-    path(filepath, folder, "obat-penyakit.csv");
-    FILE *fp = fopen(filepath, "r");
+    char filePath[MAX_LINE_LENGTH];
+    path(filePath, folder, "obat-penyakit.csv");
+    FILE *fp = fopen(filePath, "r");
     if (fp == NULL) {
         perror("Error opening obat-penyakit.csv");
         return 1;
@@ -232,4 +242,161 @@ void add_user(List *Ulist,Set* Uset){
 
 int add_penyakit(){
 
+}
+
+/* SAVE FUNCTIONS */
+char fullFolderPath[MAX_LINE_LENGTH];
+char command[MAX_LINE_LENGTH];
+
+// Simpan state UserList sekarang ke data/{folderName}/user.csv
+int save_user(UserList* l) {
+    char filePath[MAX_LINE_LENGTH];
+
+    // Buat path file output
+    strcpy(filePath, fullFolderPath);
+    strcat(filePath, "/user.csv");
+
+    FILE* fp = fopen(filePath, "w");
+    int fieldCount = 16;
+    // Tulis data ke file
+    for (int i = 0; i < l->len; i++) {
+        for (int j = 0; j < fieldCount; j++) {
+            fprintf(fp, "%s", USER(*l, i).field[j]);
+            if (j < fieldCount - 1) {
+                fprintf(fp, ";");
+            }
+        }
+        fprintf(fp, "\n");
+    }
+
+    fclose(fp);
+
+    printf("Berhasil menyimpan data di folder %s!\n", fullFolderPath);
+    return 0;
+}
+
+int save_penyakit(PenyakitList* l) {
+    char filePath[MAX_LINE_LENGTH];
+
+    // Buat path file output
+    strcpy(filePath, fullFolderPath);
+    strcat(filePath, "/penyakit.csv");
+
+    FILE* fp = fopen(filePath, "w");
+    if (fp == NULL) {
+        perror("Gagal membuka file untuk ditulis");
+        return 1;
+    }
+    int fieldCount = 20;
+    // Tulis data ke file
+    for (int i = 0; i < l->len; i++) {
+        for (int j = 0; j < fieldCount; j++) {
+            fprintf(fp, "%s", PENYAKIT(*l, i).field[j]);
+            if (j < fieldCount - 1) {
+                fprintf(fp, ";");
+            }
+        }
+        fprintf(fp, "\n");
+    }
+
+    fclose(fp);
+
+    return 0;
+}
+
+int save_obat(ObatList* l) {
+    char filePath[MAX_LINE_LENGTH];
+
+    strcpy(filePath, fullFolderPath);
+    strcat(filePath, "/obat.csv");
+
+    FILE* fp = fopen(filePath, "w");
+    if (fp == NULL) {
+        perror("Gagal membuka file untuk ditulis");
+        return 1;
+    }
+    int fieldCount = 2;
+    // Tulis data ke file
+    for (int i = 0; i < l->len; i++) {
+        for (int j = 0; j < fieldCount; j++) {
+            fprintf(fp, "%s", OBAT(*l, i).field[j]);
+            if (j < fieldCount - 1) {
+                fprintf(fp, ";");
+            }
+        }
+        fprintf(fp, "\n");
+    }
+
+    fclose(fp);
+
+    return 0;
+}
+
+int save_obatpenyakit(ObatPenyakitList* l) {
+    char filePath[MAX_LINE_LENGTH];
+    puts(fullFolderPath);
+    strcpy(filePath, fullFolderPath);
+    strcat(filePath, "/obat-penyakit.csv");
+
+    puts(filePath);
+    FILE* fp = fopen(filePath, "w");
+    if (fp == NULL) {
+        perror("Gagal membuka file untuk ditulis");
+        return 1;
+    }
+    int fieldCount = 2;
+    // Tulis data ke file
+    for (int i = 0; i < l->len; i++) {
+        for (int j = 0; j < fieldCount; j++) {
+            fprintf(fp, "%s", OBATPENYAKIT(*l, i).field[j]);
+            if (j < fieldCount - 1) {
+                fprintf(fp, ";");
+            }
+        }
+        fprintf(fp, "\n");
+    }
+
+    fclose(fp);
+
+    return 0;
+}
+
+// TODO : Simpan config
+int save_all(char* folderName,ObatList* obatList,ObatPenyakitList* obatPenyakitList,
+            PenyakitList* penyakitList,UserList* userList){
+    // Cek apakah folder data/ ada
+    int dataExists = folder_exists("data");
+
+    // Buat path folder lengkap: data/nama_folder
+    strcpy(fullFolderPath, "data/");
+    strcat(fullFolderPath, folderName);
+
+    // Cek apakah folder data/nama_folder ada
+    int subfolderExists = folder_exists(fullFolderPath);
+
+    printf("\nSaving...\n");
+
+    if (!dataExists) {
+        printf("\nMembuat folder data...\n");
+        system("mkdir data");
+    }
+
+    if (!subfolderExists) {
+        printf("Membuat folder %s...\n", fullFolderPath);
+        // Buat perintah mkdir data/nama_folder
+        strcpy(command, "mkdir ");
+        strcat(command, fullFolderPath);
+        system(command);
+    }
+    puts(folderName);
+    save_obat(obatList);
+    puts("segfault 1");
+    save_obatpenyakit(obatPenyakitList);
+    printf("segfault 2");
+    save_penyakit(penyakitList);
+    printf("segfault 3");
+    save_user(userList);
+    printf("segfault 4");
+    printf("Berhasil menyimpan data di folder %s!\n", fullFolderPath);
+    return 0;
 }

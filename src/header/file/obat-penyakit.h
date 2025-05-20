@@ -14,6 +14,7 @@ typedef struct ObatPenyakit{
 
 typedef struct ObatPenyakitList{
     ObatPenyakit contents[MAX_USER];
+    int len;
 } ObatPenyakitList;
 
 #endif

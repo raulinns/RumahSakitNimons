@@ -3,10 +3,10 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include "file/obat-penyakit.h"
 #include "adt/list.h"
 #include "adt/map.h"
 #include "file/obat.h"
-#include "file/obat-penyakit.h"
 #include "file/user.h"
 #include "file/penyakit.h"
 #include "file/field.h"
@@ -39,4 +39,16 @@ int load_obatpenyakit(char* folder, ObatPenyakitList* l);
 
 /* Menambahkan user baru ke variabel interal (list dan set)*/
 void add_user(List *Ulist,Set* Uset);
+
+int save_user(UserList* l);
+
+int save_penyakit(PenyakitList* l);
+
+int save_obat(ObatList* l);
+
+int save_obatpenyakit(ObatPenyakitList* l);
+
+int save_all(char* folderName,ObatList* obatList,ObatPenyakitList* obatPenyakitList,
+            PenyakitList* penyakitList,UserList* userList);
+
 #endif

@@ -32,6 +32,14 @@ int main(int argc, char* argv[])
         printf("Tidak ada nama folder yang diberikan!\n");
         printf("Usage : ./main <<nama_folder>>\n");
     }
+    if( strcmp(prompt,"REGISTER") == 0){
+        Register();
+    }
+	if (strcmp(prompt,"LUPA_PASSWORD") == 0)
+    {
+        passwordUpdate();
+    }
+}
     load_all(argv[1], &denah, &antrean, &Ulist, &Olist, &OPlist, &Plist);
     int exit = 0, loggedIn = 0, i;
     do {
@@ -45,7 +53,7 @@ int main(int argc, char* argv[])
         	}
         	else 
         	{
-        	    loggedIn = login();
+        	    loggedIn = login(Ulist);
         	}
     	} else if( strcmp(prompt,"REGISTER") == 0) { // NEED FIX (KLOCE)
         	if (loggedIn != 0) //melakukan register saat sudah loggedin
@@ -54,7 +62,7 @@ int main(int argc, char* argv[])
         	}
         	else
         	{
-        	    Register();
+        	    loggedIn = Register(&Ulist);
         	}
     	} else if (strcmp(prompt,"LUPA_PASSWORD") == 0) {  // UNTESTED
 			if (loggedIn == 0) //melakukan reset password saat sudah belum loggedin
@@ -140,6 +148,11 @@ int main(int argc, char* argv[])
 		} else if (strcmp(prompt, "EXIT") == 0) {
 			exitProgram(&exit);
 			exit = 1;
+		} else if (strcmp(prompt, "SAVE") == 0){
+			char folderName[100]; // Panjang nama folder diasumsikan <= 100
+			printf("\nMasukkan nama folder: ");
+    		scanf("%s", folderName);
+			save_all(folderName, &Olist, &OPlist, &Plist, &Ulist);
 		} else {
 			printf("Perintah tidak valid. Ketik 'HELP' untuk melihat daftar perintah yang tersedia.\n");
 		}

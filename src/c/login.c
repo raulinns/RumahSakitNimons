@@ -1,3 +1,4 @@
+#include "../header/file/user.h"
 #include "../header/login.h"
 #include "../header/password.h"
 #include <stdlib.h>
@@ -5,14 +6,9 @@
 char user[1001], pass[1001];
 
 
-int login()
+
+int login(UserList uList)
 {
-    FILE *userfile = fopen("data/user.csv","r");
-    if (userfile == NULL)
-    {
-        perror("Error opening file");
-        return 0;
-    }
     int validuser = 0,validpass = 0;
     char line[MAX_LINE_LENGTH];
     char fields[MAX_FIELDS][MAX_FIELD_LENGTH];
@@ -21,54 +17,28 @@ int login()
     printf("Password: ");
     scanf("%s", pass);
 
-    while (fgets(line, sizeof(line), userfile))
-    {
-        int field_idx = 0, char_idx = 0;
-        for (int i = 0; line[i] != '\0' && line[i] != '\n'; i++)
-        {
-            if (line[i] == ';') //parsing dengan pembeda ";"
-            {
-                fields[field_idx][char_idx] = '\0'; // end current field
-                field_idx++;
-                char_idx = 0;
-            }
-            else
-            {
-                fields[field_idx][char_idx++] = line[i];
-            }
-        }
-        fields[field_idx][char_idx] = '\0'; // terminate last field
-        field_idx++;
-
-        //Checking valid username
-        if (strcmp(user,fields[1]) == 0)
-        {
-            validuser = 1;
-            //Checking valid password for username
-            if (strcmp(pass,fields[2]) == 0)
-            {
-                validpass = 1;
-            }
-            break;
-        }
+    int check = getIDbyName(uList,user);
+    if( check == -1 ){
+        printf("Tidak ada Manager, Dokter, atau pun Pasien yang bernama %s!\n",user);
+        login(uList);
     }
-    
-    fclose(userfile);
-    if (validuser == 1)
+
+    // Check wheter a user with the inputted name exist
+    if ( strcmp( username(USER(uList,check) )  , user ) == 0)
     {
-        if (validpass == 1)
+        if ( strcmp( password(USER(uList,check) ) , pass ) == 0)
         {
-            if (strcmp(fields[3],"Manager") == 0)
+            if (strcmp(role(USER(uList,check)),"Manager") == 0)
             {
                 printf("Selamat pagi Manager %s!\n",user);
                 return 1;
             }
-            else if (strcmp(fields[3],"Dokter") == 0)
+            else if (strcmp(role(USER(uList,check)),"Dokter") == 0)
             {
                 printf("Selamat pagi Dokter %s!\n",user);
                 return 2;
             }
-            else if (strcmp(fields[3],"Pasien") == 0)
+            else if (strcmp(role(USER(uList,check)),"Pasien") == 0)
             {
                 printf("Selamat pagi %s! Ada keluhan apa ?\n",user);
                 return 3;
@@ -78,38 +48,35 @@ int login()
         else //Username found && Password not found
         {
             printf("Password salah untuk pengguna yang bernama %s!\n",user);
-            login();
+            login(uList);
         }
-    }
-    else//both Username && Password not found
-    {
-        printf("Tidak ada Manager, Dokter, atau pun Pasien yang bernama %s!\n",user);
-        login();
     }
 }
 
-void Register(){
+// Coba buat logout dan testing
+// Otomatis jadi pasien
+int Register(UserList* uList){
     char user[1001], pass[1001];
     printf("Username: ");
     scanf("%s", user);
-
-    if( IdxUser(user) != -1 ) // User dengan nama yang sama sudah ada
+    if( getIDbyName(*uList,user) != -1 ) // User dengan nama yang sama sudah ada
     {
-        printf("Registrasi gagal! Pasien dengan nama Denis sudah terdaftar.\n");
-        return;
+        printf("Registrasi gagal! Pasien dengan nama %s sudah terdaftar.\n", user);
+        return 0;
     }
 
     printf("Pass: ");
     scanf("%s", pass);
 
     /* Menambahkan data user baru pada user.csv */
-    AddUser(user,pass);
+    AddUser(user,pass, uList);
 
     printf("Selamat pagi %s! Ada keluhan apa ?\n", user);
-    return;
+    return 1;
 }
 
 int passwordUpdate(){
+    int passwordUpdate(UserList uList){
     FILE *userfile = fopen("data/user.csv","r");
     if (userfile == NULL)
     {
@@ -175,15 +142,21 @@ int passwordUpdate(){
             //Kembali ke menu login 
             printf("========================================\n");
             printf(">>> LOGIN\n");
-            login();      
+            login(uList);      
         }
-        else{
-            printf("Kode unik salah!\n");
-            free(encoded);
+        else //Username found && Password not found
+        {
+            printf("Password salah untuk pengguna yang bernama %s!\n",user);
+            login();
         }
     } else{
         printf("Username tidak terdaftar!\n"); 
     }
-
+    else//both Username && Password not found
+    {
+        printf("Tidak ada Manager, Dokter, atau pun Pasien yang bernama %s!\n",user);
+        login();
+    }
+    
     return 0;
 }
