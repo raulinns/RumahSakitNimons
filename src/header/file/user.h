@@ -21,6 +21,7 @@
 #define LDL(x)          (x).field[14]
 #define trombosit(x)    (x).field[15]
 #define USER(l,x)       (l).contents[x]
+#define length(l)     	(l).len
 
 typedef struct User{
     fields field[16];

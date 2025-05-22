@@ -139,6 +139,24 @@ int main(int argc, char* argv[])
 				printf("    1. Untuk menggunakan aplikasi, silahkan masukkan nama fungsi yang terdaftar\n");
 				printf("    2. Jangan lupa untuk memasukkan input yang valid\n\n");
 			}
+		} else if (strcmp(prompt, "LIHAT_USER") == 0 || (strcmp(prompt, "LIHAT_DOKTER") == 0) || (strcmp(prompt, "LIHAT_PASIEN") == 0)) {
+			if (loggedIn == 0)
+			{
+				printf("Anda belum login\n");
+			}
+			else if (loggedIn == 1)
+			{
+				MenuLihat(Ulist, prompt);
+			}
+			else
+			{
+				printf("Anda tidak dapat melakukan perintah ini\n");
+			}
+			
+		} else if (strcmp(prompt, "LOGOUT") == 0) {
+			loggedIn = 0;
+			printf("Anda telah logout dari akun %s\n", user);
+
 		} else if (strcmp(prompt, "EXIT") == 0) {
 			exitProgram(&exit);
 			exit = 1;

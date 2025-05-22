@@ -3,7 +3,6 @@
 
 #include "field.h"
 
-#define id(x)                   (x).fields[0]
 #define penyakit_id(x)          (x).fields[1]
 #define urutan(x)               (x).fields[2]
 #define OBATPENYAKIT(l,x)       (l).contents[x]
