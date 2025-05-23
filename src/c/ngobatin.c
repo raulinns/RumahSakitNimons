@@ -87,13 +87,6 @@ void NGOBATIN(User currentUser, ListRuangan ruangList, UserList* userList, ObatP
         printf("Data dokter tidak ditemukan.\n");
         return;
     }
-
-    if (!linked_search(dokter->inventoryObat, idObat))
-    {
-        printf("Dokter tidak memiliki obat yang sesuai untuk penyakit %s.\n", penyakit);
-        return;
-    }
-
     linked_delete(&dokter->inventoryObat, idObat);
     linked_insertEnd(&pasien->inventoryObat, idObat);
     printf("Obat berhasil diberikan kepada pasien %s.\n", pasien->field[1]);

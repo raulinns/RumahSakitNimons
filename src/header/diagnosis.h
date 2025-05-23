@@ -3,6 +3,7 @@
 
 #include "user.h"
 #include "hospital.h"
+#include "file/penyakit.h"
 #include "adt/queue.h"
 
 /*

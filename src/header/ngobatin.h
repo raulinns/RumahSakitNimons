@@ -3,7 +3,8 @@
 
 #include "user.h"
 #include "hospital.h"
-#include "adt/linked.h"
+#include "adt/linkedlist.h"
+#include "file/penyakit.h"
 #include "adt/queue.h"
 #include "file-utilities.h"
 

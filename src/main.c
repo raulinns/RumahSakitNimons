@@ -11,6 +11,7 @@
 #include "header/adt/list.h"
 #include "header/diagnosis.h"
 #include "header/ngobatin.h"
+#include "header/hospital.h"
 
 Set setUser;
 List listUser;
@@ -19,6 +20,8 @@ ObatList Olist;
 ObatPenyakitList OPlist;
 PenyakitList Plist;
 Denah denah;
+Ruangan ruangan;
+ListRuangan listRuangan;
 Map antrean;
 
 void init(){
@@ -59,8 +62,12 @@ int main(int argc, char* argv[])
         	else
         	{
         	    setUser = NULL;
-				user = NULL;
-				pass = NULL;
+				for (int i = 0; i < 1001; i++)
+				{
+					user[i] = '\0';
+					pass[i] = '\0';
+				}
+				
 				loggedIn = 0;
         	}
     	} else if( strcmp(prompt,"REGISTER") == 0) { // NEED FIX (KLOCE)
@@ -125,7 +132,7 @@ int main(int argc, char* argv[])
 						break;
 					}
 				}
-				DIAGNOSIS(currentDokter, denah.ruang, &Ulist, &Plist);
+				DIAGNOSIS(currentDokter, listRuangan, &Ulist, &Plist);
 			}
 			else
 			{
@@ -143,7 +150,7 @@ int main(int argc, char* argv[])
 						break;
 					}
 				}
-				NGOBATIN(currentDokter, denah.ruang, &Ulist, &OPlist);
+				NGOBATIN(currentDokter, listRuangan, &Ulist, &OPlist);
 			}
 			else
 			{
