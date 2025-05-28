@@ -35,7 +35,7 @@ Set set_findSet(Set t,char* key);
 
 /*
     Melakukan split pada tree t, yang menghasilkan:
-    - Tree l yang berisikan node d   21 | } NodeSet;
+    - Tree l yang berisikan ;;;;;;;;node d   21 | } NodeSet;
 engan key <= key parameter
     - Tree r yang berisikan node dengan key > key parameter
     I.S. t adalah node yang valid, key adalah id yang valid

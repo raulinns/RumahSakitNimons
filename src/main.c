@@ -1,29 +1,36 @@
 // Include any necessary headers
 #include <stdio.h>
 #include <string.h>
-#include "header/file/user.h"
-#include "header/login.h"
 #include "header/denah.h"
+#include "header/file/ext-list.h"
+#include "header/login.h"
 #include "header/user.h"
 #include "header/password.h"
 #include "header/file-utilities.h"
 #include "header/adt/set.h"
 #include "header/adt/list.h"
+#include "header/role.h"
 
-Set setUser;
-List listUser;
-UserList Ulist;
-ObatList Olist;
-ObatPenyakitList OPlist;
-PenyakitList Plist;
-Denah denah;
-Map antrean;
+/* List external:
+	UserList Ulist;
+	ObatList Olist;
+	ObatPenyakitL
+	map_createist OPlist;
+	PenyakitList Plist;
+	Denah denah;
+*/
 
 void init(){
-    setUser = NULL;
-    list_create(&listUser);
+	pasienList.neff  = 0;
+	managerList.neff = 0;
+	dokterList.neff = 0;
+	setUser = NULL;
+	for(int i = 0 ; i < MAX_USER ; i++){
+		DOKTER(i).antrian = malloc(sizeof(Queue));
+		queue_create(DOKTER(i).antrian);
+	}
+	RuangtoDokter = NULL;
 }
-
 int main(int argc, char* argv[])
 {
     init();
@@ -31,8 +38,9 @@ int main(int argc, char* argv[])
     if (argc < 2) {
         printf("Tidak ada nama folder yang diberikan!\n");
         printf("Usage : ./main <<nama_folder>>\n");
+		exit(0);
     }
-    load_all(argv[1], &denah, &antrean, &Ulist, &Olist, &OPlist, &Plist);
+    load_all(argv[1], &denah, &Ulist, &Olist, &OPlist, &Plist);
     int exit = 0, loggedIn = 0, i;
     do {
 		printf("========================================\n");
@@ -45,7 +53,7 @@ int main(int argc, char* argv[])
         	}
         	else 
         	{
-        	    loggedIn = login();
+        	    loggedIn = login(Ulist);
         	}
     	} else if( strcmp(prompt,"REGISTER") == 0) { // NEED FIX (KLOCE)
         	if (loggedIn != 0) //melakukan register saat sudah loggedin
@@ -54,7 +62,7 @@ int main(int argc, char* argv[])
         	}
         	else
         	{
-        	    Register();
+        	    loggedIn = Register(&Ulist);
         	}
     	} else if (strcmp(prompt,"LUPA_PASSWORD") == 0) {  // UNTESTED
 			if (loggedIn == 0) //melakukan reset password saat sudah belum loggedin
@@ -63,7 +71,7 @@ int main(int argc, char* argv[])
 			}
 			else
 			{
-				passwordUpdate();
+				//passwordUpdate();
 			}
     	} else if (strcmp(prompt, "LIHAT_DENAH") == 0) {
 			if (loggedIn == 0) //melakukan register saat sudah loggedin
@@ -75,20 +83,41 @@ int main(int argc, char* argv[])
 			{
 				PrintDenah(denah);
 			}
-		} else if (strcmp(prompt,"LIHAT_RUANGAN") == 0) { //NEED FIX (KLOCE)
-            char ruang[5];
-            scanf("%s", ruang);
-            strcat(prompt," ");
-            strcat(prompt,ruang);
+		} else if(strcmp(prompt,"ANTRIAN") == 0){ // Belum ditambahin checker role - TESTED
+			CekAntrian(masterID);
+		} else if(strcmp(prompt,"DAFTAR_CHECKUP") == 0){
+			DaftarCheckup();
+		}
+		else if (strcmp(prompt,"LIHAT_RUANGAN") == 0) { //NEED FIX (KLOCE) - TESTED
 			if (loggedIn == 0) //melakukan reset password saat sudah belum loggedin
 			{
 				printf("Anda belum login\n");
 			}
 			else
 			{
-				PrintRuang(prompt, denah);
+				char ruang[5]; //ASUMSI : ruang hanya menggunakan 2 char
+    			scanf("%s", ruang);
+				PrintRuang(denah,ruang,0);
 			}
-		} else if (strcmp(prompt,"UBAH_DENAH") == 0) { // UNTESTED
+		} else if (strcmp(prompt, "LIHAT_SEMUA_ANTRIAN") == 0){ // Belum ditambahin checker role - UNTESTED
+				PrintDenah(denah); printf("\n");
+				char ruang[5];
+				Map ptr;
+				ruang[0] = 'A';
+				ruang[2] = '\0';
+				for(int i = 0; i < denah.M.rows ; i++){
+					ruang[1] = '1'; //ASUMSI: MAXLEN RUANG ADALAH 2
+					for(int j = 0 ; j < denah.M.cols ; j++){
+						ptr = map_findMap(RuangtoDokter, ruang);
+						if( ptr != NULL ){
+							PrintRuang(denah, ruang, 1);
+							printf("\n");
+						}
+						ruang[1]++;
+					}
+					ruang[0]++;
+				}
+		}else if (strcmp(prompt,"UBAH_DENAH") == 0) { // UNTESTED
 			if (loggedIn == 1) //melakukan register saat sudah loggedin
 			{
 				UbahDenah(prompt, &denah);
@@ -97,7 +126,11 @@ int main(int argc, char* argv[])
 			{
 				printf("Anda tidak dapat melakukan perintah ini\n");
 			}
-		} else if (strcmp(prompt,"HELP") == 0) {
+		} else if(strcmp(prompt,"TAMBAH_DOKTER") == 0){
+			AddDokter(&Ulist);
+		} else if(strcmp(prompt,"ASSIGN_DOKTER") == 0){
+			AssignDokter();
+		}else if (strcmp(prompt,"HELP") == 0) {
 			printf("=========== HELP ===========\n");
 			switch (loggedIn)
 			{
@@ -140,11 +173,15 @@ int main(int argc, char* argv[])
 		} else if (strcmp(prompt, "EXIT") == 0) {
 			exitProgram(&exit);
 			exit = 1;
+		} else if (strcmp(prompt, "SAVE") == 0){
+			char folderName[100]; // Panjang nama folder diasumsikan <= 100
+			printf("\nMasukkan nama folder: ");
+    		scanf("%s", folderName);
+			save_all(folderName, &Olist, &OPlist, &Plist, &Ulist);
 		} else {
 			printf("Perintah tidak valid. Ketik 'HELP' untuk melihat daftar perintah yang tersedia.\n");
 		}
 	} while (exit == 0);
 }
 
-// TODO : Nambahin user di adt jangan di file eksternal
-//        Ngerjain LIHAT_ANTREAN
+//TODO : update all headers (currently features work fine)

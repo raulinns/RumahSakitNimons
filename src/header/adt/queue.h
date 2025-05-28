@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../file/user.h"
+#include "../file/ext-list.h"
 #include "node.h"
 
 /* ADT Queue ini menyimpan antrian pasien*/

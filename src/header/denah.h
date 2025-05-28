@@ -7,11 +7,14 @@
 #define MAT(d) (d).M
 #define LIST(d) (d).l
 
-typedef struct {
+typedef struct Denah{
    Matrix M;
    List l;
    int maxPasien;
+   int maxPerRoom;
 } Denah;
+
+extern Denah denah;
 
 /* I.S. denah belum terdefinisi
    F.S. denah terdefinisi dari file config.txt*/
@@ -25,7 +28,7 @@ void PrintDenah(Denah denah);
    F.S. kapasitas pasien tercetak
         dokter di ruangan tercetak
         pasien-pasien di ruangan tercetak*/
-void PrintRuang(char *ruang, Denah denah);
+void PrintRuang(Denah denah, char* ruang, int diluar);
 
 /* I.S. denah sudah terdefinisi
    F.S. rows dan cols denah diubah sesuai dengan luas

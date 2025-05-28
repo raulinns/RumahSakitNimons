@@ -1,8 +1,13 @@
 #include "../header/adt/map.h"
 #include "../header/file-utilities.h"
 #include "../header/denah.h"
+#include "../header/user.h"
+#include "../header/role.h"
+#include "../header/adt/map.h"
+#include "../header/file/ext-list.h"
 #include <string.h>
 
+Map RuangtoDokter;
 
 void path(char* dest, const char* dir, const char* name){
     strcpy(dest, "data/");
@@ -11,6 +16,14 @@ void path(char* dest, const char* dir, const char* name){
     strcat(dest, name);
 }
 
+int folder_exists(const char* path) {
+    FILE* fp = fopen(path, "r");
+    if (fp != NULL) {
+        fclose(fp);
+        return 1; // Ada
+    }
+    return 0; // Tidak ada
+}
 
 /*  Mengembalikan jumlah field yang terdapat pada line
     Melakukan parsing data dari line dengan token dan
@@ -32,7 +45,8 @@ int parser(char* line,fields* field,char token){
         }
         else
         {
-            field[fieldIdx][charIdx++] = line[i];
+            field[fieldIdx][charIdx] = line[i];
+            charIdx++;
         }
     }
     field[fieldIdx][charIdx] = '\0';
@@ -41,31 +55,37 @@ int parser(char* line,fields* field,char token){
 }
 
 
-int load_all(char* folder, Denah* denah, Map* map, UserList* Ulist,
+int load_all(char* folder, Denah* denah, UserList* Ulist,
              ObatList* Olist, ObatPenyakitList* OPlist, PenyakitList* Plist) {
-    if (load_config(folder, denah, map, Ulist)) {
+    // Cari apakah config terdapat pada path file yang diberikan
+    char filePath[MAX_LINE_LENGTH];
+    path(filePath, folder, "config.txt");
+    FILE *fp = fopen(filePath, "r");
+    if (fp == NULL) {
         printf("Folder “%s“ tidak ditemukan.\n", folder);
         exit(1);
     }
+    
+    //load
     printf("Loading...\n");
     load_obat(folder, Olist);
     load_user(folder, Ulist);
     load_obatpenyakit(folder, OPlist);
     load_penyakit(folder, Plist);
+    load_config(folder, denah, Ulist);
     printf("Selamat datang kembali di rumah sakit Nimons!\n");
     return 0;
 }
 
 
-int load_config(char* folder, Denah* denah, Map* map, UserList* Ulist){
-    char filepath[MAX_LINE_LENGTH];
-    path(filepath, folder, "config.txt");
-    FILE *fp = fopen(filepath, "r");
+int load_config(char* folder, Denah* denah, UserList* Ulist){
+    char filePath[MAX_LINE_LENGTH];
+    path(filePath, folder, "config.txt");
+    FILE *fp = fopen(filePath, "r");
     if (fp == NULL) {
-        perror("Error opening config.txt");
         return 1;
     }
-    int id, size;
+    int _id, size;
     CreateDenah(denah, folder);
     char line[MAX_LINE_LENGTH];
     fields temp[MAX_USER];
@@ -81,14 +101,26 @@ int load_config(char* folder, Denah* denah, Map* map, UserList* Ulist){
     fgets(line, sizeof(line), fp);
     parser(line, temp, ' ');
     denah->maxPasien = atoi(temp[0]);
+    denah->maxPerRoom = atoi(temp[1]);
 
+    char ruang[3]; //ASUMSI: Kode ruangan hanya memiliki panjang 2
+    ruang[2] = '\0';
     for (int i = 0; i < ROWS(denah->M) * COLS(denah->M); i++) {
+        ruang[0] = 'A' + i/denah->M.cols;
+        ruang[1] = '1' + i%denah->M.cols;
         fgets(line, sizeof(line), fp);
         size = parser(line, temp, ' ');
-        id = atoi(temp[0]);
-        if (id != 0) {
+        _id = atoi(temp[0]);
+        if (_id != 0) {
+            map_insert(&RuangtoDokter, ruang, _id);
+            strcpy(DOKTER(DokterList_NametoID(username(USER(*Ulist,_id)))).ruangKerja,ruang);
+            //ruang.idDokter[i/denah->M.cols][i%denah->M.cols] = _id;
             for (int j = 0; j < size - 1; j++) {
-                map_insertData(map, id, atoi(temp[j + 1]), i);
+                if( atoi(temp[j+1]) != 0) {
+                    AddPasien_to_Dokter(atoi(temp[j+1]),_id);
+                    int dokterID = UserID_to_DokterID(_id);
+                    PASIEN(UserID_to_PasienID(atoi(temp[j+1]))).idDokter = dokterID;
+                }
             }
         }
     }
@@ -100,12 +132,12 @@ int load_config(char* folder, Denah* denah, Map* map, UserList* Ulist){
     for (int i = 1; i < size; i++) {
         fgets(line, sizeof(line), fp);
         int count = parser(line, temp, ';');
-        id = atoi(temp[0]);
+        _id = atoi(temp[0]);
 
         for (int j = 0; j < count - 1; j++) {
             int obatID = atoi(temp[j + 1]);
-            linked_insertEnd(&(USER(*Ulist, id).inventoryObat), obatID);
-            //map_insertData(map, id, obatID);
+            linked_insertEnd(&(USER(*Ulist, _id).inventoryObat), obatID);
+            //map_insertData(map, _id, obatID);
         }
     }
 
@@ -114,9 +146,9 @@ int load_config(char* folder, Denah* denah, Map* map, UserList* Ulist){
 }
 
 int load_obat(char* folder, ObatList* l) {
-    char filepath[MAX_LINE_LENGTH];
-    path(filepath, folder, "obat.csv");
-    FILE *fp = fopen(filepath, "r");
+    char filePath[MAX_LINE_LENGTH];
+    path(filePath, folder, "obat.csv");
+    FILE *fp = fopen(filePath, "r");
     if (fp == NULL) {
         perror("Error opening obat.csv");
         return 1;
@@ -135,9 +167,9 @@ int load_obat(char* folder, ObatList* l) {
 }
 
 int load_penyakit(char* folder, PenyakitList* l) {
-    char filepath[MAX_LINE_LENGTH];
-    path(filepath, folder, "penyakit.csv");
-    FILE *fp = fopen(filepath, "r");
+    char filePath[MAX_LINE_LENGTH];
+    path(filePath, folder, "penyakit.csv");
+    FILE *fp = fopen(filePath, "r");
     if (fp == NULL) {
         perror("Error opening penyakit.csv");
         return 1;
@@ -155,33 +187,49 @@ int load_penyakit(char* folder, PenyakitList* l) {
     return 0;
 }
 
-
 int load_user(char* folder, UserList* l) {
-    char filepath[MAX_LINE_LENGTH];
-    path(filepath, folder, "user.csv");
-    FILE *fp = fopen(filepath, "r");
+    char filePath[MAX_LINE_LENGTH];
+    path(filePath, folder, "user.csv");
+
+    FILE *fp = fopen(filePath, "r");
     if (fp == NULL) {
         perror("Error opening user.csv");
         return 1;
     }
-
+    
     char line[MAX_LINE_LENGTH];
-    int cur = 0;
+    int cur = 1;
 
     while (fgets(line, sizeof(line), fp)) {
-        parser(line, USER(*l, cur).field, ';');
+        int n = parser(line, USER(*l, cur).field, ';');
+        for (int i = n; i < 16; i++) {
+            strcpy(USER(*l, cur).field[i], "");
+        }
+
+        set_insertData(&setUser, username(USER(*l,cur)), atoi(id(USER(*l,cur))));
+        
+        // Masukkan data user ke List berdasarkan role masing masing
+        if( strcmp(role(USER(*l, cur)), "dokter") == 0){
+            AddDokterList(atoi(id(USER(*l,cur))));
+        }
+        else if( strcmp(role(USER(*l,cur)), "pasien") == 0){
+           AddPasienList(atoi(id(USER(*l,cur))));
+        }
+        else{
+            AddManagerList(atoi(id(USER(*l,cur))));
+        }
         cur++;
     }
-
+    l->len = cur;
     fclose(fp);
     return 0;
 }
 
 
 int load_obatpenyakit(char* folder, ObatPenyakitList* l) {
-    char filepath[MAX_LINE_LENGTH];
-    path(filepath, folder, "obat-penyakit.csv");
-    FILE *fp = fopen(filepath, "r");
+    char filePath[MAX_LINE_LENGTH];
+    path(filePath, folder, "obat-penyakit.csv");
+    FILE *fp = fopen(filePath, "r");
     if (fp == NULL) {
         perror("Error opening obat-penyakit.csv");
         return 1;
@@ -232,4 +280,154 @@ void add_user(List *Ulist,Set* Uset){
 
 int add_penyakit(){
 
+}
+
+/* SAVE FUNCTIONS */
+char fullFolderPath[MAX_LINE_LENGTH];
+char command[MAX_LINE_LENGTH];
+
+// Simpan state UserList sekarang ke data/{folderName}/user.csv
+// Perhatikan zero base dan one base indexing
+int save_user(UserList* l) {
+    char filePath[MAX_LINE_LENGTH];
+
+    // Buat path file output
+    strcpy(filePath, fullFolderPath);
+    strcat(filePath, "/user.csv");
+
+    FILE* fp = fopen(filePath, "w");
+    int fieldCount = 16;
+    // Tulis data ke file
+    for (int i = 1; i < l->len; i++) {
+        for (int j = 0; j < fieldCount; j++) {
+            fprintf(fp, "%s", USER(*l, i).field[j]);
+            if (j < fieldCount - 1) {
+                fprintf(fp, ";");
+            }
+        }
+        fprintf(fp, "\n");
+    }
+
+    fclose(fp);
+    return 0;
+}
+
+int save_penyakit(PenyakitList* l) {
+    char filePath[MAX_LINE_LENGTH];
+
+    // Buat path file output
+    strcpy(filePath, fullFolderPath);
+    strcat(filePath, "/penyakit.csv");
+
+    FILE* fp = fopen(filePath, "w");
+    if (fp == NULL) {
+        perror("Gagal membuka file untuk ditulis");
+        return 1;
+    }
+    int fieldCount = 20;
+    // Tulis data ke file
+    for (int i = 0; i < l->len; i++) {
+        for (int j = 0; j < fieldCount; j++) {
+            fprintf(fp, "%s", PENYAKIT(*l, i).field[j]);
+            if (j < fieldCount - 1) {
+                fprintf(fp, ";");
+            }
+        }
+        fprintf(fp, "\n");
+    }
+
+    fclose(fp);
+
+    return 0;
+}
+
+int save_obat(ObatList* l) {
+    char filePath[MAX_LINE_LENGTH];
+
+    strcpy(filePath, fullFolderPath);
+    strcat(filePath, "/obat.csv");
+
+    FILE* fp = fopen(filePath, "w");
+    if (fp == NULL) {
+        perror("Gagal membuka file untuk ditulis");
+        return 1;
+    }
+    int fieldCount = 2;
+    // Tulis data ke file
+    for (int i = 0; i < l->len; i++) {
+        for (int j = 0; j < fieldCount; j++) {
+            fprintf(fp, "%s", OBAT(*l, i).field[j]);
+            if (j < fieldCount - 1) {
+                fprintf(fp, ";");
+            }
+        }
+        fprintf(fp, "\n");
+    }
+
+    fclose(fp);
+
+    return 0;
+}
+
+int save_obatpenyakit(ObatPenyakitList* l) {
+    char filePath[MAX_LINE_LENGTH];
+    strcpy(filePath, fullFolderPath);
+    strcat(filePath, "/obat-penyakit.csv");
+
+    FILE* fp = fopen(filePath, "w");
+    if (fp == NULL) {
+        perror("Gagal membuka file untuk ditulis");
+        return 1;
+    }
+    int fieldCount = 2;
+    // Tulis data ke file
+    for (int i = 0; i < l->len; i++) {
+        for (int j = 0; j < fieldCount; j++) {
+            fprintf(fp, "%s", OBATPENYAKIT(*l, i).field[j]);
+            if (j < fieldCount - 1) {
+                fprintf(fp, ";");
+            }
+        }
+        fprintf(fp, "\n");
+    }
+
+    fclose(fp);
+
+    return 0;
+}
+
+// TODO : Simpan config
+int save_all(char* folderName,ObatList* obatList,ObatPenyakitList* obatPenyakitList,
+            PenyakitList* penyakitList,UserList* userList){
+    // Cek apakah folder data/ ada
+    int dataExists = folder_exists("data");
+
+    // Buat path folder lengkap: data/nama_folder
+    strcpy(fullFolderPath, "data/");
+    strcat(fullFolderPath, folderName);
+
+    // Cek apakah folder data/nama_folder ada
+    int subfolderExists = folder_exists(fullFolderPath);
+
+    printf("\nSaving...\n");
+
+    if (!dataExists) {
+        printf("\nMembuat folder data...\n");
+        system("mkdir data");
+    }
+
+    if (!subfolderExists) {
+        printf("Membuat folder %s...\n", fullFolderPath);
+        // Buat perintah mkdir data/nama_folder
+        strcpy(command, "mkdir ");
+        strcat(command, fullFolderPath);
+        system(command);
+    }
+    
+    save_obat(obatList);
+    save_obatpenyakit(obatPenyakitList);
+    save_penyakit(penyakitList);
+    save_user(userList);
+    printf("Berhasil menyimpan data di folder %s!\n", fullFolderPath);
+    return 0;
 }
