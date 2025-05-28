@@ -1,6 +1,7 @@
-#include "../header/file/user.h"
+#include "../header/file/ext-list.h"
 #include "../header/login.h"
 #include "../header/password.h"
+#include "../header/role.h"
 #include <stdlib.h>
 
 char user[1001], pass[1001];
@@ -29,17 +30,18 @@ int login(UserList uList)
     {
         if ( strcmp( password(USER(uList,check) ) , pass ) == 0)
         {
-            if (strcmp(role(USER(uList,check)),"Manager") == 0)
+            masterID = getIDbyName(uList, user);
+            if (strcmp(role(USER(uList,check)),"manager") == 0)
             {
                 printf("Selamat pagi Manager %s!\n",user);
                 return 1;
             }
-            else if (strcmp(role(USER(uList,check)),"Dokter") == 0)
+            else if (strcmp(role(USER(uList,check)),"dokter") == 0)
             {
                 printf("Selamat pagi Dokter %s!\n",user);
                 return 2;
             }
-            else if (strcmp(role(USER(uList,check)),"Pasien") == 0)
+            else if (strcmp(role(USER(uList,check)),"pasien") == 0)
             {
                 printf("Selamat pagi %s! Ada keluhan apa ?\n",user);
                 return 3;
@@ -54,10 +56,9 @@ int login(UserList uList)
     }
 }
 
-// Coba buat logout dan testing
+
 // Otomatis jadi pasien
 int Register(UserList* uList){
-    char user[1001], pass[1001];
     printf("Username: ");
     scanf("%s", user);
     if( getIDbyName(*uList,user) != -1 ) // User dengan nama yang sama sudah ada
@@ -71,7 +72,8 @@ int Register(UserList* uList){
 
     /* Menambahkan data user baru pada user.csv */
     AddUser(user,pass, uList);
-
+    AddPasienList(uList->len-1);
+    masterID = uList->len-1;
     printf("Selamat pagi %s! Ada keluhan apa ?\n", user);
     return 1;
 }

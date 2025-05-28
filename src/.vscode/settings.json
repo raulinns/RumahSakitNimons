@@ -1,6 +1,20 @@
 {
     "files.associations": {
-        "user.h": "c"
+        "user.h": "c",
+        "set.h": "c",
+        "array": "c",
+        "string": "c",
+        "string_view": "c",
+        "ranges": "c",
+        "stdlib.h": "c",
+        "random.h": "c",
+        "list.h": "c",
+        "role.h": "c",
+        "file-utilities.h": "c",
+        "initializer_list": "c",
+        "utility": "c",
+        "ext-list.h": "c",
+        "string.h": "c"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }

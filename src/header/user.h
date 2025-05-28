@@ -28,6 +28,6 @@ char *NamaUser(int idx);
 void AddUser(char *name, char *pass,UserList *uList);
 
 /* Menambahkan dokter baru ke user list */
-int AddDokter(UserList* uList)
+int AddDokter(UserList* uList);
 
 #endif

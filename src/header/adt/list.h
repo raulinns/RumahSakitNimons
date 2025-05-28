@@ -6,7 +6,7 @@
 #define NEFF(l)     (l).nEff
 #define ELMT(l, i)  (l).contents[i]
 
-typedef struct {
+typedef struct List {
     int nEff;
     char contents[100][CAPACITY];
 } List;

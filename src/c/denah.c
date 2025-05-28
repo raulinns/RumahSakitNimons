@@ -1,58 +1,92 @@
-#include "../header/denah.h"
 #include "../header/user.h"
+#include "../header/file-utilities.h"
+#include "../header/file/ext-list.h"
+#include "../header/denah.h"
+#include "../header/role.h"
+#include "../header/adt/queue.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
-void CreateDenah(Denah *denah, const char* folder) {
-    // Bangun path ke config.txt: "../data/folder/config.txt"
-    char path[256];
-    sprintf(path, "data/%s/config.txt", folder);
+Denah denah;
 
+void CreateDenah(Denah *denah, const char* folder) {
+    // Build path to config.txt: "data/folder/config.txt"
+    char path[256];
+    snprintf(path, sizeof(path), "data/%s/config.txt", folder);
+    
     FILE *configFile = fopen(path, "r");
     if (!configFile) {
         perror("Gagal membuka config.txt");
         exit(1);
     }
-
+    
     char line[MAX_LINE_LENGTH];
-    int i = 0;
-    // Baris pertama: rows dan cols
-    fgets(line, MAX_LINE_LENGTH, configFile);
+    
+    // First line: rows and cols
+    if (!fgets(line, MAX_LINE_LENGTH, configFile)) {
+        fprintf(stderr, "Error reading first line\n");
+        fclose(configFile);
+        exit(1);
+    }
+    
     int rowIdx = 0;
     char *rowStr = ParseData(line, &rowIdx, ' ');
+    if (!rowStr) {
+        fprintf(stderr, "Failed to parse rows\n");
+        fclose(configFile);
+        exit(1);
+    }
+    
     int rows = atoi(rowStr);
     free(rowStr); // DEALLOC
-
+    
     char *colStr = ParseData(line, &rowIdx, ' ');
+    if (!colStr) {
+        fprintf(stderr, "Failed to parse cols\n");
+        fclose(configFile);
+        exit(1);
+    }
+    
     int cols = atoi(colStr);
     free(colStr); // DEALLOC
-
+    
     ROWS(MAT(*denah)) = rows;
     COLS(MAT(*denah)) = cols;
 
-    // Baris kedua: maxPasien
-    fgets(line, MAX_LINE_LENGTH, configFile);
+    if (!fgets(line, MAX_LINE_LENGTH, configFile)) {
+        fprintf(stderr, "Error reading second line\n");
+        fclose(configFile);
+        exit(1);
+    }
+    
     int maxIdx = 0;
-    int maxPasien = atoi(ParseData(line, &maxIdx, ' '));
+    char *maxPasienStr = ParseData(line, &maxIdx, ' ');
+    if (!maxPasienStr) {
+        fprintf(stderr, "Failed to parse maxPasien\n");
+        fclose(configFile);
+        exit(1);
+    }
+    
+    int maxPasien = atoi(maxPasienStr);
+    free(maxPasienStr);
     denah->maxPasien = maxPasien;
-    // Alokasi kapasitas list sesuai rumus
+    
     NEFF(LIST(*denah)) = maxPasien + maxPasien * cols + maxPasien * cols * rows;
-
-    // Inisialisasi semua isi ruangan (dokter dan pasien)
+    
+    // Inisialisasi ruangan
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
-            CNTN(MAT(*denah), i, j) = 0; // Default tidak ada dokter
+            CNTN(MAT(*denah), i, j) = 0; 
         }
     }
-
+    
     fclose(configFile);
 }
 
 
 void PrintDenah(Denah denah) {
     int i, j;
-    printf(" ");
     for (i = 0; i < COLS(MAT(denah)); i++) {
         printf("     %d", i + 1);
     }
@@ -75,38 +109,69 @@ void PrintDenah(Denah denah) {
     }
 }
 
-void PrintRuang(char *ruang, Denah denah) {
-    int i = 15;
-    int row = (int)ruang[i] - (int)('A');
-    i++;
-    int col = atoi(ParseData(ruang, i, ' ')) - 1;
-    if (row < ROWS(MAT(denah)) && row >= 0 && col < COLS(MAT(denah)) && col >= 0) {
-        printf("--- Detail Ruangan %s ---\n", ruang);
-        printf("Kapasitas  : %d\n", NEFF(LIST(denah)));
-        printf("Dokter     : ");
-        if (CNTN(MAT(denah), row, col) != 0) {
-            printf("Dr. %s", NamaUser(CNTN(MAT(denah), row, col)));
-        }
-        else {
-            printf("-");
-        }
-        printf("\n");
+void PrintRuang(Denah denah, char* ruang, int diluar) {
+    // Print heaeder
+    if( diluar == 0 ){
+        printf("\n--- Detail Ruangan %s ---\n", ruang);
+        printf("Kapasitas  : %d\n", denah.maxPerRoom);     
+    }
+    else{
+        printf("============ %s ============\n", ruang);
+    }
+    
+    Map temp = map_findMap(RuangtoDokter, ruang);
+    
+    // Handle kasus kosong
+    if( temp == NULL ){
+        printf("Dokter     : - \n");
         printf("Pasien di dalam ruangan:\n");
-        if (ELMT(LIST(denah), row * COLS(MAT(denah)) * NEFF(LIST(denah)) + col * NEFF(LIST(denah))) != 0) {
-            for (i = 0; ELMT(LIST(denah), row * COLS(MAT(denah)) * NEFF(LIST(denah)) + col * NEFF(LIST(denah)) + i) != 0; i++) {
-                printf("  %d. %s\n", i + 1, NamaUser(ELMT(LIST(denah), row * COLS(MAT(denah)) * NEFF(LIST(denah)) + col * NEFF(LIST(denah)) + i)));
-            }
+        printf("  Tidak ada pasien di dalam ruangan saat ini.\n");
+        printf("Pasien di antrian:\n");
+        printf("  Tidak ada pasien di antrian saat ini.\n");
+        return;
+    }
+
+    // Print header
+    
+    printf("Dokter     : ");
+    if ( temp != NULL ) {
+        printf("Dr. %s\n", username(USER(Ulist,temp->value)));
+    }
+    else {
+        printf(" -\n");
+    }
+
+    Node* tempq = DOKTER(UserID_to_DokterID(temp->value)).antrian->front;
+    
+    // Print queue
+    int cur = 1;
+    printf("Pasien di dalam ruangan:\n");
+    if( tempq == NULL ) printf("  Tidak ada pasien di dalam ruangan saat ini.\n");
+    else{
+        while( tempq != NULL && cur <= denah.maxPerRoom ){
+            printf(" %d. %s\n", cur, username(USER(Ulist,tempq->data)));
+            cur++;
+            tempq = tempq->next;
         }
-        else {
-            printf("  Tidak ada pasien di dalam ruangan saat ini.\n");
+    }
+    printf("\n");
+
+    // Print pasien yang diluar
+    if( diluar == 0 ) return;
+    printf("Pasien di antrian:\n");
+    if( tempq == NULL ) printf("  Tidak ada pasien di antrian saat ini.\n");
+    else{
+        while( tempq != NULL ){
+            printf(" %d. %s\n", cur, username(USER(Ulist,tempq->data)));
+            cur++;
+            tempq = tempq->next;
         }
-        printf("------------------------------\n");
     }
 }
 
 void UbahDenah(char *luas, Denah *denah) {
     int i = 0;
-    ParseData(luas, i, ' ');
+    ParseData(luas, &i, ' ');
     int rows = atoi(ParseData(luas, &i, ' '));
     int cols = atoi(ParseData(luas, &i, ' '));
     int valid = 1;

@@ -3,16 +3,13 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "file/obat-penyakit.h"
+#include "file/ext-list.h"
 #include "adt/list.h"
 #include "adt/map.h"
-#include "file/obat.h"
-#include "file/user.h"
-#include "file/penyakit.h"
-#include "file/field.h"
 #include "adt/set.h"
 #include "denah.h"
 
+extern Map RuangtoDokter;
 /* Mengembalikan path yang diinginkan:
         ../file/dir/name
 */
@@ -22,7 +19,7 @@ void path(char* dest, const char* dir, const char* name);
 //void parser(char* line,fields* field);
 
 /* Menyimpan seluruh data ke struktur data masing-masing*/
-int load_all(char* folder, Denah* denah, Map* map, UserList* Ulist,
+int load_all(char* folder, Denah* denah, UserList* Ulist,
              ObatList* Olist, ObatPenyakitList* OPlist, PenyakitList* Plist);
 
 /* Menyimpan data dari obat.csv ke ObatList*/

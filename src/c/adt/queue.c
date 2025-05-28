@@ -44,7 +44,7 @@ int queue_isEmpty(Queue q){
 
 void queue_print(Queue* q) {
     if (queue_isEmpty(*q)) {
-        printf("Queue kosong.\n");
+        //printf("Queue kosong.\n");
         return;
     }
 

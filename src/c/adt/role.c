@@ -1,0 +1,271 @@
+#include "../header/role.h"
+#include "../header/file-utilities.h"
+#include "../header/denah.h"
+#include <stdio.h>
+
+DokterList dokterList;
+PasienList pasienList;
+ManagerList managerList;
+
+// TODO: Pindahkan masing-masing modul spesifik ke role tertentu kesini
+
+/* MODUL SPESIFIK UNTUK PASIEN */
+int UserID_to_PasienID(int id){
+    int l = 0, r = pasienList.neff-1;
+    while(l <= r){
+        int m = (l+r)/2;
+        if( PASIEN(m).id == id ) return m;
+        else if( PASIEN(m).id < id ) l = m+1;
+        else r = m-1;
+    }
+    return -1;
+}
+
+void AddPasienList(int id){
+    int neff = pasienList.neff;
+    PASIEN(neff).id = id;
+    PASIEN(neff).idDokter = -1; // Dokter belum di-assign
+    pasienList.neff = pasienList.neff + 1;
+}
+
+void CekAntrian(int id){
+    int userId = UserID_to_PasienID(id);
+
+    if( PASIEN(userId).idDokter == -1 ) {
+        printf("Anda belum terdaftar dalam antrian check-up!\n");
+        printf("Silakan daftar terlebih dahulu dengan command DAFTAR_CHECKUP.\n");
+        return;
+    }
+
+    int sz = 0;
+    int pos = -1;
+    Node* tempq = DOKTER(PASIEN(userId).idDokter).antrian->front;
+    while( tempq != NULL ){
+        if( tempq->data == id ) pos = sz;
+        sz++;
+        tempq = tempq->next;
+    }
+    if( pos < denah.maxPerRoom ){
+        printf("\nAnda sedang berada di dalam ruangan dokter!\n");
+    }
+
+    else{
+        int idDokter = PASIEN(userId).idDokter;
+        printf("\nStatus antrian Anda:\n");
+        printf("Dokter: Dr. %s\n", username(USER(Ulist,DOKTER(idDokter).id)));
+        printf("Ruangan: %s\n", DOKTER(idDokter).ruangKerja);
+        printf("Posisi antrian: %d dari %d\n", pos+1, sz);
+    }
+}
+
+void DaftarCheckup(){
+    if( PASIEN(UserID_to_PasienID(masterID)).idDokter != -1 ) {
+        printf("Anda sudah terdaftar dalam antrian check-up!\n");
+        printf("Silakan selesaikan check-up yang sudah terdaftar terlebih dahulu.\n");
+        return;
+    }
+
+    printf("\nSilakan masukkan data check-up Anda: \n");
+    
+    User user = USER(Ulist,masterID);
+    
+    printf("Suhu Tubuh (Celcius): ");
+    scanf("%s", suhu(user));
+    while( atof(suhu(user)) < 0 ){
+        printf("Suhu tubuh harus berupa angka positif!\n");
+        printf("Suhu Tubuh (Celcius): ");
+        scanf("%s", suhu(user));
+    }
+
+    printf("Tekanan Darah (sistol/diastol, contoh 120 8): ");
+    scanf("%s %s", sistol(user), diastol(user));
+    while( atoi(sistol(user)) < 0 || atoi(diastol(user)) < 0 ){
+        printf("Tekanan darah harus berupa angka positif!\n");
+        printf("Tekanan Darah (sistol/diastol, contoh 120 8): ");
+        scanf("%s %s", sistol(user), diastol(user));
+    }
+
+    printf("Detak Jantung (bpm): ");
+    scanf("%s", detak(user));
+    while( atoi(detak(user)) < 0 ){
+        printf("Detak Jantung harus berupa angka positif!\n");
+        printf("Detak Jantung (bpm): ");
+        scanf("%s", detak(user));
+    }
+
+    printf("Saturasi Oksigen (%%): ");
+    scanf("%s", saturasi(user));
+    while( atof(saturasi(user)) < 0 || atof(saturasi(user)) > 100 ){
+        printf("Saturasi oksigen harus berada dalam rentang 0 sampai 100!\n");
+        printf("Saturasi Oksigen (%%): ");
+        scanf("%s", saturasi(user));
+    }
+
+    printf("Kadar Gula Darah (mg/dL): ");
+    scanf("%s", gula(user));
+    while( atoi(gula(user)) < 0){
+        printf("Kadar gula darah harus berupa angka positif!\n");
+        printf("Kadar Gula Darah (mg/dL): ");
+        scanf("%s", gula(user));
+    }
+
+    printf("Berat Badan (kg): ");
+    scanf("%s", berat(user));
+    while( atof(berat(user)) <= 0){
+        printf("Berat badan harus berupa angka positif!\n");
+        printf("Berat Badan (kg): ");
+        scanf("%s", berat(user));
+    }
+
+    printf("Tinggi Badan (cm): ");
+    scanf("%s", tinggi(user));
+    while( atoi(tinggi(user)) <= 0){
+        printf("Tinggi badan harus berupa angka positif!\n");
+        printf("Tinggi Badan (cm): ");
+        scanf("%s", tinggi(user));
+    }
+
+    printf("Kadar Kolestrol (mg/dL): ");
+    scanf("%s", kolesterol(user));
+    while( atoi(kolesterol(user)) < 0){
+        printf("Kolesterol badan harus berupa angka positif!\n");
+        printf("Kolesterol Badan (mg/dL): ");
+        scanf("%s", kolesterol(user));
+    }
+
+    printf("Trombosit (ribu/µL): ");
+    scanf("%s", trombosit(user));
+    while( atoi(trombosit(user)) < 0){
+        printf("Trombosit harus berupa angka positif!\n");
+        printf("Trombosit (ribu/µL): ");
+        scanf("%s", trombosit(user));
+    }
+
+    // Print list dokter
+    int cnt = 0; int temp[MAX_USER];
+    for(int i = 0 ; i < dokterList.neff ; i++){
+        if( strcmp(DOKTER(i).ruangKerja,"..") != 0 ){
+            temp[cnt] = i;
+            cnt++;
+            printf("%d. Dr. %s - Spesialisasi %s - Ruangan %s (Antrian: %d orang)\n", 
+                cnt, username(USER(Ulist,DOKTER(i).id)), DOKTER(i).spesialisasi, DOKTER(i).ruangKerja, DOKTER(i).queue_size);
+        }
+    }
+
+    if( dokterList.neff == 0 ) printf("Tidak ada dokter yang dapat dipilih!\n");
+    else {
+        int pick;
+        printf("\nPilih dokter (1-%d): ", cnt);
+        scanf("%d", &pick);
+        while( pick < 0 || pick > cnt ){
+            printf("Pilihan tidak valid!\n");
+            printf("\nPilih dokter (1-%d): ", cnt);
+            scanf("%d", &pick);
+        }
+        
+        printf("\nPendaftaran check-up berhasil!\n");
+        AddPasien_to_Dokter(masterID, DOKTER(temp[pick-1]).id);
+        printf("Anda terdaftar pada antrian Dr. %s di ruangan %s.\n", username(USER(Ulist,DOKTER(temp[pick-1]).id)), DOKTER(temp[pick-1]).ruangKerja);
+        printf("Posisi antrian Anda: %d\n", DOKTER(temp[pick-1]).queue_size);
+    }
+}
+
+/* MODUL SPESIFIK UNTUK DOKTER */
+
+void AddPasien_to_Dokter(int idPasien,int idDokter){
+    int pos = -1;
+    // Cari indeks dokter bersarkan USERID
+    int l = 0, r = dokterList.neff, m;
+    while( l <= r ){
+        m = (l+r)/2;
+        if(DOKTER(m).id == idDokter){
+            pos = m;
+            break;
+        }
+        else if(DOKTER(m).id < idDokter) l = m+1;
+        else r = m-1;
+    }
+    int _idPasien = UserID_to_PasienID(idPasien);
+    PASIEN(_idPasien).idDokter = pos;
+    // Tambahkan pasien
+    queue_push(DOKTER(pos).antrian, idPasien);
+    DOKTER(pos).queue_size++;
+}
+
+/* Mengembalikan indeks dokter dengan nama sesuai parameter pada
+   dokterList.
+*/
+
+int UserID_to_DokterID(int id){
+    int l = 0, r = dokterList.neff-1;
+    while(l <= r){
+        int m = (l+r)/2;
+        if( DOKTER(m).id == id ) return m;
+        else if( DOKTER(m).id < id ) l = m+1;
+        else r = m-1;
+    }
+    return -1;
+}
+
+int DokterList_NametoID(char* name){
+    for(int i = 0 ; i < dokterList.neff ; i++){
+        if( strcmp(name,username(USER(Ulist,DOKTER(i).id))) == 0 ){
+            return i;
+        }
+    }
+    return -1;
+}
+
+void AddDokterList(int id){
+    int neff = dokterList.neff;
+    DOKTER(neff).id = id;
+    strcpy(DOKTER(neff).ruangKerja,".."); // Ruang kerja belum di assign
+    strcpy(DOKTER(neff).spesialisasi,"Umum");
+    DOKTER(neff).antrian = malloc(sizeof(Queue));
+    DOKTER(neff).queue_size = 0;
+    dokterList.neff = dokterList.neff + 1;
+    queue_create(DOKTER(neff).antrian);
+}
+
+void AssignDokter(){
+    char stream[MAX_LINE_LENGTH];
+    char ruang[3];
+    printf("Username: ");
+    scanf("%s", stream);
+    printf("Ruangan: "); //TODO: cek apakah ruangan valid
+    scanf("%s", ruang);
+    int getID = DokterList_NametoID(stream);
+
+    // Temporary variables untuk pengecekan
+    Map tMap = map_findMap(RuangtoDokter, ruang);
+    char tRuang[3]; strcpy(tRuang, DOKTER(getID).ruangKerja);
+
+    // Output berdasarkan kondisi dokter dan ruang yang ingin di assign
+    if( getID == -1 ){ // Tidak terdapat dokter dengan nama yang sesuai
+        printf("Tidak ada dokter dengan nama %s!\n", stream);
+        return;
+    }
+    else if( strcmp(tRuang,"..") != 0 && tMap == NULL  ){ // Dokter sudah di assign dan ruang kosong
+        printf("Dokter %s sudah diassign ke ruangan %s!\n", stream, DOKTER(getID).ruangKerja);
+    }
+    else if(  strcmp(tRuang,"..") == 0 && tMap != NULL ){     // Dokter belum di assign tetapi ruangan sudah diisi oleh dokter lain
+        printf("Dokter %s sudah menempati ruangan %s!\n", username(USER(Ulist,tMap->value)),ruang);
+        printf("Silakan cari ruangan lain untuk dokter %s.\n", ruang);
+    }
+    else if( strcmp(tRuang,"..") != 0 && tMap != NULL) { // Dokter sudah di assign dan ruangan juga sudah ditempati
+        printf("Dokter %s sudah menempati ruangan %s!\n", stream, tRuang);
+        printf("Ruangan %s juga sudah ditempati dokter %s!\n", ruang, username(USER(Ulist,tMap->value)));
+    }
+    else{
+        map_insert(&RuangtoDokter, ruang, DOKTER(getID).id);
+        strcpy(DOKTER(getID).ruangKerja,ruang);
+        printf("\nDokter %s berhasil diassign ke ruangan %s!\n", stream, ruang);
+    }
+}
+
+/* MODUL SPESIFIK UNTUK MANAGER */
+void AddManagerList(int id){
+    int neff = managerList.neff;
+    MANAGER(neff).id = id;
+    managerList.neff = managerList.neff + 1;
+}

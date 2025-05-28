@@ -1,8 +1,9 @@
-#include "../header/file/user.h"
+#include "../header/file/ext-list.h"
 #include "../header/user.h"
 #include <stdlib.h>
 #include <string.h>
 #include "../header/adt/set.h"
+#include "role.h"
 
 #define MAX_FIELD_LENGTH 100
 
@@ -10,18 +11,34 @@ Set setUser;
 
 char *ParseData(char *line, int *i, char token) {
     char *data = (char *)malloc(MAX_FIELD_LENGTH * sizeof(char));
-    if (data == NULL) return NULL;
-
+    if (data == NULL) {
+        fprintf(stderr, "Memory allocation failed in ParseData\n");
+        return NULL;
+    }
+    
     int idx = 0;
-    while (line[*i] != token && line[*i] != '\n' && line[*i] != '\0') {
+    // Skip leading whitespace
+    while (line[*i] == ' ' || line[*i] == '\t') {
+        (*i)++;
+    }
+    
+    // Parsing sampai ketemu token
+    while (line[*i] != token && line[*i] != '\n' && line[*i] != '\0' && line[*i] != '\r') {
+        if (idx >= MAX_FIELD_LENGTH - 1) {
+            fprintf(stderr, "Field too long in ParseData\n");
+            break;
+        }
         data[idx++] = line[*i];
         (*i)++;
     }
-
+    
     data[idx] = '\0'; // null-terminate
+    
+    // Lewati token
     if (line[*i] == token) {
-        (*i)++; // lewati token
+        (*i)++;
     }
+    
 
     return data;
 }
@@ -98,7 +115,7 @@ void AddUser(char *name, char *pass, UserList *uList){
     strcpy( &newUser->field[0] , temp );
     strcpy( &newUser->field[1] , name );
     strcpy( &newUser->field[2] , pass );
-    strcpy( &newUser->field[3] , "Pasien" );
+    strcpy( &newUser->field[3] , "pasien" );
 
     free(temp);
     uList->len = uList->len + 1;
@@ -131,7 +148,7 @@ int AddDokter(UserList* uList){
 
     free(temp);
     uList->len = uList->len + 1;
-
+    AddDokterList(uList->len-1);
     printf("Dokter %s berhasil ditambahkan!\n", user);
     return 1;
 }
