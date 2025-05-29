@@ -3,6 +3,7 @@
 
 #include "field.h"
 #include "../adt/linkedlist.h"
+#include "../adt/stack.h"
 
 #define id(x)           (x).field[0]
 #define username(x)     (x).field[1]
@@ -25,6 +26,7 @@
 typedef struct User{
     fields field[16];
     LinkedList inventoryObat;
+    Stack* perut;
 } User;
 
 typedef struct UserList{
