@@ -11,6 +11,7 @@
 #include "header/adt/list.h"
 #include "header/diagnosis.h"
 #include "header/ngobatin.h"
+#include "header/minum-obat.h"
 #include "header/hospital.h"
 
 Set setUser;
@@ -151,6 +152,36 @@ int main(int argc, char* argv[])
 					}
 				}
 				NGOBATIN(currentDokter, listRuangan, &Ulist, &OPlist);
+			} else if (strcmp(prompt,"MINUM_OBAT") == 0){
+				if (loggedIn == 0){ //melakukan reset password saat sudah belum loggedin
+					printf("Anda belum login\n");
+				} 
+				else if (loggedIn == 1){ //saat sudah loggedin
+					User currentPasien;
+					for (int i = 0; i < Ulist.len; i++){
+						if (strcmp(Ulist.contents[i].field[1], user) == 0)
+						{
+							currentPasien = Ulist.contents[i];
+							break;
+						}
+					}
+					minumObat(&currentPasien, &Olist);
+				}
+			} else if (strcmp(prompt,"PENAWAR") == 0){
+				if (loggedIn == 0){ //melakukan reset password saat sudah belum loggedin
+					printf("Anda belum login\n");
+				} 
+				else if (loggedIn == 1){ //saat sudah loggedin
+					User currentPasien;
+					for (int i = 0; i < Ulist.len; i++){
+						if (strcmp(Ulist.contents[i].field[1], user) == 0)
+						{
+							currentPasien = Ulist.contents[i];
+							break;
+						}
+					}
+					minumPenawar(&currentPasien, &Olist);
+				}
 			}
 			else
 			{
