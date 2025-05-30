@@ -130,6 +130,7 @@ void LihatUser (UserList uList, int pilihan) {
 		printf("-------------------------------------------------\n");
 		
 		for (int i = 0; i < length(sortedList); i++) {
+			if(strlen(username(sortedList.contents[i])) == 0) continue;
 			if ((strcmp(role(sortedList.contents[i]), "Dokter") == 0) || (strcmp(role(sortedList.contents[i]), "Manager") == 0)) {
 				printf("| %.2d | %-12s | %-8s |       -        |\n", atoi(id(sortedList.contents[i])), username(sortedList.contents[i]), role(sortedList.contents[i]));
 			} else {
@@ -143,7 +144,7 @@ void LihatUser (UserList uList, int pilihan) {
 		printf("--------------------------------------\n");
 
 		for (int i = 0; i < length(sortedList); i++) {
-			if (strcmp(role(sortedList.contents[i]), "Pasien") == 0) {
+			if (strcmp(role(sortedList.contents[i]), "Pasien") == 0 && strlen(username(sortedList.contents[i])) != 0) {
 				printf("| %.2d | %-12s | %-14s |\n", atoi(id(sortedList.contents[i])), username(sortedList.contents[i]), riwayat(sortedList.contents[i]));
 			}
 		}
@@ -154,7 +155,7 @@ void LihatUser (UserList uList, int pilihan) {
 		printf("---------------------\n");
 
 		for (int i = 0; i < length(sortedList); i++) {
-			if (strcmp(role(sortedList.contents[i]), "Dokter") == 0) {
+			if (strcmp(role(sortedList.contents[i]), "Dokter") == 0 && strlen(username(sortedList.contents[i])) != 0) {
 				printf("| %.2d | %-12s |\n", atoi(id(sortedList.contents[i])), username(sortedList.contents[i]));
 			}
 		}

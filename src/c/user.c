@@ -145,7 +145,7 @@ int AddDokter(UserList* uList){
     strcpy( &newUser->field[0] , temp );
     strcpy( &newUser->field[1] , user );
     strcpy( &newUser->field[2] , pass );
-    strcpy( &newUser->field[3] , "Dokter" );
+    strcpy( &newUser->field[3] , "dokter" );
 
     free(temp);
     uList->len = uList->len + 1;

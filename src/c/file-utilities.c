@@ -108,10 +108,12 @@ int load_config(char* folder, Denah* denah, UserList* Ulist){
     for (int i = 0; i < ROWS(denah->M) * COLS(denah->M); i++) {
         ruang[0] = 'A' + i/denah->M.cols;
         ruang[1] = '1' + i%denah->M.cols;
+        denah->M.contents[i/denah->M.cols][i%denah->M.cols] = -1; // Ruang kosong
         fgets(line, sizeof(line), fp);
         size = parser(line, temp, ' ');
         _id = atoi(temp[0]);
         if (_id != 0) {
+            denah->M.contents[i/denah->M.cols][i%denah->M.cols] = _id; // Ruang terisi
             map_insert(&RuangtoDokter, ruang, _id);
             strcpy(DOKTER(DokterList_NametoID(username(USER(*Ulist,_id)))).ruangKerja,ruang);
             //ruang.idDokter[i/denah->M.cols][i%denah->M.cols] = _id;
@@ -126,7 +128,7 @@ int load_config(char* folder, Denah* denah, UserList* Ulist){
     }
 
     fgets(line, sizeof(line), fp);
-    parser(line, temp, ';');
+    parser(line, temp, ' ');
     size = atoi(temp[0]);
 
     for (int i = 1; i < size; i++) {
@@ -157,9 +159,14 @@ int load_obat(char* folder, ObatList* l) {
     char line[MAX_LINE_LENGTH];
     int cur = 0;
 
+    fields tempField[20];
     while (fgets(line, sizeof(line), fp)) {
-        parser(line, OBAT(*l, cur).field, ';');
-        cur++;
+        parser(line, tempField, ';');
+        cur = atoi(tempField[0]);
+        for(int i = 0 ; i < 2 ; i++){
+            strcpy(OBAT(*l,cur).field[i],tempField[i]);
+        }
+
     }
 
     fclose(fp);
