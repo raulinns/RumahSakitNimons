@@ -25,6 +25,7 @@ void AddPasienList(int id){
     int neff = pasienList.neff;
     PASIEN(neff).id = id;
     PASIEN(neff).idDokter = -1; // Dokter belum di-assign
+    PASIEN(neff).sudahDiagnosis = 0;
     pasienList.neff = pasienList.neff + 1;
 }
 

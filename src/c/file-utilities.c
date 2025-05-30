@@ -65,7 +65,6 @@ int load_all(char* folder, Denah* denah, UserList* Ulist,
         printf("Folder “%s“ tidak ditemukan.\n", folder);
         exit(1);
     }
-    
     //load
     printf("Loading...\n");
     load_obat(folder, Olist);
@@ -161,13 +160,10 @@ int load_obat(char* folder, ObatList* l) {
 
     fields tempField[20];
     while (fgets(line, sizeof(line), fp)) {
-        parser(line, tempField, ';');
-        cur = atoi(tempField[0]);
-        for(int i = 0 ; i < 2 ; i++){
-            strcpy(OBAT(*l,cur).field[i],tempField[i]);
-        }
-
+        parser(line, OBAT(*l,cur).field, ';');
+        cur++;
     }
+    l->len = cur;
 
     fclose(fp);
     return 0;
@@ -189,7 +185,7 @@ int load_penyakit(char* folder, PenyakitList* l) {
         parser(line, PENYAKIT(*l, cur).field, ';'); // <- asumsi field[cur] valid
         cur++;
     }
-
+    l->len = cur;
     fclose(fp);
     return 0;
 }
@@ -249,7 +245,7 @@ int load_obatpenyakit(char* folder, ObatPenyakitList* l) {
         parser(line, OBATPENYAKIT(*l, cur).field, ';');
         cur++;
     }
-
+    l->len = cur;
     fclose(fp);
     return 0;
 }

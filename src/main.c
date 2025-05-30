@@ -333,7 +333,11 @@ int main(int argc, char* argv[])
 				printf("Anda tidak dapat melakukan perintah ini\n");
 			}
 
-		} else if (strcmp(prompt, "LOGOUT") == 0) {
+		} else if(strcmp(prompt, "SKIP_ANTRIAN") == 0){
+			SkipAntrian();
+		} else if(strcmp(prompt, "CANCEL_ANTRIAN") == 0){
+			KeluarAntrian();
+		}else if (strcmp(prompt, "LOGOUT") == 0) {
 			loggedIn = 0;
 			printf("Anda telah logout dari akun %s\n", user);
 
