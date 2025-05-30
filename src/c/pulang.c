@@ -1,0 +1,79 @@
+#include "../header/pulang.h"
+#include <stdio.h>
+#include <string.h>
+
+int pulangdok(User Pasien, ObatPenyakitList OPlist, ObatList Olist) {
+    printf("\n");
+    char* penyakit = riwayat(Pasien);
+    if (strcmp(riwayat(Pasien), "-") == 0 || strlen(riwayat(Pasien)) == 0) {
+        printf("Kamu belum menerima diagnosis apapun dari dokter, jangan buru-buru pulang!\n");
+        return 0;
+    }
+    printf("Dokter sedang memeriksa keadaanmu...\n\n");
+    if (Pasien.inventoryObat.size != 0) {
+        printf("Masih ada obat yang belum kamu habiskan, minum semuanya dulu yukk!\n");
+    }
+    int idx = 0;
+    int idPenyakit = riwayat(Pasien);
+    ObatPenyakitList NewOPlist;
+    NewOPlist.len = 0;
+    for (int i = 0; i != OPlist.len; i++) {
+        if (OPlist.contents[i].field[1] == idPenyakit) {
+            NewOPlist.contents[idx] = OPlist.contents[i];
+            NewOPlist.len++; idx++;
+        }
+    }
+    int len = NewOPlist.len;
+    int arr1[len];
+    for (int i = 0; i != len; i++) {
+        int j = 0;
+        while (NewOPlist.contents[j].field[2] != i + 1) {
+            j++;
+        }
+        arr1[i] = NewOPlist.contents[j].field[0];
+    }
+    Stack perut;
+    perut = *Pasien.perut;
+    int arr2[len];
+    for (int i = len - 1; i != -1; i--) {
+        arr2[i] = perut.top->data;
+        stack_pop(&perut);
+    }
+    int beda = 0;
+    for (int i = 0; i != len && !beda; i++) {
+        if (arr1[i] != arr2[i]) {
+            beda = 1;
+        }
+    }
+    if (beda) {
+        printf("Maaf, tapi kamu masih belum bisa pulang!\n\n");
+        printf("Urutan peminuman obat yang diharapkan:\n");
+        for (int i = 0; i != len; i++) {
+            int j = 0;
+            while (Olist.contents[j].field[0] != arr1[i]) {
+                j++;
+            }
+            printf("%s", Olist.contents[j].field[1]);
+            if (i != len - 1) {
+                printf(" -> ");
+            }
+        }
+        printf("\n\n");
+        printf("Urutan obat yang kamu minum:\n");
+        for (int i = 0; i != len; i++) {
+            int j = 0;
+            while (Olist.contents[j].field[0] != arr2[i]) {
+                j++;
+            }
+            printf("%s", Olist.contents[j].field[1]);
+            if (i != len - 1) {
+                printf(" -> ");
+            }
+        }
+        printf("\n\n");
+        printf("Silahkan kunjungi dokter untuk meminta penawar yang sesuai!\n");
+        return 0;
+    }
+    printf("Selamat! Kamu sudah dinyatakan sembuh oleh dokter. Silahkan pulang dan semoga sehat selalu!\n");
+    return 1;
+}

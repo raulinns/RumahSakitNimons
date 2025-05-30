@@ -11,6 +11,11 @@
 #include "header/adt/list.h"
 #include "header/role.h"
 #include "header/lihat-cari.h"
+#include "header/diagnosis.h"
+#include "header/ngobatin.h"
+#include "header/minum-obat.h"
+#include "header/hospital.h"
+#include "header/pulang.h"
 
 /* List external:
 	UserList Ulist;
@@ -21,6 +26,8 @@
 	Denah denah;
 */
 
+Ruangan ruangan;
+ListRuangan listRuangan;
 void init(){
 	pasienList.neff  = 0;
 	managerList.neff = 0;
@@ -75,7 +82,22 @@ int main(int argc, char* argv[])
         	{
         	    loggedIn = login(Ulist);
         	}
-
+		} else if(strcmp(prompt,"LOGOUT") == 0) {
+        	if (loggedIn = 0) //melakukan logout saat belum loggedin
+        	{
+        	    printf("Anda belum login\n");
+        	}
+        	else
+        	{
+        	    setUser = NULL;
+				for (int i = 0; i < 1001; i++)
+				{
+					user[i] = '\0';
+					pass[i] = '\0';
+				}
+				printf("Anda berhasil logout!\n");
+				loggedIn = 0;
+        	}
     	} else if( strcmp(prompt,"REGISTER") == 0) { // NEED FIX (KLOCE)
         	if (loggedIn != 0) //melakukan register saat sudah loggedin
         	{
@@ -111,7 +133,7 @@ int main(int argc, char* argv[])
 		} else if(strcmp(prompt,"DAFTAR_CHECKUP") == 0){
 			DaftarCheckup();
 		}
-		else if (strcmp(prompt,"LIHAT_RUANGAN") == 0) { //NEED FIX (KLOCE) - TESTED
+		else if (strcmp(prompt,"LIHAT_RUANGAN") == 0) { // - TESTED Kloce
 			if (loggedIn == 0) //melakukan reset password saat sudah belum loggedin
 			{
 				printf("Anda belum login\n");
@@ -154,6 +176,89 @@ int main(int argc, char* argv[])
 		} else if(strcmp(prompt,"ASSIGN_DOKTER") == 0){
 			AssignDokter();
 		}else if (strcmp(prompt,"HELP") == 0) {
+		} else if (strcmp(prompt,"DIAGNOSIS") == 0) { // UNTESTED
+			if (loggedIn == 2)
+			{
+				User currentDokter;
+				for (int i = 0; i < Ulist.len; i++)
+				{
+					if (strcmp(Ulist.contents[i].field[1], user) == 0)
+					{
+						currentDokter = Ulist.contents[i];
+						break;
+					}
+				}
+				DIAGNOSIS(currentDokter, listRuangan, &Ulist, &Plist);
+			}
+			else
+			{
+				printf("Anda tidak dapat melakukan perintah ini\n");
+			}
+		} else if (strcmp(prompt,"NGOBATIN") == 0) { // UNTESTED
+			if (loggedIn == 2)
+			{
+				User currentDokter;
+				for (int i = 0; i < Ulist.len; i++)
+				{
+					if (strcmp(Ulist.contents[i].field[1], user) == 0)
+					{
+						currentDokter = Ulist.contents[i];
+						break;
+					}
+				}
+				NGOBATIN(currentDokter, listRuangan, &Ulist, &OPlist);
+			}
+		} else if (strcmp(prompt, "PULANGDOK") == 0) { //UNTESTED
+			switch (loggedIn)
+			{
+				case 0:
+				printf("Anda belum login\n");
+				break;
+				case 3:
+				User Pasien;
+				for (int i = 0; i != Ulist.len; i++) {
+					if (strcmp(Ulist.contents[i].field[1], user) == 0) {
+						Pasien = Ulist.contents[i];
+						break;
+					}
+				}
+				pulangdok(Pasien, OPlist, Olist);
+				break;
+				default:
+				printf("Anda tidak dapat melakukan perintah ini\n");
+			}
+		}
+		else if (strcmp(prompt,"MINUM_OBAT") == 0) {
+			if (loggedIn == 0){ //melakukan reset password saat sudah belum loggedin
+				printf("Anda belum login\n");
+			} 
+			else if (loggedIn == 1){ //saat sudah loggedin
+				User currentPasien;
+				for (int i = 0; i < Ulist.len; i++){
+					if (strcmp(Ulist.contents[i].field[1], user) == 0)
+					{
+						currentPasien = Ulist.contents[i];
+						break;
+					}
+				}
+				minumObat(&currentPasien, &Olist);
+			}
+		} else if (strcmp(prompt,"PENAWAR") == 0){
+			if (loggedIn == 0){ //melakukan reset password saat sudah belum loggedin
+				printf("Anda belum login\n");
+			} 
+			else if (loggedIn == 1){ //saat sudah loggedin
+				User currentPasien;
+				for (int i = 0; i < Ulist.len; i++){
+					if (strcmp(Ulist.contents[i].field[1], user) == 0)
+					{
+						currentPasien = Ulist.contents[i];
+						break;
+					}
+				}
+				minumPenawar(&currentPasien, &Olist);
+			}
+		} else if (strcmp(prompt,"HELP") == 0) {
 			printf("=========== HELP ===========\n");
 			switch (loggedIn)
 			{
