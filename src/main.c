@@ -13,6 +13,7 @@
 #include "header/ngobatin.h"
 #include "header/minum-obat.h"
 #include "header/hospital.h"
+#include "header/pulang.h"
 
 Set setUser;
 List listUser;
@@ -152,40 +153,56 @@ int main(int argc, char* argv[])
 					}
 				}
 				NGOBATIN(currentDokter, listRuangan, &Ulist, &OPlist);
-			} else if (strcmp(prompt,"MINUM_OBAT") == 0){
-				if (loggedIn == 0){ //melakukan reset password saat sudah belum loggedin
-					printf("Anda belum login\n");
-				} 
-				else if (loggedIn == 1){ //saat sudah loggedin
-					User currentPasien;
-					for (int i = 0; i < Ulist.len; i++){
-						if (strcmp(Ulist.contents[i].field[1], user) == 0)
-						{
-							currentPasien = Ulist.contents[i];
-							break;
-						}
-					}
-					minumObat(&currentPasien, &Olist);
-				}
-			} else if (strcmp(prompt,"PENAWAR") == 0){
-				if (loggedIn == 0){ //melakukan reset password saat sudah belum loggedin
-					printf("Anda belum login\n");
-				} 
-				else if (loggedIn == 1){ //saat sudah loggedin
-					User currentPasien;
-					for (int i = 0; i < Ulist.len; i++){
-						if (strcmp(Ulist.contents[i].field[1], user) == 0)
-						{
-							currentPasien = Ulist.contents[i];
-							break;
-						}
-					}
-					minumPenawar(&currentPasien, &Olist);
-				}
 			}
-			else
+		} else if (strcmp(prompt, "PULANGDOK") == 0) { //UNTESTED
+			switch (loggedIn)
 			{
+				case 0:
+				printf("Anda belum login\n");
+				break;
+				case 3:
+				User Pasien;
+				for (int i = 0; i != Ulist.len; i++) {
+					if (strcmp(Ulist.contents[i].field[1], user) == 0) {
+						Pasien = Ulist.contents[i];
+						break;
+					}
+				}
+				pulangdok(Pasien, OPlist, Olist);
+				break;
+				default:
 				printf("Anda tidak dapat melakukan perintah ini\n");
+			}
+		}
+		else if (strcmp(prompt,"MINUM_OBAT") == 0) {
+			if (loggedIn == 0){ //melakukan reset password saat sudah belum loggedin
+				printf("Anda belum login\n");
+			} 
+			else if (loggedIn == 1){ //saat sudah loggedin
+				User currentPasien;
+				for (int i = 0; i < Ulist.len; i++){
+					if (strcmp(Ulist.contents[i].field[1], user) == 0)
+					{
+						currentPasien = Ulist.contents[i];
+						break;
+					}
+				}
+				minumObat(&currentPasien, &Olist);
+			}
+		} else if (strcmp(prompt,"PENAWAR") == 0){
+			if (loggedIn == 0){ //melakukan reset password saat sudah belum loggedin
+				printf("Anda belum login\n");
+			} 
+			else if (loggedIn == 1){ //saat sudah loggedin
+				User currentPasien;
+				for (int i = 0; i < Ulist.len; i++){
+					if (strcmp(Ulist.contents[i].field[1], user) == 0)
+					{
+						currentPasien = Ulist.contents[i];
+						break;
+					}
+				}
+				minumPenawar(&currentPasien, &Olist);
 			}
 		} else if (strcmp(prompt,"HELP") == 0) {
 			printf("=========== HELP ===========\n");
