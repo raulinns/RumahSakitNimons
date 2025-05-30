@@ -214,3 +214,73 @@ void UbahDenah(char *luas, Denah *denah) {
         printf("Denah rumah sakit berhasil diubah menjadi %d baris dan %d kolom\n", rows, cols);
     }
 }
+
+void SkipAntrian() {
+    if (strcmp(role(USER(Ulist, masterID)), "pasien") != 0) {
+        printf("Akses tidak dimiliki!\n");
+        return;
+    }
+
+    int idDokter = PASIEN(UserID_to_PasienID(masterID)).idDokter;
+    
+    if( idDokter == -1 ){
+        printf("Skip antrian gagal! Anda tidak sedang terdaftar dalam antrian manapun!\n");
+        return;
+    }
+
+    if( DOKTER(idDokter).antrian->front->data == masterID ){
+        printf("Skip antrian gagal! Anda tidak sedang terdaftar dalam antrian manapun!\n");
+        return;
+    }
+    Queue* oldQueue = DOKTER(idDokter).antrian;
+    Queue* newQueue = malloc(sizeof(Queue));
+    queue_create(newQueue);
+
+    // Tambah masterID di depan
+    queue_push(newQueue, masterID);
+
+    // Salin antrean lama, kecuali masterID
+    Node* temp = oldQueue->front;
+    while (temp != NULL) {
+        if (temp->data != masterID) {
+            queue_push(newQueue, temp->data);
+        }
+        temp = temp->next;
+    }
+
+    // Hapus antrean lama dan ganti dengan antrean baru
+    queue_clear(oldQueue);
+    free(oldQueue);  // Hindari memory leak
+    DOKTER(idDokter).antrian = newQueue;
+    printf("Anda berhasil maju ke depan antrian Dr. %s di ruangan %s!\n", username(USER(Ulist,DOKTER(idDokter).id)), DOKTER(idDokter).ruangKerja);
+    printf("Posisi antrian Anda sekarang: 1\n");
+}
+
+void KeluarAntrian() {
+    if (strcmp(role(USER(Ulist, masterID)), "pasien") != 0) {
+        printf("Akses tidak dimiliki!\n");
+        return;
+    }
+
+    int idDokter = PASIEN(UserID_to_PasienID(masterID)).idDokter;
+    if( idDokter == -1 ) {
+        printf("Pembatalan antrian gagal! Anda tidak sedang terdaftar dalam antrian manapun!\n");
+    }
+    Queue* oldQueue = DOKTER(idDokter).antrian;
+    Queue* newQueue = malloc(sizeof(Queue));
+    queue_create(newQueue);
+
+    Node* temp = oldQueue->front;
+    while (temp != NULL) {
+        if (temp->data != masterID) {
+            queue_push(newQueue, temp->data);
+        }
+        temp = temp->next;
+    }
+
+    queue_clear(oldQueue);
+    free(oldQueue);
+    DOKTER(idDokter).antrian = newQueue;
+
+    printf("Anda berhasil keluar dari antrian Dr. %s di ruangan %s.", username(USER(Ulist,DOKTER(idDokter).id)), DOKTER(idDokter).ruangKerja); 
+}

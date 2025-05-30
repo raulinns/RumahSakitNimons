@@ -26,6 +26,7 @@ typedef struct _Dokter{
 typedef struct _Pasien{
     int id;
     int idDokter;
+    int sudahDiagnosis;
 } _Pasien;
 
 /* Bentukan list dari role */
