@@ -3,9 +3,14 @@
 
 #include "field.h"
 
+<<<<<<< HEAD
 #define id(x)                   (x).field[0]
 #define penyakit_id(x)          (x).field[1]
 #define urutan(x)               (x).field[2]
+=======
+#define penyakit_id(x)          (x).fields[1]
+#define urutan(x)               (x).fields[2]
+>>>>>>> origin/lihat-cari-user
 #define OBATPENYAKIT(l,x)       (l).contents[x]
 
 typedef struct ObatPenyakit{

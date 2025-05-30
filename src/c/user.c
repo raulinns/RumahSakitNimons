@@ -1,5 +1,6 @@
 #include "../header/file/ext-list.h"
 #include "../header/user.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "../header/adt/set.h"
