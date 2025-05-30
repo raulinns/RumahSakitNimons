@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdlib.h>
 #include "file/user.h"
 
 /* i adalah indeks awal data yang ingin di parse 
@@ -23,13 +22,5 @@ char *NamaUser(int idx);
 
 /* Menambahkan data user baru pada user.csv */
 void AddUser(char *name, char *pass,UserList *uList);
-
-void MenuLihat (UserList uList, char* prompt);
-
-void LihatUser (UserList uList);
-
-void LihatDokter (UserList uList);
-
-void LihatPasien (UserList uList);
 
 #endif

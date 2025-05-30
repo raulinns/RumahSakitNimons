@@ -9,6 +9,7 @@
 #include "header/file-utilities.h"
 #include "header/adt/set.h"
 #include "header/adt/list.h"
+#include "header/lihat-cari.h"
 
 Set setUser;
 List listUser;
@@ -24,10 +25,25 @@ void init(){
     list_create(&listUser);
 }
 
+void printLogo() {
+	printf("==================================================================================================\n");
+	printf("||                                                                                              ||\n");
+    printf("||  ██████     ███████       ███    ██    ██    ███    ███     ██████     ███    ██    ███████  ||\n");
+	printf("||  ██   ██    ██            ████   ██    ██    ████  ████    ██    ██    ████   ██    ██       ||\n");
+	printf("||  ██████     ███████       ██ ██  ██    ██    ██ ████ ██    ██    ██    ██ ██  ██    ███████  ||\n");
+	printf("||  ██   ██         ██       ██  ██ ██    ██    ██  ██  ██    ██    ██    ██  ██ ██         ██  ||\n");
+	printf("||  ██   ██    ███████       ██   ████    ██    ██      ██     ██████     ██   ████    ███████  ||\n");
+	printf("||                                                                                              ||\n");
+	printf("==================================================================================================\n");
+	printf("Selamat datang di aplikasi Rumah Sakit Nimons!\n");
+	printf("Silahkan masukkan perintah yang diinginkan.\n");
+	printf("Ketik 'HELP' untuk melihat daftar perintah yang tersedia.\n");
+}
+
 int main(int argc, char* argv[])
 {
     init();
-    char prompt[1001];
+    char input[1001];
     if (argc < 2) {
         printf("Tidak ada nama folder yang diberikan!\n");
         printf("Usage : ./main <<nama_folder>>\n");
@@ -35,11 +51,16 @@ int main(int argc, char* argv[])
     }
 
     load_all(argv[1], &denah, &antrean, &Ulist, &Olist, &OPlist, &Plist);
+	printLogo();
+
     int exit = 0, loggedIn = 0, i;
     do {
-		printf("========================================\n");
+		printf("\n==================================================================================================\n");
 		printf(">>> ");
-		scanf("%s", prompt);
+		scanf("%s", input);
+
+		char* prompt = ToUpper(input);
+
 		if (strcmp(prompt,"LOGIN") == 0) {
         	if (loggedIn != 0) //melakukan login saat sudah loggedin
         	{
@@ -49,6 +70,7 @@ int main(int argc, char* argv[])
         	{
         	    loggedIn = login(Ulist);
         	}
+
     	} else if( strcmp(prompt,"REGISTER") == 0) { // NEED FIX (KLOCE)
         	if (loggedIn != 0) //melakukan register saat sudah loggedin
         	{
@@ -58,6 +80,7 @@ int main(int argc, char* argv[])
         	{
         	    loggedIn = Register(&Ulist);
         	}
+
     	} else if (strcmp(prompt,"LUPA_PASSWORD") == 0) {  // UNTESTED
 			if (loggedIn == 0) //melakukan reset password saat sudah belum loggedin
 			{
@@ -67,6 +90,7 @@ int main(int argc, char* argv[])
 			{
 				//passwordUpdate();
 			}
+
     	} else if (strcmp(prompt, "LIHAT_DENAH") == 0) {
 			if (loggedIn == 0) //melakukan register saat sudah loggedin
 			{
@@ -77,6 +101,7 @@ int main(int argc, char* argv[])
 			{
 				PrintDenah(denah);
 			}
+
 		} else if (strcmp(prompt,"LIHAT_RUANGAN") == 0) { //NEED FIX (KLOCE)
             char ruang[5];
             scanf("%s", ruang);
@@ -90,6 +115,7 @@ int main(int argc, char* argv[])
 			{
 				PrintRuang(prompt, denah);
 			}
+
 		} else if (strcmp(prompt,"UBAH_DENAH") == 0) { // UNTESTED
 			if (loggedIn == 1) //melakukan register saat sudah loggedin
 			{
@@ -99,6 +125,7 @@ int main(int argc, char* argv[])
 			{
 				printf("Anda tidak dapat melakukan perintah ini\n");
 			}
+
 		} else if (strcmp(prompt,"HELP") == 0) {
 			printf("=========== HELP ===========\n");
 			switch (loggedIn)
@@ -114,6 +141,12 @@ int main(int argc, char* argv[])
 				printf("    2. LIHAT_DENAH: \n");
 				printf("    3. LIHAT_RUANGAN: \n");
 				printf("    4. UBAH_DENAH: \n");
+				printf("    5. LIHAT_USER: Melihat daftar user yang terdaftar\n");
+				printf("    6. LIHAT_DOKTER: Melihat daftar dokter yang terdaftar\n");
+				printf("    7. LIHAT_PASIEN: Melihat daftar pasien yang terdaftar\n");
+				printf("    8. CARI_USER: Mencari user berdasarkan ID atau nama\n");
+				printf("    9. CARI_DOKTER: Mencari dokter berdasarkan ID atau nama\n");
+				printf("    10. CARI_PASIEN: Mencari pasien berdasarkan ID, nama, atau penyakit\n");
 				break;
 			case 2:
 				printf("Halo Dokter %s. Kamu memanggil command HELP. Kamu pasti sedang kebingungan. Berikut adalah hal-hal yang dapat kamu lakukan sekarang:\n\n", user);
@@ -139,6 +172,7 @@ int main(int argc, char* argv[])
 				printf("    1. Untuk menggunakan aplikasi, silahkan masukkan nama fungsi yang terdaftar\n");
 				printf("    2. Jangan lupa untuk memasukkan input yang valid\n\n");
 			}
+
 		} else if (strcmp(prompt, "LIHAT_USER") == 0 || (strcmp(prompt, "LIHAT_DOKTER") == 0) || (strcmp(prompt, "LIHAT_PASIEN") == 0)) {
 			if (loggedIn == 0)
 			{
@@ -146,13 +180,27 @@ int main(int argc, char* argv[])
 			}
 			else if (loggedIn == 1)
 			{
-				MenuLihat(Ulist, prompt);
+				PilihanLihat(Ulist, prompt);
 			}
 			else
 			{
 				printf("Anda tidak dapat melakukan perintah ini\n");
 			}
-			
+
+		} else if (strcmp(prompt, "CARI_USER") == 0 || (strcmp(prompt, "CARI_DOKTER") == 0) || (strcmp(prompt, "CARI_PASIEN") == 0)) {
+			if (loggedIn == 0)
+			{
+				printf("Anda belum login\n");
+			}
+			else if (loggedIn == 1)
+			{
+				PilihanCari(Ulist, prompt);
+			}
+			else
+			{
+				printf("Anda tidak dapat melakukan perintah ini\n");
+			}
+
 		} else if (strcmp(prompt, "LOGOUT") == 0) {
 			loggedIn = 0;
 			printf("Anda telah logout dari akun %s\n", user);
@@ -160,11 +208,13 @@ int main(int argc, char* argv[])
 		} else if (strcmp(prompt, "EXIT") == 0) {
 			exitProgram(&exit);
 			exit = 1;
+
 		} else if (strcmp(prompt, "SAVE") == 0){
 			char folderName[100]; // Panjang nama folder diasumsikan <= 100
 			printf("\nMasukkan nama folder: ");
     		scanf("%s", folderName);
 			save_all(folderName, &Olist, &OPlist, &Plist, &Ulist);
+
 		} else {
 			printf("Perintah tidak valid. Ketik 'HELP' untuk melihat daftar perintah yang tersedia.\n");
 		}
