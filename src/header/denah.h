@@ -34,6 +34,6 @@ void PrintRuang(Denah denah, char* ruang, int diluar);
    F.S. rows dan cols denah diubah sesuai dengan luas
         (jika rows atau cols lebih kecil dari awalnya, mengecek jika semua ruangan
          yang akan dikurangkan tidak ada orangnya) */
-void UbahDenah(char *luas, Denah *denah);
+void UbahDenah(int newRow,int newCol);
 
 #endif

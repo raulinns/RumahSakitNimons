@@ -169,50 +169,59 @@ void PrintRuang(Denah denah, char* ruang, int diluar) {
     }
 }
 
-void UbahDenah(char *luas, Denah *denah) {
-    int i = 0;
-    ParseData(luas, &i, ' ');
-    int rows = atoi(ParseData(luas, &i, ' '));
-    int cols = atoi(ParseData(luas, &i, ' '));
-    int valid = 1;
-    if (ROWS(MAT(*denah)) > rows && COLS(MAT(*denah)) > cols) {
-        for (int i = 0; i < ROWS(MAT(*denah)); i++) {
-            for (int j = 0; j < COLS(MAT(*denah)); j++) {
-                if (i >= rows && j >= cols && CNTN(MAT(*denah), i, j) != 0) {
-                    printf("Tidak dapat mengubah ukuran denah. Ruangan %c%d masih ditempati oleh Dr. %s. Silakan pindahkan dokter terlebih dahulu.\n", (i + (int)('A')), j, NamaUser(CNTN(MAT(*denah), i, j)));
-                    valid = 0;
-                    break;
-                }
+void UbahDenah(int newRow,int newCol) {
+    int row = denah.M.rows;
+    int col = denah.M.cols;
+
+    char ruang[5]; // ASUMSI : panjang kode ruang maks 2
+    ruang[0] = 'A'; ruang[1] = '1'; ruang[2] = '\0';
+    
+    for(int i = 0 ; i < row ; i++){
+        ruang[1] = '1';
+        for(int j = 0 ; j < col ; j++){
+            if( denah.M.contents[i][j] != -1 && (i >= newRow ||  j >= newCol) ){
+                printf("Tidak dapat mengubah ukuran denah.");
+                printf("Ruangan %s masih ditempati oleh Dr. %s.", ruang, username(USER(Ulist,userPosByID(denah.M.contents[i][j]))));
+                printf("Silakan pindahkan dokter terlebih dahulu.\n");
+                return;
             }
+            ruang[1]++;
         }
+        ruang[0]++;
     }
-    else if (ROWS(MAT(*denah)) > rows) {
-        for (int i = 0; i < ROWS(MAT(*denah)); i++) {
-            for (int j = 0; j < COLS(MAT(*denah)); j++) {
-                if (i >= rows && CNTN(MAT(*denah), i, j) != 0) {
-                    printf("Tidak dapat mengubah ukuran denah. Ruangan %c%d masih ditempati oleh Dr. %s. Silakan pindahkan dokter terlebih dahulu.\n", (i + (int)('A')), j, NamaUser(CNTN(MAT(*denah), i, j)));
-                    valid = 0;
-                    break;
-                }
-            }
-        }
+
+    ROWS(MAT(denah)) = newRow;
+    COLS(MAT(denah)) = newCol;
+    printf("Denah rumah sakit berhasil diubah menjadi %d baris dan %d kolom\n", newRow, newCol);
+}
+
+void PindahDokter(char* oldRoom, char* newRoom){
+    // ASUMSI : panjang kode ruang maks 2
+    int oldRow = oldRoom[0] - 'A'; int oldCol = oldRoom[1] - '1';
+    int newRow = newRoom[0] - 'A'; int newCol = newRoom[1] - '1';
+    int id = atoi(id(USER(Ulist,userPosByID(denah.M.contents[oldRow][oldCol])))) ;
+
+    if( denah.M.contents[newRow][newCol] != -1 ){
+        printf("Pemindahan gagal. Ruangan %s Sudah ditempati.\n", newRoom);
+        return;
     }
-    else if (COLS(MAT(*denah)) > cols) {
-        for (int i = 0; i < ROWS(MAT(*denah)); i++) {
-            for (int j = 0; j < COLS(MAT(*denah)); j++) {
-                if (j >= cols && CNTN(MAT(*denah), i, j) != 0) {
-                    printf("Tidak dapat mengubah ukuran denah. Ruangan %c%d masih ditempati oleh Dr. %s. Silakan pindahkan dokter terlebih dahulu.\n", (i + (int)('A')), j, NamaUser(CNTN(MAT(*denah), i, j)));
-                    valid = 0;
-                    break;
-                }
-            }
-        }
+
+    if( denah.M.contents[oldRow][oldCol] == -1 ){
+        printf("Pemindahan gagal. Ruangan %s Kosong.\n", oldRoom);
+        return;
     }
-    if (valid) {
-        ROWS(MAT(*denah)) = rows;
-        COLS(MAT(*denah)) = cols;
-        printf("Denah rumah sakit berhasil diubah menjadi %d baris dan %d kolom\n", rows, cols);
-    }
+
+    
+    printf("Dr. %s berhasil dipindahkan dari ruangan %s ke ruangan %s.\n", username(USER(Ulist,userPosByID(denah.M.contents[oldRow][oldCol]))), oldRoom, newRoom);
+    
+    denah.M.contents[oldRow][oldCol] = -1;
+    denah.M.contents[newRow][newCol] = id;
+    
+    map_delete(&RuangtoDokter,oldRoom);
+    map_insert(&RuangtoDokter, newRoom, id);
+    
+    id = UserID_to_DokterID(id);
+    strcpy(DOKTER(id).ruangKerja, newRoom);
 }
 
 void SkipAntrian() {
@@ -283,4 +292,5 @@ void KeluarAntrian() {
     DOKTER(idDokter).antrian = newQueue;
 
     printf("Anda berhasil keluar dari antrian Dr. %s di ruangan %s.", username(USER(Ulist,userPosByID(DOKTER(idDokter).id))), DOKTER(idDokter).ruangKerja); 
+    PASIEN(UserID_to_PasienID(masterID)).idDokter = -1;
 }

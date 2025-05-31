@@ -150,7 +150,8 @@ int AddDokter(UserList* uList){
 
     free(temp);
     uList->len = uList->len + 1;
-    AddDokterList(uList->len-1);
+    AddDokterList(maxID);
+
     printf("Dokter %s berhasil ditambahkan!\n", user);
     return 1;
 }

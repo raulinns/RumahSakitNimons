@@ -216,9 +216,9 @@ void AddDokterList(int id){
     strcpy(DOKTER(neff).ruangKerja,".."); // Ruang kerja belum di assign
     strcpy(DOKTER(neff).spesialisasi,"Umum");
     DOKTER(neff).antrian = malloc(sizeof(Queue));
+    queue_create(DOKTER(neff).antrian); //Order bug
     DOKTER(neff).queue_size = 0;
     dokterList.neff = dokterList.neff + 1;
-    queue_create(DOKTER(neff).antrian);
 }
 
 void AssignDokter(){
@@ -226,7 +226,7 @@ void AssignDokter(){
     char ruang[3];
     printf("Username: ");
     scanf("%s", stream);
-    printf("Ruangan: "); //TODO: cek apakah ruangan valid
+    printf("Ruangan: "); //TODO: cek apakah ruangan valid ASUMSI len maks 2
     scanf("%s", ruang);
     int getID = DokterList_NametoID(stream);
 
@@ -254,6 +254,7 @@ void AssignDokter(){
         map_insert(&RuangtoDokter, ruang, DOKTER(getID).id);
         strcpy(DOKTER(getID).ruangKerja,ruang);
         printf("\nDokter %s berhasil diassign ke ruangan %s!\n", stream, ruang);
+        denah.M.contents[ruang[0]-'A'][ruang[1]-'1'] = DOKTER(getID).id;
     }
 }
 
