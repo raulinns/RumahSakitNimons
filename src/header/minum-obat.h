@@ -4,6 +4,6 @@
 #include "file-utilities.h"
 
 void minumObat();
-void minumPenawar(User *pasien, ObatList* listObat);
+void minumPenawar();
 
 #endif

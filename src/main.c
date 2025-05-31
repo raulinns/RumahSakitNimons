@@ -235,16 +235,8 @@ int main(int argc, char* argv[])
 			if (loggedIn == 0){ //melakukan reset password saat sudah belum loggedin
 				printf("Anda belum login\n");
 			} 
-			else if (loggedIn == 1){ //saat sudah loggedin
-				User currentPasien;
-				for (int i = 0; i < Ulist.len; i++){
-					if (strcmp(Ulist.contents[i].field[1], user) == 0)
-					{
-						currentPasien = Ulist.contents[i];
-						break;
-					}
-				}
-				minumPenawar(&currentPasien, &Olist);
+			else if (loggedIn == 3){ //saat sudah loggedin
+				minumPenawar();
 			}
 		} else if (strcmp(prompt,"HELP") == 0) {
 			printf("=========== HELP ===========\n");

@@ -8,7 +8,7 @@ void minumObat(){
     //Print daftar obat di inventory pasien nyimpen id obat
     User* pasien;
     for(int i = 0 ; i < Ulist.len ; i++){
-        if( atoi(Ulist.contents[i].field[0]) == masterID ) pasien = &Ulist.contents[i];
+        if( atoi(Ulist.contents[i].field[0]) == masterID ) {pasien = &Ulist.contents[i]; break;}
     }
     
     printf("========== DAFTAR OBAT ==========\n");
@@ -68,16 +68,21 @@ void minumObat(){
     stack_push(&pasien->perut, id_obat_hapus);
 }
 
-void minumPenawar(User *pasien, ObatList* Olist){
+void minumPenawar(){
+    User* pasien;
+    for(int i = 0 ; i < Ulist.len ; i++){
+        if( atoi(Ulist.contents[i].field[0]) == masterID ) {pasien = &Ulist.contents[i]; break;}
+    }
+
     if (stack_isEmpty(pasien->perut)){
         printf("Perut kosong!! Belum ada obat yang dimakan.\n");
     } else{
         //Keluarin id_obat yang dimuntahin dr perut pasien
         char* nama_obat = NULL;
-        int id_obat = stack_top(&pasien->perut);
-        for(int i=0; i<Olist->len; i++){
-            if (id_obat == atoi(Olist->contents[i].field[0])){
-                nama_obat = Olist->contents[i].field[1];
+        int id_obat = stack_top(&pasien->perut.top);
+        for(int i=0; i<Olist.len; i++){
+            if (id_obat == atoi(Olist.contents[i].field[0])){
+                nama_obat = Olist.contents[i].field[1];
                 break;
             }
         }

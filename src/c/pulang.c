@@ -29,7 +29,6 @@ int pulangdok() {
     
     
     if (Pasien->inventoryObat.size != 0) {
-        printf("%d\n", Pasien->inventoryObat.size);
         printf("Masih ada obat yang belum kamu habiskan, minum semuanya dulu yukk!\n");
         return;
     }
