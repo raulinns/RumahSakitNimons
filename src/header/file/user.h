@@ -27,7 +27,7 @@
 typedef struct User{
     fields field[16];
     LinkedList inventoryObat;
-    Stack* perut;
+    Stack perut;
 } User;
 
 typedef struct UserList{

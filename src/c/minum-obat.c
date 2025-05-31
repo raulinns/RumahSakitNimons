@@ -58,17 +58,17 @@ void minumObat(User* pasien, ObatList* listObat){
         free(tempNamaObat);
 
         //Masukkin id_obat yang diminum ke perut pasien
-        stack_push(pasien->perut, id_obat_hapus);
+        stack_push(&pasien->perut, id_obat_hapus);
     }
 }
 
 void minumPenawar(User *pasien, ObatList* listObat){
-    if (stack_isEmpty(*pasien->perut)){
+    if (stack_isEmpty(pasien->perut)){
         printf("Perut kosong!! Belum ada obat yang dimakan.\n");
     } else{
         //Keluarin id_obat yang dimuntahin dr perut pasien
         char* nama_obat = NULL;
-        int id_obat = stack_top(pasien->perut);
+        int id_obat = stack_top(&pasien->perut);
         for(int i=0; i<listObat->len; i++){
             if (id_obat == atoi(listObat->contents[i].field[0])){
                 nama_obat = listObat->contents[i].field[1];
@@ -77,7 +77,7 @@ void minumPenawar(User *pasien, ObatList* listObat){
         }
         if (nama_obat != NULL){
             printf("Uwekkk!!! %s keluar dan kembali ke inventory\n", nama_obat);
-            stack_pop(pasien->perut);
+            stack_pop(&pasien->perut);
         }
 
         //Tambahkan lagi ke inventory
