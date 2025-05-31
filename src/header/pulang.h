@@ -6,6 +6,6 @@
 #include "../header/file/obat.h"
 
 /* Mengembalikan 1 jika pasien boleh pulang (sebagai tambahan untuk B03 Aura)*/
-int pulangdok(User Pasien, ObatPenyakitList OPlist, ObatList Olist);
+int pulangdok();
 
 #endif

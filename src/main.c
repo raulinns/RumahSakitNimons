@@ -34,6 +34,8 @@ void init(){
 	dokterList.neff = 0;
 	setUser = NULL;
 	for(int i = 0 ; i < MAX_USER ; i++){
+		linked_create(&USER(Ulist,i).inventoryObat);
+		stack_create(&USER(Ulist,i).perut);
 		DOKTER(i).antrian = malloc(sizeof(Queue));
 		queue_create(DOKTER(i).antrian);
 	}
@@ -216,33 +218,18 @@ int main(int argc, char* argv[])
 				printf("Anda belum login\n");
 				break;
 				case 3:
-				User Pasien;
-				for (int i = 0; i != Ulist.len; i++) {
-					if (strcmp(Ulist.contents[i].field[1], user) == 0) {
-						Pasien = Ulist.contents[i];
-						break;
-					}
-				}
-				pulangdok(Pasien, OPlist, Olist);
+				pulangdok();
 				break;
 				default:
 				printf("Anda tidak dapat melakukan perintah ini\n");
 			}
 		}
 		else if (strcmp(prompt,"MINUM_OBAT") == 0) {
-			if (loggedIn == 0){ //melakukan reset password saat sudah belum loggedin
+			if (loggedIn == 0){ 
 				printf("Anda belum login\n");
-			} 
-			else if (loggedIn == 1){ //saat sudah loggedin
-				User currentPasien;
-				for (int i = 0; i < Ulist.len; i++){
-					if (strcmp(Ulist.contents[i].field[1], user) == 0)
-					{
-						currentPasien = Ulist.contents[i];
-						break;
-					}
-				}
-				minumObat(&currentPasien, &Olist);
+			}
+			else if (loggedIn == 3){
+				minumObat();
 			}
 		} else if (strcmp(prompt,"PENAWAR") == 0){
 			if (loggedIn == 0){ //melakukan reset password saat sudah belum loggedin

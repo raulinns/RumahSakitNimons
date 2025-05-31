@@ -8,7 +8,7 @@ PasienList pasienList;
 ManagerList managerList;
 
 int userPosByID(int id){
-    for(int i = 0; i < Ulist.len ; i++){
+    for(int i = 0; i <= Ulist.len ; i++){
         if( atoi(Ulist.contents[i].field[0]) == id ) return i;
     }
     return -1;
@@ -28,7 +28,7 @@ void AddPasienList(int id){
     int neff = pasienList.neff;
     PASIEN(neff).id = id;
     PASIEN(neff).idDokter = -1; // Dokter belum di-assign
-    if( strlen(Ulist.contents[userPosByID(id)].field[4]) > 0 ) PASIEN(neff).sudahDiagnosis = 0;
+    if( strlen(Ulist.contents[userPosByID(id)].field[4]) > 0 ) PASIEN(neff).sudahDiagnosis = 1;
     else PASIEN(neff).sudahDiagnosis = 0;
     pasienList.neff = pasienList.neff + 1;
 }
@@ -178,18 +178,7 @@ void DaftarCheckup(){
 /* MODUL SPESIFIK UNTUK DOKTER */
 
 void AddPasien_to_Dokter(int idPasien,int idDokter){
-    int pos = -1;
-    // Cari indeks dokter bersarkan USERID
-    int l = 0, r = dokterList.neff, m;
-    while( l <= r ){
-        m = (l+r)/2;
-        if(DOKTER(m).id == idDokter){
-            pos = m;
-            break;
-        }
-        else if(DOKTER(m).id < idDokter) l = m+1;
-        else r = m-1;
-    }
+    int pos = UserID_to_DokterID(idDokter);
     int _idPasien = UserID_to_PasienID(idPasien);
     PASIEN(_idPasien).idDokter = pos;
     // Tambahkan pasien

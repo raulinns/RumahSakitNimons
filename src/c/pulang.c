@@ -3,23 +3,35 @@
 #include <stdio.h>
 #include <string.h>
 
-int pulangdok(User Pasien, ObatPenyakitList OPlist, ObatList Olist) {
+int pulangdok() {
     printf("\n");
-    char* penyakit = riwayat(Pasien);
     
-    if( PASIEN(UserID_to_PasienID(atoi(Pasien.field[0]))).sudahDiagnosis == 0 ){
-        printf("Kamu belum menerima diagnosis apapun dari dokter, jangan buru-buru pulang!\n");
+    User* Pasien;
+    for (int i = 0; i != Ulist.len; i++) {
+        if ( atoi(Ulist.contents[i].field[0]) == masterID ) {
+            Pasien = &Ulist.contents[i];
+            break;
+        }
     }
     
-    if (strcmp(riwayat(Pasien), "-") == 0 || strlen(riwayat(Pasien)) == 0) {
-        printf("Selamat! Kamu sudah dinyatakan sembuh oleh dokter. Silahkan pulang dan semoga sehat selalu!\n");
-        return 1;
+    char* penyakit = riwayat(*Pasien);
+    
+    if( PASIEN(UserID_to_PasienID(atoi(Pasien->field[0]))).sudahDiagnosis == 0 ){
+        printf("Kamu belum menerima diagnosis apapun dari dokter, jangan buru-buru pulang!\n");
     }
     
     printf("Dokter sedang memeriksa keadaanmu...\n\n");
     
-    if (Pasien.inventoryObat.size != 0) {
+    if (strcmp(riwayat(*Pasien), "-") == 0 || strlen(riwayat(*Pasien)) == 0) {
+        printf("Selamat! Kamu sudah dinyatakan sembuh oleh dokter. Silahkan pulang dan semoga sehat selalu!\n");
+        return 1;
+    }
+    
+    
+    if (Pasien->inventoryObat.size != 0) {
+        printf("%d\n", Pasien->inventoryObat.size);
         printf("Masih ada obat yang belum kamu habiskan, minum semuanya dulu yukk!\n");
+        return;
     }
     
     int idx = 0;
@@ -34,7 +46,7 @@ int pulangdok(User Pasien, ObatPenyakitList OPlist, ObatList Olist) {
     ObatPenyakitList NewOPlist;
     NewOPlist.len = 0;
     for (int i = 0; i != OPlist.len; i++) {
-        if (OPlist.contents[i].field[1] == idPenyakit) {
+        if (atoi(OPlist.contents[i].field[1]) == idPenyakit) {
             NewOPlist.contents[idx] = OPlist.contents[i];
             NewOPlist.len++; idx++;
         }
@@ -45,14 +57,14 @@ int pulangdok(User Pasien, ObatPenyakitList OPlist, ObatList Olist) {
     int arr1[len];
     for (int i = 0; i != len; i++) {
         int j = 0;
-        while (NewOPlist.contents[j].field[2] != i + 1) {
+        while (atoi(NewOPlist.contents[j].field[2]) != i + 1) {
             j++;
         }
         arr1[i] = atoi(NewOPlist.contents[j].field[0]);
     }
 
     Stack perut;
-    perut = *Pasien.perut;
+    perut = Pasien->perut;
     int arr2[len];
     for (int i = len - 1; i != -1; i--) {
         arr2[i] = perut.top->data;

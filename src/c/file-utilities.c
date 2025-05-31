@@ -212,7 +212,7 @@ int load_user(char* folder, UserList* l) {
         }
 
         set_insertData(&setUser, username(USER(*l,cur)), atoi(id(USER(*l,cur))));
-        
+        l->len++;
         // Masukkan data user ke List berdasarkan role masing masing
         if( strcmp(role(USER(*l, cur)), "dokter") == 0){
             AddDokterList(atoi(id(USER(*l,cur))));

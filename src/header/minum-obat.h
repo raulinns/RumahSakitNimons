@@ -3,7 +3,7 @@
 
 #include "file-utilities.h"
 
-void minumObat(User *pasien, ObatList* listObat);
+void minumObat();
 void minumPenawar(User *pasien, ObatList* listObat);
 
 #endif
