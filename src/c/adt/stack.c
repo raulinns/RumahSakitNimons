@@ -1,6 +1,7 @@
 #include "../../header/adt/stack.h"
 
 void stack_create(Stack* s){
+    s = malloc(sizeof(Stack));
     s->size = 0;
     s->top = NULL;
 }

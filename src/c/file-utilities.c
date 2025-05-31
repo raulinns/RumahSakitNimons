@@ -61,6 +61,7 @@ int load_all(char* folder, Denah* denah, UserList* Ulist,
     // Cari apakah config terdapat pada path file yang diberikan
     char filePath[MAX_LINE_LENGTH];
     path(filePath, folder, "config.txt");
+
     FILE *fp = fopen(filePath, "r");
     if (fp == NULL) {
         printf("Folder “%s“ tidak ditemukan.\n", folder);
@@ -90,7 +91,7 @@ int load_config(char* folder, Denah* denah, UserList* Ulist){
     char line[MAX_LINE_LENGTH];
     fields temp[MAX_USER];
     for (int i = 0; i < MAX_USER; i++) {
-        linked_create(&(USER(*Ulist, i).inventoryObat));
+        linked_create(&(USER(*Ulist,userPosByID(i)).inventoryObat));
     }
 
     fgets(line, sizeof(line), fp);
@@ -115,7 +116,7 @@ int load_config(char* folder, Denah* denah, UserList* Ulist){
         if (_id != 0) {
             denah->M.contents[i/denah->M.cols][i%denah->M.cols] = _id; // Ruang terisi
             map_insert(&RuangtoDokter, ruang, _id);
-            strcpy(DOKTER(DokterList_NametoID(username(USER(*Ulist,_id)))).ruangKerja,ruang);
+            strcpy(DOKTER(UserID_to_DokterID(_id)).ruangKerja,ruang);
             //ruang.idDokter[i/denah->M.cols][i%denah->M.cols] = _id;
             for (int j = 0; j < size - 1; j++) {
                 if( atoi(temp[j+1]) != 0) {
@@ -131,15 +132,14 @@ int load_config(char* folder, Denah* denah, UserList* Ulist){
     parser(line, temp, ' ');
     size = atoi(temp[0]);
 
-    for (int i = 1; i < size; i++) {
+    for (int i = 1; i <= size; i++) {
         fgets(line, sizeof(line), fp);
-        int count = parser(line, temp, ';');
+        int count = parser(line, temp, ' ');
         _id = atoi(temp[0]);
 
         for (int j = 0; j < count - 1; j++) {
             int obatID = atoi(temp[j + 1]);
-            linked_insertEnd(&(USER(*Ulist, _id).inventoryObat), obatID);
-            //map_insertData(map, _id, obatID);
+            linked_insertEnd(&(USER(*Ulist,userPosByID(_id)).inventoryObat), obatID);
         }
     }
 
@@ -282,11 +282,6 @@ void add_user(List *Ulist,Set* Uset){
     }
 }
 
-
-int add_penyakit(){
-
-}
-
 /* SAVE FUNCTIONS */
 char fullFolderPath[MAX_LINE_LENGTH];
 char command[MAX_LINE_LENGTH];
@@ -384,7 +379,7 @@ int save_obatpenyakit(ObatPenyakitList* l) {
         perror("Gagal membuka file untuk ditulis");
         return 1;
     }
-    int fieldCount = 2;
+    int fieldCount = 3;
     // Tulis data ke file
     for (int i = 0; i < l->len; i++) {
         for (int j = 0; j < fieldCount; j++) {
