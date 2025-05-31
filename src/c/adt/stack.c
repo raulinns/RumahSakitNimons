@@ -18,7 +18,7 @@ void stack_push(Stack* s, int data){
     s->size = s->size + 1;
 }
 
-Node* stack_top(Stack* s){
+int stack_top(Stack* s){
     return s->top->data;
 }
 
