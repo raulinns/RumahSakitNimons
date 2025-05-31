@@ -19,7 +19,7 @@ void stack_push(Stack* s, int data){
 }
 
 Node* stack_top(Stack* s){
-    return s->top;
+    return s->top->data;
 }
 
 void stack_pop(Stack* s){
