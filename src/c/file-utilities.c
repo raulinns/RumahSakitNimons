@@ -5,6 +5,7 @@
 #include "../header/role.h"
 #include "../header/adt/map.h"
 #include "../header/file/ext-list.h"
+#include "../header/login.h"
 #include <string.h>
 
 Map RuangtoDokter;
@@ -205,6 +206,7 @@ int load_user(char* folder, UserList* l) {
 
     while (fgets(line, sizeof(line), fp)) {
         int n = parser(line, USER(*l, cur).field, ';');
+        if( maxID < atoi(USER(*l, cur).field[0]) ) maxID = atoi(USER(*l, cur).field[0]);
         for (int i = n; i < 16; i++) {
             strcpy(USER(*l, cur).field[i], "");
         }
@@ -251,12 +253,12 @@ int load_obatpenyakit(char* folder, ObatPenyakitList* l) {
 }
 
 
-int addUserList(char *name, char *pass,UserList *Ulist){
-    FILE * fp = fopen("data/user.csv","a");
-    fprintf(fp, ";%s;%s;;;;;;;;;;;;;\n", name, pass);
-    fclose(fp);
-    return 0;
-}
+// int addUserList(char *name, char *pass,UserList *Ulist){
+//     FILE * fp = fopen("data/user.csv","a");
+//     fprintf(fp, ";%s;%s;;;;;;;;;;;;;\n", name, pass);
+//     fclose(fp);
+//     return 0;
+// }
 
 int add_obat(char name, char *pass){
 

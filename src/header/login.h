@@ -10,6 +10,7 @@
 #define MAX_FIELD_LENGTH 100
 
 extern char user[1001], pass[1001];
+extern maxID;
 
 typedef enum LoggedIn //State of login
     {

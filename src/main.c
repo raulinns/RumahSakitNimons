@@ -37,6 +37,7 @@ void init(){
 		DOKTER(i).antrian = malloc(sizeof(Queue));
 		queue_create(DOKTER(i).antrian);
 	}
+	maxID = 0;
 	RuangtoDokter = NULL;
 }
 

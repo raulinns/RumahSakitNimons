@@ -135,7 +135,7 @@ void PrintRuang(Denah denah, char* ruang, int diluar) {
     
     printf("Dokter     : ");
     if ( temp != NULL ) {
-        printf("Dr. %s\n", username(USER(Ulist,temp->value)));
+        printf("Dr. %s\n", username(USER(Ulist,userPosByID(temp->value))));
     }
     else {
         printf(" -\n");
@@ -149,7 +149,7 @@ void PrintRuang(Denah denah, char* ruang, int diluar) {
     if( tempq == NULL ) printf("  Tidak ada pasien di dalam ruangan saat ini.\n");
     else{
         while( tempq != NULL && cur <= denah.maxPerRoom ){
-            printf(" %d. %s\n", cur, username(USER(Ulist,tempq->data)));
+            printf(" %d. %s\n", cur, username(USER(Ulist,userPosByID(tempq->data))));
             cur++;
             tempq = tempq->next;
         }
@@ -162,7 +162,7 @@ void PrintRuang(Denah denah, char* ruang, int diluar) {
     if( tempq == NULL ) printf("  Tidak ada pasien di antrian saat ini.\n");
     else{
         while( tempq != NULL ){
-            printf(" %d. %s\n", cur, username(USER(Ulist,tempq->data)));
+            printf(" %d. %s\n", cur, username(USER(Ulist,userPosByID(tempq->data))));
             cur++;
             tempq = tempq->next;
         }
@@ -216,7 +216,7 @@ void UbahDenah(char *luas, Denah *denah) {
 }
 
 void SkipAntrian() {
-    if (strcmp(role(USER(Ulist, masterID)), "pasien") != 0) {
+    if (strcmp(role(USER(Ulist,userPosByID(masterID))), "pasien") != 0) {
         printf("Akses tidak dimiliki!\n");
         return;
     }
@@ -252,12 +252,12 @@ void SkipAntrian() {
     queue_clear(oldQueue);
     free(oldQueue);  // Hindari memory leak
     DOKTER(idDokter).antrian = newQueue;
-    printf("Anda berhasil maju ke depan antrian Dr. %s di ruangan %s!\n", username(USER(Ulist,DOKTER(idDokter).id)), DOKTER(idDokter).ruangKerja);
+    printf("Anda berhasil maju ke depan antrian Dr. %s di ruangan %s!\n", username(USER(Ulist,userPosByID(DOKTER(idDokter).id))), DOKTER(idDokter).ruangKerja);
     printf("Posisi antrian Anda sekarang: 1\n");
 }
 
 void KeluarAntrian() {
-    if (strcmp(role(USER(Ulist, masterID)), "pasien") != 0) {
+    if (strcmp(role(USER(Ulist,userPosByID(masterID))), "pasien") != 0) {
         printf("Akses tidak dimiliki!\n");
         return;
     }
@@ -282,5 +282,5 @@ void KeluarAntrian() {
     free(oldQueue);
     DOKTER(idDokter).antrian = newQueue;
 
-    printf("Anda berhasil keluar dari antrian Dr. %s di ruangan %s.", username(USER(Ulist,DOKTER(idDokter).id)), DOKTER(idDokter).ruangKerja); 
+    printf("Anda berhasil keluar dari antrian Dr. %s di ruangan %s.", username(USER(Ulist,userPosByID(DOKTER(idDokter).id))), DOKTER(idDokter).ruangKerja); 
 }

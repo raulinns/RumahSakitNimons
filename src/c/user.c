@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../header/adt/set.h"
+#include "../header/login.h"
 #include "role.h"
 
 #define MAX_FIELD_LENGTH 100
@@ -109,8 +110,7 @@ char* to_string(int value) {
 }
 
 void AddUser(char *name, char *pass, UserList *uList){
-    int len = uList->len;
-    char* temp = to_string(len);
+    char* temp = to_string(maxID);
     User* newUser = &uList->contents[uList->len];
 
     strcpy( &newUser->field[0] , temp );
@@ -137,12 +137,13 @@ int AddDokter(UserList* uList){
     scanf("%s", pass);
 
     /* Menambahkan data user baru pada user.csv */
+    maxID++;
     int len = uList->len;
-    char* temp = to_string(len);
+    char* temp = to_string(maxID);
     User* newUser = &uList->contents[uList->len];
     set_insertData(&setUser, user, uList->len);
 
-    strcpy( &newUser->field[0] , temp );
+    strcpy( &newUser->field[0] , to_string(maxID) );
     strcpy( &newUser->field[1] , user );
     strcpy( &newUser->field[2] , pass );
     strcpy( &newUser->field[3] , "dokter" );

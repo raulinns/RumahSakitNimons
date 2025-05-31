@@ -5,9 +5,15 @@
 #include <stdlib.h>
 
 char user[1001], pass[1001];
+int maxID;
 
 int getIDbyName(UserList uList,char* name){
-    for(int i = 0 ; i < uList.len ; i++) if(strcmp(name,username(USER(uList,i))) == 0) return i;
+    for(int i = 0 ; i < uList.len ; i++) if(strcmp(name,username(USER(Ulist,i))) == 0) return i;
+    return -1;
+}
+
+int findID(UserList uList, char* name){
+    for(int i = 0 ; i < uList.len ; i++) if(strcmp(name,username(USER(Ulist,i))) == 0) return atoi(id(USER(Ulist,i)));
     return -1;
 }
 
@@ -26,22 +32,22 @@ int login(UserList uList)
         login(uList);
     }
     // Check wheter a user with the inputted name exist
-    if ( strcmp( username(USER(uList,check) )  , user ) == 0)
+    if ( strcmp( username(USER(Ulist,check) )  , user ) == 0)
     {
-        if ( strcmp( password(USER(uList,check) ) , pass ) == 0)
+        if ( strcmp( password(USER(Ulist,check) ) , pass ) == 0)
         {
-            masterID = getIDbyName(uList, user);
-            if (strcmp(role(USER(uList,check)),"manager") == 0)
+            masterID = findID(uList, user);
+            if (strcmp(role(USER(Ulist,check)),"manager") == 0)
             {
                 printf("Selamat pagi Manager %s!\n",user);
                 return 1;
             }
-            else if (strcmp(role(USER(uList,check)),"dokter") == 0)
+            else if (strcmp(role(USER(Ulist,check)),"dokter") == 0)
             {
                 printf("Selamat pagi Dokter %s!\n",user);
                 return 2;
             }
-            else if (strcmp(role(USER(uList,check)),"pasien") == 0)
+            else if (strcmp(role(USER(Ulist,check)),"pasien") == 0)
             {
                 printf("Selamat pagi %s! Ada keluhan apa ?\n",user);
                 return 3;
@@ -71,9 +77,10 @@ int Register(UserList* uList){
     scanf("%s", pass);
 
     /* Menambahkan data user baru pada user.csv */
+    maxID++;
     AddUser(user,pass, uList);
-    AddPasienList(uList->len-1);
-    masterID = uList->len-1;
+    AddPasienList(maxID);
+    masterID = maxID;
     printf("Selamat pagi %s! Ada keluhan apa ?\n", user);
     return 1;
 }

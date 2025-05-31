@@ -7,16 +7,19 @@ DokterList dokterList;
 PasienList pasienList;
 ManagerList managerList;
 
+int userPosByID(int id){
+    for(int i = 0; i < Ulist.len ; i++){
+        if( atoi(Ulist.contents[i].field[0]) == id ) return i;
+    }
+    return -1;
+}
 // TODO: Pindahkan masing-masing modul spesifik ke role tertentu kesini
 
 /* MODUL SPESIFIK UNTUK PASIEN */
+
 int UserID_to_PasienID(int id){
-    int l = 0, r = pasienList.neff-1;
-    while(l <= r){
-        int m = (l+r)/2;
-        if( PASIEN(m).id == id ) return m;
-        else if( PASIEN(m).id < id ) l = m+1;
-        else r = m-1;
+    for(int i = 0 ; i < pasienList.neff ; i++){
+        if( PASIEN(i).id == id ) return i;
     }
     return -1;
 }
@@ -25,7 +28,8 @@ void AddPasienList(int id){
     int neff = pasienList.neff;
     PASIEN(neff).id = id;
     PASIEN(neff).idDokter = -1; // Dokter belum di-assign
-    PASIEN(neff).sudahDiagnosis = 0;
+    if( strlen(Ulist.contents[userPosByID(id)].field[4]) > 0 ) PASIEN(neff).sudahDiagnosis = 0;
+    else PASIEN(neff).sudahDiagnosis = 0;
     pasienList.neff = pasienList.neff + 1;
 }
 
@@ -53,7 +57,7 @@ void CekAntrian(int id){
     else{
         int idDokter = PASIEN(userId).idDokter;
         printf("\nStatus antrian Anda:\n");
-        printf("Dokter: Dr. %s\n", username(USER(Ulist,DOKTER(idDokter).id)));
+        printf("Dokter: Dr. %s\n", username(USER(Ulist,userPosByID(DOKTER(idDokter).id))));
         printf("Ruangan: %s\n", DOKTER(idDokter).ruangKerja);
         printf("Posisi antrian: %d dari %d\n", pos+1, sz);
     }
@@ -68,7 +72,7 @@ void DaftarCheckup(){
 
     printf("\nSilakan masukkan data check-up Anda: \n");
     
-    User user = USER(Ulist,masterID);
+    User user = USER(Ulist,userPosByID(masterID));
     
     printf("Suhu Tubuh (Celcius): ");
     scanf("%s", suhu(user));
@@ -149,7 +153,7 @@ void DaftarCheckup(){
             temp[cnt] = i;
             cnt++;
             printf("%d. Dr. %s - Spesialisasi %s - Ruangan %s (Antrian: %d orang)\n", 
-                cnt, username(USER(Ulist,DOKTER(i).id)), DOKTER(i).spesialisasi, DOKTER(i).ruangKerja, DOKTER(i).queue_size);
+                cnt, username(USER(Ulist,userPosByID(DOKTER(i).id))), DOKTER(i).spesialisasi, DOKTER(i).ruangKerja, DOKTER(i).queue_size);
         }
     }
 
@@ -166,7 +170,7 @@ void DaftarCheckup(){
         
         printf("\nPendaftaran check-up berhasil!\n");
         AddPasien_to_Dokter(masterID, DOKTER(temp[pick-1]).id);
-        printf("Anda terdaftar pada antrian Dr. %s di ruangan %s.\n", username(USER(Ulist,DOKTER(temp[pick-1]).id)), DOKTER(temp[pick-1]).ruangKerja);
+        printf("Anda terdaftar pada antrian Dr. %s di ruangan %s.\n", username(USER(Ulist,userPosByID(DOKTER(temp[pick-1]).id))), DOKTER(temp[pick-1]).ruangKerja);
         printf("Posisi antrian Anda: %d\n", DOKTER(temp[pick-1]).queue_size);
     }
 }
@@ -210,7 +214,7 @@ int UserID_to_DokterID(int id){
 
 int DokterList_NametoID(char* name){
     for(int i = 0 ; i < dokterList.neff ; i++){
-        if( strcmp(name,username(USER(Ulist,DOKTER(i).id))) == 0 ){
+        if( strcmp(name,username(USER(Ulist,userPosByID(DOKTER(i).id)))) == 0 ){
             return i;
         }
     }
@@ -250,12 +254,12 @@ void AssignDokter(){
         printf("Dokter %s sudah diassign ke ruangan %s!\n", stream, DOKTER(getID).ruangKerja);
     }
     else if(  strcmp(tRuang,"..") == 0 && tMap != NULL ){     // Dokter belum di assign tetapi ruangan sudah diisi oleh dokter lain
-        printf("Dokter %s sudah menempati ruangan %s!\n", username(USER(Ulist,tMap->value)),ruang);
+        printf("Dokter %s sudah menempati ruangan %s!\n", username(USER(Ulist,userPosByID(tMap->value))),ruang);
         printf("Silakan cari ruangan lain untuk dokter %s.\n", ruang);
     }
     else if( strcmp(tRuang,"..") != 0 && tMap != NULL) { // Dokter sudah di assign dan ruangan juga sudah ditempati
         printf("Dokter %s sudah menempati ruangan %s!\n", stream, tRuang);
-        printf("Ruangan %s juga sudah ditempati dokter %s!\n", ruang, username(USER(Ulist,tMap->value)));
+        printf("Ruangan %s juga sudah ditempati dokter %s!\n", ruang, username(USER(Ulist,userPosByID(tMap->value))));
     }
     else{
         map_insert(&RuangtoDokter, ruang, DOKTER(getID).id);
