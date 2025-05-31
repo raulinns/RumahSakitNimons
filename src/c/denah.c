@@ -238,7 +238,7 @@ void SkipAntrian() {
     }
 
     if( DOKTER(idDokter).antrian->front->data == masterID ){
-        printf("Skip antrian gagal! Anda tidak sedang terdaftar dalam antrian manapun!\n");
+        printf("Anda sudah berada di posisi paling depan antrian! Tidak bisa skip lagi.!\n");
         return;
     }
     Queue* oldQueue = DOKTER(idDokter).antrian;
