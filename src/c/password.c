@@ -39,7 +39,8 @@ char* runLengthEncoding(const char* a){
         sprintf(temp, "%d%c", count, prev);
         strcat(encoding, temp);
     }
-    return encoding;   
+    return encoding;  
+
 }
 void updateFile(const char* user, int replaceIndex, const char* newValue){
     FILE *userfile = fopen("data/user.csv", "r");

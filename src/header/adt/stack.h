@@ -19,7 +19,7 @@ void stack_push(Stack* s, int data);
 /* Mengembalikan pointer ke posisi teratas pada stack
    Mengembalikan NULL jika stack kosong
 */
-Node* stack_top(Stack* s);
+int stack_top(Stack* s);
 
 /* Menghapus elemen teratas pada stack */
 void stack_pop(Stack* s);

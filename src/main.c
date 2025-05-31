@@ -112,15 +112,7 @@ int main(int argc, char* argv[])
         	}
 
     	} else if (strcmp(prompt,"LUPA_PASSWORD") == 0) {  // UNTESTED
-			if (loggedIn == 0) //melakukan reset password saat sudah belum loggedin
-			{
-				printf("Anda belum login\n");
-			}
-			else
-			{
-				//passwordUpdate();
-			}
-
+			passwordUpdate();
     	} else if (strcmp(prompt, "LIHAT_DENAH") == 0) {
 			if (loggedIn == 0) //melakukan register saat sudah loggedin
 			{
