@@ -21,12 +21,14 @@
 #define berat_max(x)        (x).field[15]
 #define tinggi_min(x)       (x).field[16]
 #define tinggi_max(x)       (x).field[17]
-#define trombosit_min(x)    (x).field[18]
-#define trombosit_max(x)    (x).field[19]
+#define kolesterol_min(x)   (x).field[18]
+#define kolesterol_max(x)   (x).field[19]
+#define trombosit_min(x)    (x).field[20]
+#define trombosit_max(x)    (x).field[21]
 #define PENYAKIT(l,x)       (l).contents[x]
 
 typedef struct Penyakit{
-    fields field[20];
+    fields field[22];
 } Penyakit;
 
 typedef struct PenyakitList{
