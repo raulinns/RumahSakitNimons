@@ -14,28 +14,52 @@ typedef struct Queue{
     int size;
 } Queue;
 
-/* Membuat node baru yang berisikan data dari parameter */
-void queue_create(Queue* head);
 
-/* Menambahkan node baru di queue */
-void queue_push(Queue* head, int data);
-
-/* Mengembalikan pointer ke posisi terdepan pada queue
-   Mengembalikan NULL jika queue kosong
+/**
+ Membuat queue kosong
+ I.S. : Queue q sembarang (mungkin belum terisi)
+ F.S. : Queue q terinisialisasi sebagai queue kosong
 */
-Node* queue_front(Queue* head);
+void queue_create(Queue* q);
 
-/* Menghapus elemen terdepan pada queue */
-void queue_pop(Queue* head);
+/**
+ Menambahkan elemen ke belakang queue
+ I.S. : Queue q mungkin kosong atau berisi
+ F.S. : Elemen data ditambahkan ke belakang queue
+*/
+void queue_push(Queue* q, int data);
 
-/* Menghapus queue seluruhnya */
+/**
+ Mengembalikan pointer ke elemen paling depan queue
+ Return : Node* yang menunjuk ke front, atau NULL jika kosong
+*/
+Node* queue_front(Queue* q);
+
+/**
+ Menghapus elemen paling depan queue
+ I.S. : Queue q tidak kosong
+ F.S. : Elemen paling depan queue dihapus, ukuran queue berkurang 1
+*/
+void queue_pop(Queue* q);
+
+/**
+ Menghapus semua elemen dalam queue
+ I.S. : Queue q mungkin berisi elemen atau kosong
+ F.S. : Queue q menjadi kosong, semua elemen dibebaskan
+*/
 void queue_clear(Queue* q);
 
-/* Mengembalikan 1 jika queue kosong
-   Mengembalikan 0 jika queue memiliki setidaknya satu elemen*/
+/**
+ Mengecek apakah queue kosong
+ Return : 1 jika kosong, 0 jika tidak
+*/
 int queue_isEmpty(Queue q);
 
-/* Output data pada queue mulai dari indeks terdepan*/
+/**
+ Mencetak semua elemen dalam queue
+ I.S. : Queue q mungkin kosong atau berisi
+ F.S. : Semua elemen queue dicetak ke output
+*/
 void queue_print(Queue* q);
 
 #endif
