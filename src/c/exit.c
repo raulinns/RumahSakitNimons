@@ -32,7 +32,6 @@ int exitProgram() {
 	} else if (choice == 2) {
 		return 0;
 	}
-
 }
 
 void saveFile(Set *userSet) { // Tambahkan parameter sendiri kalau mau save file, tinggal copy 2 line yang gw hightlight
