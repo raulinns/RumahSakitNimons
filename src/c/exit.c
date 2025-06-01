@@ -33,31 +33,3 @@ int exitProgram() {
 		return 0;
 	}
 }
-
-void saveFile(Set *userSet) { // Tambahkan parameter sendiri kalau mau save file, tinggal copy 2 line yang gw hightlight
-	FILE *writeFile = fopen("file/user.csv", "w");
-	if (writeFile != NULL) {
-		Set maxCapacity[1000];
-		int top = -1;
-
-		Set current = *userSet;
-		int status = 0;
-
-		while (!status) {
-			if (current != NULL) {
-				maxCapacity[++top] = current;
-				current = current->l;
-			} else {
-				if (top == -1) {
-					status = 1;
-				} else {
-					current = maxCapacity[top--];
-					fprintf(writeFile, "%d;;;;;;;;;;;;;;;\n", current->key);
-					current = current->r;
-				}
-			}
-		}
-	}
-	fclose(writeFile);
-	printf("Data telah disimpan.\n");
-}
