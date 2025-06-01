@@ -11,13 +11,4 @@
 
 typedef char fields[MAX_FIELD_LENGTH];
 
-/*  Melakukan assignment pada fields
-    fieldsOut <- fieldsIn
-*/
-// void assignFields(fields fIn, fields* fOut, int size){
-//     for(int i = 0 ; i < size ; i++){
-//         fOut[]
-//     }
-// }
-
 #endif

@@ -82,7 +82,7 @@ int Register(UserList* uList){
     AddPasienList(maxID);
     masterID = maxID;
     printf("Selamat pagi %s! Ada keluhan apa ?\n", user);
-    return 1;
+    return 3;
 }
 
 int passwordUpdate(){

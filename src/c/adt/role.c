@@ -60,7 +60,7 @@ void CekAntrian(int id){
         printf("\nStatus antrian Anda:\n");
         printf("Dokter: Dr. %s\n", username(USER(Ulist,userPosByID(DOKTER(idDokter).id))));
         printf("Ruangan: %s\n", DOKTER(idDokter).ruangKerja);
-        printf("Posisi antrian: %d dari %d\n", pos+1, sz);
+        printf("Posisi antrian: %d dari %d\n", pos+1-denah.maxPerRoom, sz-denah.maxPerRoom);
     }
 }
 
@@ -73,78 +73,78 @@ void DaftarCheckup(){
 
     printf("\nSilakan masukkan data check-up Anda: \n");
     
-    User user = USER(Ulist,userPosByID(masterID));
+    User* user = &USER(Ulist,userPosByID(masterID));
     
     printf("Suhu Tubuh (Celcius): ");
-    scanf("%s", suhu(user));
-    while( atof(suhu(user)) < 0 ){
+    scanf("%s", suhu(*user));
+    while( atof(suhu(*user)) < 0 ){
         printf("Suhu tubuh harus berupa angka positif!\n");
         printf("Suhu Tubuh (Celcius): ");
-        scanf("%s", suhu(user));
+        scanf("%s", suhu(*user));
     }
 
     printf("Tekanan Darah (sistol/diastol, contoh 120 8): ");
-    scanf("%s %s", sistol(user), diastol(user));
-    while( atoi(sistol(user)) < 0 || atoi(diastol(user)) < 0 ){
+    scanf("%s %s", sistol(*user), diastol(*user));
+    while( atoi(sistol(*user)) < 0 || atoi(diastol(*user)) < 0 ){
         printf("Tekanan darah harus berupa angka positif!\n");
         printf("Tekanan Darah (sistol/diastol, contoh 120 8): ");
-        scanf("%s %s", sistol(user), diastol(user));
+        scanf("%s %s", sistol(*user), diastol(*user));
     }
 
     printf("Detak Jantung (bpm): ");
-    scanf("%s", detak(user));
-    while( atoi(detak(user)) < 0 ){
+    scanf("%s", detak(*user));
+    while( atoi(detak(*user)) < 0 ){
         printf("Detak Jantung harus berupa angka positif!\n");
         printf("Detak Jantung (bpm): ");
-        scanf("%s", detak(user));
+        scanf("%s", detak(*user));
     }
 
     printf("Saturasi Oksigen (%%): ");
-    scanf("%s", saturasi(user));
-    while( atof(saturasi(user)) < 0 || atof(saturasi(user)) > 100 ){
+    scanf("%s", saturasi(*user));
+    while( atof(saturasi(*user)) < 0 || atof(saturasi(*user)) > 100 ){
         printf("Saturasi oksigen harus berada dalam rentang 0 sampai 100!\n");
         printf("Saturasi Oksigen (%%): ");
-        scanf("%s", saturasi(user));
+        scanf("%s", saturasi(*user));
     }
 
     printf("Kadar Gula Darah (mg/dL): ");
-    scanf("%s", gula(user));
-    while( atoi(gula(user)) < 0){
+    scanf("%s", gula(*user));
+    while( atoi(gula(*user)) < 0){
         printf("Kadar gula darah harus berupa angka positif!\n");
         printf("Kadar Gula Darah (mg/dL): ");
-        scanf("%s", gula(user));
+        scanf("%s", gula(*user));
     }
 
     printf("Berat Badan (kg): ");
-    scanf("%s", berat(user));
-    while( atof(berat(user)) <= 0){
+    scanf("%s", berat(*user));
+    while( atof(berat(*user)) <= 0){
         printf("Berat badan harus berupa angka positif!\n");
         printf("Berat Badan (kg): ");
-        scanf("%s", berat(user));
+        scanf("%s", berat(*user));
     }
 
     printf("Tinggi Badan (cm): ");
-    scanf("%s", tinggi(user));
-    while( atoi(tinggi(user)) <= 0){
+    scanf("%s", tinggi(*user));
+    while( atoi(tinggi(*user)) <= 0){
         printf("Tinggi badan harus berupa angka positif!\n");
         printf("Tinggi Badan (cm): ");
-        scanf("%s", tinggi(user));
+        scanf("%s", tinggi(*user));
     }
 
     printf("Kadar Kolestrol (mg/dL): ");
-    scanf("%s", kolesterol(user));
-    while( atoi(kolesterol(user)) < 0){
+    scanf("%s", kolesterol(*user));
+    while( atoi(kolesterol(*user)) < 0){
         printf("Kolesterol badan harus berupa angka positif!\n");
         printf("Kolesterol Badan (mg/dL): ");
-        scanf("%s", kolesterol(user));
+        scanf("%s", kolesterol(*user));
     }
 
     printf("Trombosit (ribu/µL): ");
-    scanf("%s", trombosit(user));
-    while( atoi(trombosit(user)) < 0){
+    scanf("%s", trombosit(*user));
+    while( atoi(trombosit(*user)) < 0){
         printf("Trombosit harus berupa angka positif!\n");
         printf("Trombosit (ribu/µL): ");
-        scanf("%s", trombosit(user));
+        scanf("%s", trombosit(*user));
     }
 
     // Print list dokter

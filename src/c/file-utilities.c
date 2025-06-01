@@ -331,7 +331,7 @@ int save_penyakit(PenyakitList* l) {
         perror("Gagal membuka file untuk ditulis");
         return 1;
     }
-    int fieldCount = 20;
+    int fieldCount = 22;
     // Tulis data ke file
     for (int i = 0; i < l->len; i++) {
         for (int j = 0; j < fieldCount; j++) {

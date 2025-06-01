@@ -6,7 +6,7 @@
 #include "../random.h"
 
 /* ADT set yang digunakan memiliki struktur treap */
-/* Setiap node pada treap memiliki key dan prior unik, dan menyimpan sebuah queue */
+/* Setiap node pada treap memiliki key (kode ruang) dan prior unik, dan menyimpan sebuah idDokter */
 
 /*  Pendefinisian node set yang berisikan:
     key -> value yang disimpan
@@ -23,38 +23,29 @@ typedef struct NodeSet {
 typedef NodeSet* Set;
 typedef Set* pSet;
 
-/* Membuat set baru dengan key sesuai parameter */
-void set_create(Set t, char* key,int id);
+/* Membuat node set baru dengan key dan prioritas berdasarkan id */
+void set_create(Set t, char *key, int id);
 
-/*
-    Mengembalikan pointer ke node set dengan key sesuai parameter.
-    Jika tree kosong atau node dengan key yang sesuai tidak ditemukan,
-    maka akan dikembalikan NULL.
-*/
-Set set_findSet(Set t,char* key);
+/* Mencari node set dengan key tertentu dalam tree t */
+Set set_findSet(Set t, char *key);
 
-/*
-    Melakukan split pada tree t, yang menghasilkan:
-    - Tree l yang berisikan ;;;;;;;;node d   21 | } NodeSet;
-engan key <= key parameter
-    - Tree r yang berisikan node dengan key > key parameter
-    I.S. t adalah node yang valid, key adalah id yang valid
-    F.S. Terbentuk tree l dan r sesuai kriteria diatas
+/* Memisahkan tree t menjadi dua tree berdasarkan key:
+   - l: tree dengan key <= key parameter
+   - r: tree dengan key > key parameter
 */
-void set_split(Set t, char* key, pSet l, pSet r);
+void set_split(Set t, char *key, pSet l, pSet r);
 
-/*
-    Menyisipkan node set baru pada ADT set.
-    I.S. Set terinisialisasi
-    F.S. ADT Set berisi node baru, yakni node *it 
+/* Mengecek apakah tree t mengandung key tertentu.
+   Mengembalikan 1 jika ada, 0 jika tidak.
 */
+int set_contains(Set t, char* key);
+
+/* Menyisipkan node baru it ke dalam tree t dengan mempertimbangkan prioritas */
 void set_insertNewSet(pSet t, Set it);
 
-/*
-    Memasukkan id baru ke antrian berdasarkan idDokter
-    I.S. idDokter valid
-    F.S. antrian idDokter mendapatkan data baru di akhir antrian
+/* Menyisipkan data baru berupa nama dan id ke dalam tree t.
+   Jika key belum ada, membuat node baru dan menyisipkannya.
 */
-void set_insertData(pSet t,char *name,int id);
+void set_insertData(pSet t, char* name, int id);
 
 #endif

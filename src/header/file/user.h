@@ -19,8 +19,7 @@
 #define berat(x)        (x).field[11]
 #define tinggi(x)       (x).field[12]
 #define kolesterol(x)   (x).field[13]
-#define LDL(x)          (x).field[14]
-#define trombosit(x)    (x).field[15]
+#define trombosit(x)    (x).field[14]
 #define USER(l,x)       (l).contents[x]
 #define length(l)     	(l).len
 
@@ -34,10 +33,6 @@ typedef struct UserList{
     User contents[MAX_USER];
     int len;
 } UserList;
-
-/* Mengembalikan ID User yang terdapat pada user.csv
-   Mengembalikan -1 jika user dengan nama "name" tidak ditemukan */
-int IdxUser(char *name);
 
 /* Menambahkan data user baru pada user.csv */
 void AddUser(char *name, char *pass, UserList *uList);

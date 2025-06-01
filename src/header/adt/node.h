@@ -8,7 +8,12 @@ typedef struct Node {
     struct Node* next;
 } Node;
 
-/* Membuat node baru */
+/**
+ Membuat node baru dengan data tertentu
+ I.S. : data sembarang
+ F.S. : Node baru dialokasikan dengan data dan next = NULL
+*/
 Node* createNode(int data);
+
 
 #endif
