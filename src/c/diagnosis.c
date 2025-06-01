@@ -46,6 +46,12 @@ void DIAGNOSIS(User currentUser, ListRuangan ruangList, UserList *userList, Peny
     }
     
     User *pasien = &userList->contents[idxPasien];
+
+    if( strcmp(riwayat(*pasien),"-") != 0 && strlen(riwayat(*pasien)) > 0) {
+        printf("%s terdiagnosa penyakit %s!\n", username(*pasien), riwayat(*pasien));
+        return;
+    }
+
     PASIEN(UserID_to_PasienID(atoi(pasien->field[0]))).sudahDiagnosis = 1;
 
     float f_suhu       = atof(suhu(*pasien));
@@ -56,27 +62,31 @@ void DIAGNOSIS(User currentUser, ListRuangan ruangList, UserList *userList, Peny
     int i_gula         = atoi(gula(*pasien));
     float f_berat      = atof(berat(*pasien));
     int i_tinggi       = atoi(tinggi(*pasien));
+    int i_kolesterol   = atoi(kolesterol(*pasien));
     int i_trombosit    = atoi(trombosit(*pasien));
 
     int ditemukan = 0;
-    for (int i = 1; i < penyakitList->len; i++)
+    for (int i = 0; i < penyakitList->len; i++)
     {
+        Penyakit penyakit = penyakitList->contents[i];
         if (
-            f_suhu      >= atof(suhu_min(penyakit))     && f_suhu      <= atof(suhu_max(penyakit))     &&
-            i_sistol    >= atoi(sistol_min(penyakit))   && i_sistol    <= atoi(sistol_max(penyakit))   &&
-            i_diastol   >= atoi(diastol_min(penyakit))  && i_diastol   <= atoi(diastol_max(penyakit))  &&
-            i_detak     >= atoi(detak_min(penyakit))    && i_detak     <= atoi(detak_max(penyakit))    &&
-            f_saturasi  >= atof(saturasi_min(penyakit)) && f_saturasi  <= atof(saturasi_max(penyakit)) &&
-            i_gula      >= atoi(gula_min(penyakit))     && i_gula      <= atoi(gula_max(penyakit))     &&
-            f_berat     >= atof(berat_min(penyakit))    && f_berat     <= atof(berat_max(penyakit))    &&
-            i_tinggi    >= atoi(tinggi_min(penyakit))   && i_tinggi    <= atoi(tinggi_max(penyakit))   &&
-            i_trombosit >= atoi(trombosit_min(penyakit))&& i_trombosit <= atoi(trombosit_max(penyakit))
+            f_suhu       >= atof(suhu_min(penyakit))       && f_suhu      <= atof(suhu_max(penyakit))        &&
+            i_sistol     >= atoi(sistol_min(penyakit))     && i_sistol    <= atoi(sistol_max(penyakit))      &&
+            i_diastol    >= atoi(diastol_min(penyakit))    && i_diastol   <= atoi(diastol_max(penyakit))     &&
+            i_detak      >= atoi(detak_min(penyakit))      && i_detak     <= atoi(detak_max(penyakit))       &&
+            f_saturasi   >= atof(saturasi_min(penyakit))   && f_saturasi  <= atof(saturasi_max(penyakit))    &&
+            i_gula       >= atoi(gula_min(penyakit))       && i_gula      <= atoi(gula_max(penyakit))        &&
+            f_berat      >= atof(berat_min(penyakit))      && f_berat     <= atof(berat_max(penyakit))       &&
+            i_tinggi     >= atoi(tinggi_min(penyakit))     && i_tinggi    <= atoi(tinggi_max(penyakit))      //&&
+            // i_kolesterol >= atoi(kolesterol_min(penyakit)) && i_kolesterol >= atoi(kolesterol_max(penyakit)) &&
+            // i_trombosit  >= atoi(trombosit_min(penyakit))  && i_trombosit <= atoi(trombosit_max(penyakit))
         )
         {
             strcpy(riwayat(*pasien), penyakit(penyakit));
             printf("%s terdiagnosa penyakit %s!\n", username(*pasien), riwayat(*pasien));
             ditemukan = 1;
             break;
+        }
     }
 
     if (!ditemukan)
