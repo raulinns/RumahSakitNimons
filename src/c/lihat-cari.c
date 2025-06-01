@@ -1,4 +1,5 @@
 #include "lihat-cari.h"
+#include "../header/role.h"
 
 char* ToLower (char *str) {
 	char* lowerstr = (char*)malloc(strlen(str) + 1);
@@ -86,39 +87,129 @@ void PilihanLihat (UserList uList, char *prompt) {
 	}
 }
 
-void MenuLihat (int *urutan, int *sort, char *urutanLihat, char *sortLihat) {
-	printf("Basis pengurutan: \n");
-	printf("1. ID\n");
-	printf("2. Nama\n");
-	do {
-		printf(">>> Pilihan: ");
-		scanf("%d", urutan);
-		if (*urutan != 1 && *urutan != 2) printf("Pilihan tidak valid\n");
-	} while (*urutan != 1 && *urutan != 2);
+void sortByAura(int sort){
+	DokterList newList;
+	newList.neff = 0;
 
+	for(int i = 0 ; i < dokterList.neff ; i++){
+		newList.contents[i].id = dokterList.contents[i].id;
+		newList.contents[i].aura = dokterList.contents[i].aura;
+		newList.neff++;
+	}
+
+	// Bubble-sort
+	for (int i = 0; i < newList.neff - 1; i++) {
+        for (int j = 0; j < newList.neff - 1 - i; j++) {
+            if ((sort == 1 && newList.contents[j].aura > newList.contents[j + 1].aura) ||
+                (sort == 0 && newList.contents[j].aura < newList.contents[j + 1].aura)) {
+                // Swap
+                _Dokter temp = newList.contents[j];
+                newList.contents[j] = newList.contents[j + 1];
+                newList.contents[j + 1] = temp;
+            }
+        }
+    }
+
+	printf("--------------------------------\n");
+	printf("| ID |     Nama     |   Aura   |\n");
+	printf("--------------------------------\n");
 	
-	if (*urutan == 1) strcpy(urutanLihat, "ID");
-	else if (*urutan == 2) strcpy(urutanLihat, "Nama");
+	for (int i = 0; i < newList.neff ; i++) {
+		if(strlen(username(USER(Ulist,userPosByID(newList.contents[i].id)))) == 0) continue;
+		printf("| %.2s | %-12s | %-8d |\n", id(USER(Ulist,userPosByID(newList.contents[i].id))), username(USER(Ulist,userPosByID(newList.contents[i].id))), newList.contents[i].aura);
+	}
+	printf("--------------------------------\n");
+}
 
-	printf("\n");
-	printf("Metode pengurutan: \n");
-	printf("1. ASC (A-Z)\n");
-	printf("2. DESC (Z-A)\n");
-	do {
-		printf(">>> Pilihan: ");
-		scanf("%d", sort);
-		if (*sort != 1 && *sort != 2) printf("Pilihan tidak valid\n");
-	} while (*sort != 1 && *sort != 2);
+void MenuLihat (int *urutan, int *sort, char *urutanLihat, char *sortLihat,int pilihan) {
+	
+	if( pilihan == 3 ){ //SPECIAL CASE FOR DOKTER
+		printf("Basis pengurutan: \n");
+		printf("1. ID\n");
+		printf("2. Nama\n");
+		printf("3. Aura\n");
+		
+		do {
+			printf(">>> Pilihan: ");
+			scanf("%d", urutan);
+			if (*urutan != 1 && *urutan != 2 && *urutan != 3) printf("Pilihan tidak valid\n");
+		} while (*urutan != 1 && *urutan != 2 && *urutan != 3);
 
-	if (*sort == 1) strcpy(sortLihat, "ascending");
-	else if (*sort == 2) strcpy(sortLihat, "descending");
+		if( *urutan == 3 ){
+			printf("\n");
+			printf("Metode pengurutan: \n");
+			printf("1. ASC (A-Z)\n");
+			printf("2. DESC (Z-A)\n");
+			
+			do {
+				printf(">>> Pilihan: ");
+				scanf("%d", sort);
+				if (*sort != 1 && *sort != 2) printf("Pilihan tidak valid\n");
+			} while (*sort != 1 && *sort != 2);
+
+			sortByAura(*sort);
+
+			strcpy(sortLihat,"Aura");
+		}
+
+		else{
+			if (*urutan == 1) strcpy(urutanLihat, "ID");
+			else if (*urutan == 2) strcpy(urutanLihat, "Nama");
+
+			printf("\n");
+			printf("Metode pengurutan: \n");
+			printf("1. ASC (A-Z)\n");
+			printf("2. DESC (Z-A)\n");
+			do {
+				printf(">>> Pilihan: ");
+				scanf("%d", sort);
+				if (*sort != 1 && *sort != 2) printf("Pilihan tidak valid\n");
+			} while (*sort != 1 && *sort != 2);
+
+			if (*sort == 1) strcpy(sortLihat, "ascending");
+			else if (*sort == 2) strcpy(sortLihat, "descending");
+		}
+	}
+	
+	else{
+		printf("Basis pengurutan: \n");
+		printf("1. ID\n");
+		printf("2. Nama\n");
+		
+		do {
+			printf(">>> Pilihan: ");
+			scanf("%d", urutan);
+			if (*urutan != 1 && *urutan != 2) printf("Pilihan tidak valid\n");
+		} while (*urutan != 1 && *urutan != 2);
+
+		
+		if (*urutan == 1) strcpy(urutanLihat, "ID");
+		else if (*urutan == 2) strcpy(urutanLihat, "Nama");
+
+		printf("\n");
+		printf("Metode pengurutan: \n");
+		printf("1. ASC (A-Z)\n");
+		printf("2. DESC (Z-A)\n");
+		do {
+			printf(">>> Pilihan: ");
+			scanf("%d", sort);
+			if (*sort != 1 && *sort != 2) printf("Pilihan tidak valid\n");
+		} while (*sort != 1 && *sort != 2);
+
+		if (*sort == 1) strcpy(sortLihat, "ascending");
+		else if (*sort == 2) strcpy(sortLihat, "descending");
+	}
 }
 
 void LihatUser (UserList uList, int pilihan) {
 	int urutan, sort;
 	char urutanLihat[5], sortLihat[11];
 
-	MenuLihat(&urutan, &sort, urutanLihat, sortLihat);
+	MenuLihat(&urutan, &sort, urutanLihat, sortLihat, pilihan);
+	if( strcmp(sortLihat,"Aura") == 0 ){ //special case
+		return;
+	}
+
 	UserList sortedList = sortList(uList, urutan, sort);
 	
 	printf("\n");
@@ -308,7 +399,7 @@ void CariUser (UserList uList, int pilihan) {
             if (basis == 3) {
                 int urutan, sort;
                 char urutanLihat[5], sortLihat[11];
-                MenuLihat(&urutan, &sort, urutanLihat, sortLihat);
+                MenuLihat(&urutan, &sort, urutanLihat, sortLihat, pilihan);
                 printf("Menampilkan pasien dengan %s %s dengan %s terurut %s...\n", basisCari, data, urutanLihat, sortLihat);
             }
             printf("--------------------------------------\n");

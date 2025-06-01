@@ -19,7 +19,7 @@ UserList sortList (UserList uList, int urutan, int sort);
 void PilihanLihat (UserList uList, char* prompt);
 
 /* Menampilkan menu pilihan untuk melihat data user, dokter, atau pasien */
-void MenuLihat (int *urutan, int *sort, char *sortLihat, char *urutanLihat);
+void MenuLihat (int *urutan, int *sort, char *sortLihat, char *urutanLihat, int pilihan);
 
 /* Menampilkan seluruh data user yang terdapat pada user.csv */
 void LihatUser (UserList uList, int pilihan);
