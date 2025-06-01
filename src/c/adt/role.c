@@ -152,8 +152,8 @@ void DaftarCheckup(){
         if( strcmp(DOKTER(i).ruangKerja,"..") != 0 ){
             temp[cnt] = i;
             cnt++;
-            printf("%d. Dr. %s - Spesialisasi %s - Ruangan %s (Antrian: %d orang)\n", 
-                cnt, username(USER(Ulist,userPosByID(DOKTER(i).id))), DOKTER(i).spesialisasi, DOKTER(i).ruangKerja, DOKTER(i).queue_size);
+            printf("%d. Dr. %s - Spesialisasi %s - Ruangan %s (Antrian: %d orang) - Aura %d\n", 
+                cnt, username(USER(Ulist,userPosByID(DOKTER(i).id))), DOKTER(i).spesialisasi, DOKTER(i).ruangKerja, DOKTER(i).queue_size, DOKTER(i).aura);
         }
     }
 
@@ -216,6 +216,7 @@ void AddDokterList(int id){
     strcpy(DOKTER(neff).ruangKerja,".."); // Ruang kerja belum di assign
     strcpy(DOKTER(neff).spesialisasi,"Umum");
     DOKTER(neff).antrian = malloc(sizeof(Queue));
+    DOKTER(neff).aura = 0;
     queue_create(DOKTER(neff).antrian); //Order bug
     DOKTER(neff).queue_size = 0;
     dokterList.neff = dokterList.neff + 1;

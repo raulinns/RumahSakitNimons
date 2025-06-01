@@ -16,6 +16,7 @@ typedef struct _Manager{
 
 typedef struct _Dokter{
     int id;
+    int aura;
     char ruangKerja[3];
     char spesialisasi[100];
     Queue* antrian;
