@@ -14,7 +14,6 @@ int userPosByID(int id){
     }
     return -1;
 }
-// TODO: Pindahkan masing-masing modul spesifik ke role tertentu kesini
 
 /* MODUL SPESIFIK UNTUK PASIEN */
 
@@ -31,6 +30,7 @@ void AddPasienList(int id){
     PASIEN(neff).idDokter = -1; // Dokter belum di-assign
     if( strlen(Ulist.contents[userPosByID(id)].field[4]) > 0 ) PASIEN(neff).sudahDiagnosis = 1;
     else PASIEN(neff).sudahDiagnosis = 0;
+    PASIEN(UserID_to_PasienID(id)).sudahDiobati = 0;
     pasienList.neff = pasienList.neff + 1;
 }
 

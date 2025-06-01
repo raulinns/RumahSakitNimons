@@ -141,6 +141,7 @@ int load_config(char* folder, Denah* denah, UserList* Ulist){
         for (int j = 0; j < count - 1; j++) {
             int obatID = atoi(temp[j + 1]);
             linked_insertEnd(&(USER(*Ulist,userPosByID(_id)).inventoryObat), obatID);
+            PASIEN(UserID_to_PasienID(_id)).sudahDiobati = 1;
         }
     }
 
