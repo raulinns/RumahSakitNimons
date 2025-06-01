@@ -83,7 +83,7 @@ int main(int argc, char* argv[])
 		} 
 		
 		else if (strcmp(prompt,"LOGOUT") == 0) {
-			if (loggedIn = 0) printNotLoggedIn();
+			if (loggedIn == 0) printNotLoggedIn();
         	else {
 				setUser = NULL;
 				for (int i = 0; i < 1001; i++)
@@ -357,7 +357,8 @@ void help(int loggedIn) {
 			printf("    %2s. %-44s: %s\n", "13", "TAMBAH_DOKTER", "Menambahkan dokter baru ke dalam sistem");
 			printf("    %2s. %-44s: %s\n", "14", "ASSIGN_DOKTER", "Menugaskan dokter ke ruangan tertentu");
 			printf("    %2s. %-44s: %s\n", "15", "PINDAH_DOKTER <ruangLama> <ruangBaru>", "Memindahkan dokter dari satu ruangan ke ruangan lain");
-			printf("    %2s. %-44s: %s\n", "16", "EXIT", "Keluar dari aplikasi\n");
+			printf("	%2s. %-44s: %s\n", "16", "LIHAT_FINANSIAL", "Melihat laporan keuangan rumah sakit");
+			printf("    %2s. %-44s: %s\n", "17", "EXIT", "Keluar dari aplikasi\n");
 			break;
 		
 		case 2: // loggedIn == 2 -> Dokter
@@ -368,7 +369,8 @@ void help(int loggedIn) {
 			printf("    %2s. %-44s: %s\n", "4", "LIHAT_RUANGAN <nomorRuangan>", "Menampilkan detail suatu ruangan");
 			printf("    %2s. %-44s: %s\n", "5", "DIAGNOSIS", "Melakukan diagnosis terhadap pasien");
 			printf("    %2s. %-44s: %s\n", "6", "NGOBATIN", "Memberikan obat kepada pasien");
-			printf("    %2s. %-44s: %s\n", "7", "EXIT", "Keluar dari aplikasi\n");
+			printf("    %2s. %-44s: %s\n", "8", "LIHAT_DOMPET", "Melihat isi dompet dokter");
+			printf("    %2s. %-44s: %s\n", "9", "EXIT", "Keluar dari aplikasi\n");
 			break;
 		
 		case 3: // loggedIn == 3 -> Pasien
@@ -384,7 +386,9 @@ void help(int loggedIn) {
 			printf("    %2s. %-44s: %s\n", "9", "PENAWAR", "Meminum penawar untuk mengeluarkan obat terakhir yang diminum dan memasukkannya ke inventory");
 			printf("    %2s. %-44s: %s\n", "10", "SKIP_ANTRIAN", "Melewati antrian dan langsung mendapatkan giliran");
 			printf("    %2s. %-44s: %s\n", "11", "CANCEL_ANTRIAN", "Membatalkan antrian yang sudah didaftarkan");
-			printf("    %2s. %-44s: %s\n", "12", "EXIT", "Keluar dari aplikasi\n");
+			printf("	%2s. %-44s: %s\n", "12", "GACHA_GAMING", "Melakukan gacha untuk mendapatkan banarich tambahan");
+			printf("	%2s. %-44s: %s\n", "13", "LIHAT_DOMPET", "Melihat isi dompet pasien");
+			printf("    %2s. %-44s: %s\n", "14", "EXIT", "Keluar dari aplikasi\n");
 			break;
 	}
 	printf("\n");

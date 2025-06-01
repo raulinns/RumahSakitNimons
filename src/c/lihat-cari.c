@@ -25,7 +25,7 @@ char* ToUpper (char *str) {
 	return upperstr;
 }
 
-UserList sortList (UserList uList, int urutan, int sort) {
+UserList SortList (UserList uList, int urutan, int sort) {
 	UserList sortedList;
 	length(sortedList) = 0;
 
@@ -210,7 +210,8 @@ void LihatUser (UserList uList, int pilihan) {
 		return;
 	}
 
-	UserList sortedList = sortList(uList, urutan, sort);
+	UserList sortedList = SortList(uList, urutan, sort);
+	length(sortedList) = length(uList);
 	
 	printf("\n");
 	printf("Menampilkan semua pengguna dengan %s terurut %s...\n", urutanLihat, sortLihat);
@@ -341,7 +342,7 @@ void CariUser (UserList uList, int pilihan) {
 
     MenuCari(&basis, basisCari, data, pilihan);
     
-    UserList sortedList = sortList(uList, 1, 1);
+    UserList sortedList = SortList(uList, 1, 1);
     length(sortedList) = length(uList);
 
     UserList hasilCari;
