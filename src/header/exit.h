@@ -4,7 +4,7 @@
 #include "adt/set.h"
 
 // Menampilkan prompt untuk keluar dari program
-void exitProgram();
+int exitProgram();
 
 // Melakukan save data ke file
 void saveFile();

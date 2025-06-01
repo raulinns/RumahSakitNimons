@@ -235,7 +235,7 @@ int main(int argc, char* argv[])
 		} 
 		
 		else if (strcmp(prompt, "EXIT") == 0) {
-			int save = exitProgram(&exit);
+			int save = exitProgram();
 			
 			if (save == 1) {
 				char folderName[100]; // Panjang nama folder diasumsikan <= 100
