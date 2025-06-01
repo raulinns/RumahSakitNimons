@@ -211,6 +211,7 @@ void LihatUser (UserList uList, int pilihan) {
 	}
 
 	UserList sortedList = SortList(uList, urutan, sort);
+	length(sortedList) = length(uList);
 	
 	printf("\n");
 	printf("Menampilkan semua pengguna dengan %s terurut %s...\n", urutanLihat, sortLihat);
