@@ -13,7 +13,7 @@ char* ToLower (char *str);
 char* ToUpper (char *str);
 
 /* Melakukan sorting list untuk penampilan user */
-UserList sortList (UserList uList, int urutan, int sort);
+UserList SortList (UserList uList, int urutan, int sort);
 
 /* Prosedur awal untuk LihatUser, LihatDokter, dan LihatPasien */
 void PilihanLihat (UserList uList, char* prompt);
