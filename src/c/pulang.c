@@ -18,6 +18,7 @@ int pulangdok() {
     
     if( PASIEN(UserID_to_PasienID(atoi(Pasien->field[0]))).sudahDiagnosis == 0 ){
         printf("Kamu belum menerima diagnosis apapun dari dokter, jangan buru-buru pulang!\n");
+        return;
     }
     
     printf("Dokter sedang memeriksa keadaanmu...\n\n");
@@ -105,6 +106,17 @@ int pulangdok() {
         printf("Silahkan kunjungi dokter untuk meminta penawar yang sesuai!\n");
         return 0;
     }
+
+    int idDokter = PASIEN(UserID_to_PasienID(atoi(Pasien->field[0]))).idDokter;
+    queue_pop(DOKTER(idDokter).antrian);
+    DOKTER(idDokter).aura++;
+    PASIEN(UserID_to_PasienID(atoi(Pasien->field[0]))).idDokter = -1;
+    
+    // Reset data user.csv
+    for(int i = 4; i < 16 ; i++){
+        strcpy(Pasien->field[i],"");
+    }
+
     printf("Selamat! Kamu sudah dinyatakan sembuh oleh dokter. Silahkan pulang dan semoga sehat selalu!\n");
     return 1;
 }
