@@ -30,6 +30,7 @@ typedef struct _Pasien{
     int id;
     int idDokter;
     int sudahDiagnosis;
+    int sudahDiobati;
 } _Pasien;
 
 /* Bentukan list dari role */

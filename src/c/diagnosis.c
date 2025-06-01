@@ -77,9 +77,9 @@ void DIAGNOSIS(User currentUser, ListRuangan ruangList, UserList *userList, Peny
             f_saturasi   >= atof(saturasi_min(penyakit))   && f_saturasi  <= atof(saturasi_max(penyakit))    &&
             i_gula       >= atoi(gula_min(penyakit))       && i_gula      <= atoi(gula_max(penyakit))        &&
             f_berat      >= atof(berat_min(penyakit))      && f_berat     <= atof(berat_max(penyakit))       &&
-            i_tinggi     >= atoi(tinggi_min(penyakit))     && i_tinggi    <= atoi(tinggi_max(penyakit))      //&&
-            // i_kolesterol >= atoi(kolesterol_min(penyakit)) && i_kolesterol >= atoi(kolesterol_max(penyakit)) &&
-            // i_trombosit  >= atoi(trombosit_min(penyakit))  && i_trombosit <= atoi(trombosit_max(penyakit))
+            i_tinggi     >= atoi(tinggi_min(penyakit))     && i_tinggi    <= atoi(tinggi_max(penyakit))      &&
+            i_kolesterol >= atoi(kolesterol_min(penyakit)) && i_kolesterol <= atoi(kolesterol_max(penyakit)) &&
+            i_trombosit  >= atoi(trombosit_min(penyakit))  && i_trombosit <= atoi(trombosit_max(penyakit))
         )
         {
             strcpy(riwayat(*pasien), penyakit(penyakit));
