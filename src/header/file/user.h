@@ -35,10 +35,6 @@ typedef struct UserList{
     int len;
 } UserList;
 
-/* Mengembalikan ID User yang terdapat pada user.csv
-   Mengembalikan -1 jika user dengan nama "name" tidak ditemukan */
-int IdxUser(char *name);
-
 /* Menambahkan data user baru pada user.csv */
 void AddUser(char *name, char *pass, UserList *uList);
 

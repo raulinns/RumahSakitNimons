@@ -19,14 +19,19 @@ typedef enum LoggedIn //State of login
 
 extern LoggedIn loggedIn;
 
-/* Melakukan sequensial searching user.csv dan membandingkan username dan password dengan input */
+// Cari indeks user dalam UserList berdasarkan username
+int getIDbyName(UserList uList, char* name);
+
+// Cari ID numerik user berdasarkan username
+int findID(UserList uList, char* name);
+
+// Fungsi login, validasi username dan password, lalu mengembalikan role user
 int login(UserList uList);
 
-/* Menambahkan user baru pada user.csv */
+// Registrasi user baru sebagai pasien, tambah data user dan pasien baru
 int Register(UserList* uList);
 
-/* Mengupdate password pada username.csv */
+// Update password user setelah verifikasi username dan kode unik
 int passwordUpdate();
 
-void askQuestion();
 #endif

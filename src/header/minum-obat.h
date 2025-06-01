@@ -3,7 +3,10 @@
 
 #include "file-utilities.h"
 
+/* Meminum obat*/
 void minumObat();
+
+/* Meminum penawar*/
 void minumPenawar();
 
 #endif
