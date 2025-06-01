@@ -33,12 +33,14 @@ void init(){
 	pasienList.neff  = 0;
 	managerList.neff = 0;
 	dokterList.neff = 0;
+	globalSeed = 0;
 	setUser = NULL;
 	for(int i = 0 ; i < MAX_USER ; i++){
 		linked_create(&USER(Ulist,i).inventoryObat);
 		stack_create(&USER(Ulist,i).perut);
 		DOKTER(i).antrian = malloc(sizeof(Queue));
 		queue_create(DOKTER(i).antrian);
+		banarich[i] = 0;
 	}
 	for(int i = 0 ; i < 100 ; i++){
 		for(int j = 0 ; j < 100 ; j++) denah.M.contents[i][j] = -1;
@@ -413,7 +415,40 @@ int main(int argc, char* argv[])
 				printf("Anda tidak dapat melakukan perintah ini\n");
 			}
 		}
-		
+
+		else if(strcmp(prompt, "GACHA_GAMING") == 0){
+			if (loggedIn == 0){
+				printf("Anda belum login\n");
+			} 
+			else if (loggedIn == 3) Gacha();
+			else
+			{
+				printf("Anda tidak dapat melakukan perintah ini\n");
+			}
+		}
+
+		else if(strcmp(prompt, "LIHAT_DOMPET") == 0){
+			if (loggedIn == 0){
+				printf("Anda belum login\n");
+			} 
+			else if (loggedIn == 3 || loggedIn == 2) LihatDompet();
+			else
+			{
+				printf("Anda tidak dapat melakukan perintah ini\n");
+			}
+		}
+
+		else if(strcmp(prompt, "LIHAT_FINANSIAL") == 0){
+			if (loggedIn == 0){
+				printf("Anda belum login\n");
+			} 
+			else if (loggedIn == 1) LihatFinansial();
+			else
+			{
+				printf("Anda tidak dapat melakukan perintah ini\n");
+			}
+		}
+
 		else {
 			printf("Perintah tidak valid. Ketik 'HELP' untuk melihat daftar perintah yang tersedia.\n");
 		}

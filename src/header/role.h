@@ -8,6 +8,8 @@
 #define PASIEN(i) pasienList.contents[i]
 #define MANAGER(i) managerList.contents[i]
 
+int userPosByID(int id);
+
 /* Defenisi role */
 
 typedef struct _Manager{

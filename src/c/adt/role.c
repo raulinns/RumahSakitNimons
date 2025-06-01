@@ -1,6 +1,7 @@
 #include "../header/role.h"
 #include "../header/file-utilities.h"
 #include "../header/denah.h"
+#include "../header/random.h"
 #include <stdio.h>
 
 DokterList dokterList;
@@ -152,22 +153,37 @@ void DaftarCheckup(){
         if( strcmp(DOKTER(i).ruangKerja,"..") != 0 ){
             temp[cnt] = i;
             cnt++;
-            printf("%d. Dr. %s - Spesialisasi %s - Ruangan %s (Antrian: %d orang) - Aura %d\n", 
-                cnt, username(USER(Ulist,userPosByID(DOKTER(i).id))), DOKTER(i).spesialisasi, DOKTER(i).ruangKerja, DOKTER(i).queue_size, DOKTER(i).aura);
+            printf("%d. Dr. %s - Spesialisasi %s - Ruangan %s (Antrian: %d orang) - Aura %d - Biaya %d\n", 
+                cnt, username(USER(Ulist,userPosByID(DOKTER(i).id))), DOKTER(i).spesialisasi, DOKTER(i).ruangKerja, DOKTER(i).queue_size, DOKTER(i).aura, (DOKTER(i).aura+1)*120);
         }
     }
 
-    if( dokterList.neff == 0 ) printf("Tidak ada dokter yang dapat dipilih!\n");
+    if( dokterList.neff == 0 ){
+        printf("Tidak ada dokter yang dapat dipilih!\n");
+        return;
+    }
+
     else {
         int pick;
         printf("\nPilih dokter (1-%d): ", cnt);
         scanf("%d", &pick);
-        while( pick < 0 || pick > cnt ){
+        while( pick <= 0 || pick > cnt ){
             printf("Pilihan tidak valid!\n");
             printf("\nPilih dokter (1-%d): ", cnt);
             scanf("%d", &pick);
         }
-        
+
+        if( banarich[userPosByID(masterID)] < 120*(DOKTER(temp[pick-1]).aura+1) ){
+            printf("Maaf Banarich kamu tidak cukup!\n");
+            printf("Silakan pilih dokter lain atau mainkan mesin gacha!\n");
+            return;
+        }
+
+        banarich[userPosByID(masterID)] -= 120*(DOKTER(temp[pick-1]).aura+1);
+        banarich[userPosByID(DOKTER(temp[pick-1]).id)] += 96*(DOKTER(temp[pick-1]).aura+1);
+
+        UpdateKasRumahSakit(24*(DOKTER(temp[pick-1]).aura+1));
+
         printf("\nPendaftaran check-up berhasil!\n");
         AddPasien_to_Dokter(masterID, DOKTER(temp[pick-1]).id);
         printf("Anda terdaftar pada antrian Dr. %s di ruangan %s.\n", username(USER(Ulist,userPosByID(DOKTER(temp[pick-1]).id))), DOKTER(temp[pick-1]).ruangKerja);
