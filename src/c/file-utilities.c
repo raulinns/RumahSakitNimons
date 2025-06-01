@@ -74,6 +74,7 @@ int load_all(char* folder, Denah* denah, UserList* Ulist,
     load_obatpenyakit(folder, OPlist);
     load_penyakit(folder, Plist);
     load_config(folder, denah, Ulist);
+    load_banarich(folder);
     printf("Selamat datang kembali di rumah sakit Nimons!\n");
     return 0;
 }
@@ -230,7 +231,6 @@ int load_user(char* folder, UserList* l) {
     return 0;
 }
 
-
 int load_obatpenyakit(char* folder, ObatPenyakitList* l) {
     char filePath[MAX_LINE_LENGTH];
     path(filePath, folder, "obat-penyakit.csv");
@@ -252,19 +252,28 @@ int load_obatpenyakit(char* folder, ObatPenyakitList* l) {
     return 0;
 }
 
+int load_banarich(char* folder){
+    char filepath[100];
+    path(filepath, folder, "banarich.csv");
 
-// int addUserList(char *name, char *pass,UserList *Ulist){
-//     FILE * fp = fopen("data/user.csv","a");
-//     fprintf(fp, ";%s;%s;;;;;;;;;;;;;\n", name, pass);
-//     fclose(fp);
-//     return 0;
-// }
+    FILE *f = fopen(filepath, "r");
+    if (f == NULL) {
+        // File tidak ada
+        for (int i = 0; i < Ulist.len ; i++) {
+            banarich[i] = 0;
+        }
+        return;
+    }
 
-int add_obat(char name, char *pass){
-
+    char line[20];
+    int i = 0;
+    while (fgets(line, sizeof(line), f) != NULL && i < Ulist.len) {
+        banarich[i] = atoll(line); // gunakan atoll untuk long long
+        i++;
+    }
+    fclose(f);
 }
 
-//FITUR:
 void add_user(List *Ulist,Set* Uset){
     char name[MAX_LINE_LENGTH], pass[MAX_LINE_LENGTH];
     printf("username : ");
@@ -286,8 +295,6 @@ void add_user(List *Ulist,Set* Uset){
 char fullFolderPath[MAX_LINE_LENGTH];
 char command[MAX_LINE_LENGTH];
 
-// Simpan state UserList sekarang ke data/{folderName}/user.csv
-// Perhatikan zero base dan one base indexing
 int save_user(UserList* l) {
     char filePath[MAX_LINE_LENGTH];
 
@@ -396,6 +403,24 @@ int save_obatpenyakit(ObatPenyakitList* l) {
     return 0;
 }
 
+void save_banarich() {
+    char filePath[MAX_LINE_LENGTH];
+    strcpy(filePath, fullFolderPath);
+    strcat(filePath, "/banarich.csv");
+
+    FILE *fp = fopen(filePath, "w");
+    if (fp == NULL) {
+        perror("Gagal membuka file untuk ditulis");
+        return 1;
+    }
+
+    for (int i = 0; i < Ulist.len; i++) {
+        fprintf(fp, "%d\n", banarich[i]);
+    }
+    fclose(fp);
+}
+
+
 // TODO : Simpan config
 int save_all(char* folderName,ObatList* obatList,ObatPenyakitList* obatPenyakitList,
             PenyakitList* penyakitList,UserList* userList){
@@ -428,6 +453,7 @@ int save_all(char* folderName,ObatList* obatList,ObatPenyakitList* obatPenyakitL
     save_obatpenyakit(obatPenyakitList);
     save_penyakit(penyakitList);
     save_user(userList);
+    save_banarich();
     printf("Berhasil menyimpan data di folder %s!\n", fullFolderPath);
     return 0;
 }

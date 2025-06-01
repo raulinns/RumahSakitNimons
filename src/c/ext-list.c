@@ -5,3 +5,4 @@ ObatList Olist;
 ObatPenyakitList OPlist;
 PenyakitList Plist;
 int masterID;
+int banarich[MAX_USER];

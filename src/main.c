@@ -278,7 +278,40 @@ int main(int argc, char* argv[])
 			else if (loggedIn == 3) KeluarAntrian();
 			else printWrongRole(3);
 		}
-		
+
+		else if(strcmp(prompt, "GACHA_GAMING") == 0){
+			if (loggedIn == 0){
+				printf("Anda belum login\n");
+			} 
+			else if (loggedIn == 3) Gacha();
+			else
+			{
+				printf("Anda tidak dapat melakukan perintah ini\n");
+			}
+		}
+
+		else if(strcmp(prompt, "LIHAT_DOMPET") == 0){
+			if (loggedIn == 0){
+				printf("Anda belum login\n");
+			} 
+			else if (loggedIn == 3 || loggedIn == 2) LihatDompet();
+			else
+			{
+				printf("Anda tidak dapat melakukan perintah ini\n");
+			}
+		}
+
+		else if(strcmp(prompt, "LIHAT_FINANSIAL") == 0){
+			if (loggedIn == 0){
+				printf("Anda belum login\n");
+			} 
+			else if (loggedIn == 1) LihatFinansial();
+			else
+			{
+				printf("Anda tidak dapat melakukan perintah ini\n");
+			}
+		}
+
 		else {
 			printNotValid();
 		}

@@ -12,5 +12,6 @@ extern ObatList Olist;
 extern ObatPenyakitList OPlist;
 extern PenyakitList Plist;
 extern int masterID;
+extern int banarich[MAX_USER];
 
 #endif
