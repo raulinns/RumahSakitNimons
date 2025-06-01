@@ -267,49 +267,34 @@ int main(int argc, char* argv[])
 			} else printWrongRole(1);
 		}
 		
-		else if(strcmp(prompt, "SKIP_ANTRIAN") == 0){
+		else if (strcmp(prompt, "SKIP_ANTRIAN") == 0) {
 			if (loggedIn == 0) printNotLoggedIn();
 			else if (loggedIn == 3) SkipAntrian();
 			else printWrongRole(3);
 		}
 		
-		else if(strcmp(prompt, "CANCEL_ANTRIAN") == 0){
+		else if (strcmp(prompt, "CANCEL_ANTRIAN") == 0) {
 			if (loggedIn == 0) printNotLoggedIn();
 			else if (loggedIn == 3) KeluarAntrian();
 			else printWrongRole(3);
 		}
 
-		else if(strcmp(prompt, "GACHA_GAMING") == 0){
-			if (loggedIn == 0){
-				printf("Anda belum login\n");
-			} 
+		else if (strcmp(prompt, "GACHA_GAMING") == 0) {
+			if (loggedIn == 0) printNotLoggedIn(); 
 			else if (loggedIn == 3) Gacha();
-			else
-			{
-				printf("Anda tidak dapat melakukan perintah ini\n");
-			}
+			else printWrongRole(3);
 		}
 
-		else if(strcmp(prompt, "LIHAT_DOMPET") == 0){
-			if (loggedIn == 0){
-				printf("Anda belum login\n");
-			} 
+		else if (strcmp(prompt, "LIHAT_DOMPET") == 0) {
+			if (loggedIn == 0) printNotLoggedIn();
 			else if (loggedIn == 3 || loggedIn == 2) LihatDompet();
-			else
-			{
-				printf("Anda tidak dapat melakukan perintah ini\n");
-			}
+			else printWrongRole(4);
 		}
 
-		else if(strcmp(prompt, "LIHAT_FINANSIAL") == 0){
-			if (loggedIn == 0){
-				printf("Anda belum login\n");
-			} 
+		else if (strcmp(prompt, "LIHAT_FINANSIAL") == 0) {
+			if (loggedIn == 0) printNotLoggedIn();
 			else if (loggedIn == 1) LihatFinansial();
-			else
-			{
-				printf("Anda tidak dapat melakukan perintah ini\n");
-			}
+			else printWrongRole(1);
 		}
 
 		else {
@@ -436,18 +421,17 @@ void printLogo() {
 
 void printWrongRole(int accessLevel) {
 	usleep(0250 * 1000);
-	printf(" _______    ___   _________   ________           _________   ___   ________   ________   ___  __            ________   ___   ________   ________     \n");
-	printf("|\  ___ \  |\  \ |\___   ___\|\   ____\         |\___   ___\|\  \ |\   ___ \ |\   __  \ |\  \|\  \         |\   __  \ |\  \ |\   ____\ |\   __  \    \n");
-	printf("\ \   __/| \ \  \\|___ \  \_|\ \  \___|_        \|___ \  \_|\ \  \\ \  \_|\ \\ \  \|\  \\ \  \/  /|_       \ \  \|\ /_\ \  \\ \  \___|_\ \  \|\  \   \n");
-	printf(" \ \  \_|/__\ \  \    \ \  \  \ \_____  \            \ \  \  \ \  \\ \  \ \\ \\ \   __  \\ \   ___  \       \ \   __  \\ \  \\ \_____  \\ \   __  \  \n");
-	printf("  \ \  \_|\ \\ \  \    \ \  \  \|____|\  \            \ \  \  \ \  \\ \  \_\\ \\ \  \ \  \\ \  \\ \  \       \ \  \|\  \\ \  \\|____|\  \\ \  \ \  \   \n");
-	printf("   \ \_______\\ \__\    \ \__\   ____\_\  \            \ \__\  \ \__\\ \_______\\ \__\ \__\\ \__\\ \__\       \ \_______\\ \__\ ____\_\  \\ \__\ \__\  \n");
-	printf("     \|_______| \|__|     \|__|  |\_________\            \|__|   \|__| \|_______| \|__|\|__| \|__| \|__|        \|_______| \|__||\_________\\|__|\|__|\n");
-	printf("                                  \|_________|                                                                                   \|_________|          \n");
+	printf(" _______    ___   _________   ________           _________   ___   ________   ________   ___  __            ________   ___   ________   ________       \n");
+	printf("|\\  ___ \\  |\\  \\ |\\___   ___\\|\\   ____\\         |\\___   ___\\|\\  \\ |\\   ___ \\ |\\   __  \\ |\\  \\|\\  \\         |\\   __  \\ |\\  \\ |\\   ____\\ |\\   __  \\      \n");
+	printf("\\ \\   __/| \\ \\  \\\\|___ \\  \\_|\\ \\  \\___|_        \\|___ \\  \\_|\\ \\  \\\\ \\  \\_|\\ \\\\ \\  \\|\\  \\\\ \\  \\/  /|_       \\ \\  \\|\\ /_\\ \\  \\\\ \\  \\___|_\\ \\  \\|\\  \\     \n");
+	printf(" \\ \\  \\_|/__\\ \\  \\    \\ \\  \\  \\ \\_____  \\            \\ \\  \\  \\ \\  \\\\ \\  \\ \\\\ \\\\ \\   __  \\\\ \\   ___  \\       \\ \\   __  \\\\ \\  \\\\ \\_____  \\\\ \\   __  \\    \n");
+	printf("  \\ \\  \\_|\\ \\\\ \\  \\    \\ \\  \\  \\|____|\\  \\            \\ \\  \\  \\ \\  \\\\ \\  \\_\\\\ \\\\ \\  \\ \\  \\\\ \\  \\\\ \\  \\       \\ \\  \\|\\  \\\\ \\  \\\\|____|\\  \\\\ \\  \\ \\  \\   \n");
+	printf("    \\|_______| \\|__|     \\|__| |\\_________\\            \\|__|   \\|__| \\|_______| \\|__|\\|__| \\|__| \\|__|        \\|_______| \\|__||\\_________\\\\|__|\\|__|  \n");
+	printf("                               \\|_________|                                                                                   \\|_________|             \n");
 	printf("\n");
 	
-	printf("Anda tidak memiliki akses untuk melakukan perintah ini\n");
-	printf("Silakan login sebagai %s untuk mengakses perintah ini\n", accessLevel == 1 ? "Manager" : accessLevel == 2 ? "Dokter" : "Pasien");
+	printf("\033[1mAnda tidak memiliki akses\033[0m untuk melakukan perintah ini\n");
+	printf("Silakan login sebagai \033[1m%s\033[0m untuk mengakses perintah ini\n", accessLevel == 1 ? "Manager" : accessLevel == 2 ? "Dokter" : accessLevel == 3 ? "Pasien" : accessLevel == 4 ? "Dokter atau Pasien" : "pengguna lain");
 	printf("Ketik 'HELP' untuk melihat daftar perintah yang tersedia.\n");
 
 }
@@ -464,7 +448,7 @@ void printLoggedIn(char* user) {
 	printf("                                              |___/                                   \n");
 	printf("\n");
 
-	printf("Anda sudah login sebagai %s\n", user);
+	printf("\033[1mAnda sudah login\033[0m sebagai \033[1m%s\033[0m\n", user);
 	printf("Ketik 'HELP' untuk melihat daftar perintah yang tersedia.\n");
 	printf("Ketik 'LOGOUT' untuk keluar dari akun yang sedang digunakan.\n");
 }
@@ -481,11 +465,12 @@ void printNotLoggedIn() {
 	printf("                                              |___/                                   \n");
 	printf("\n");
 
-	printf("Anda belum login, harap melakukan login atau register terlebih dahulu\n");
+	printf("\033[1mAnda belum login\033[0m, harap melakukan login atau register terlebih dahulu\n");
 	printf("Ketik 'HELP' untuk melihat daftar perintah yang tersedia.\n");
 }
 
 void printNotValid() {
+	usleep(250 * 1000);
 	printf(" ▄· ▄▌ ▐ ▄ ▄▄▄▄▄▄ •▄ ▄▄▄▄▄.▄▄ ·\n");
 	printf("▐█▪██▌•█▌▐█•██  █▌▄▌▪•██  ▐█ ▀. \n");
 	printf("▐█▪██▌•█▌▐█•██  █▌▄▌▪•██  ▐█ ▀.\n");
@@ -494,10 +479,42 @@ void printNotValid() {
 	printf("  ▀ • ▀▀ █▪ ▀▀▀ ·▀  ▀ ▀▀▀  ▀▀▀▀ ▀▀\n");
 	printf("YA NDAK TAU KOK TANYA SAYA!!\n");
 
-	printf("Perintah tidak valid. Ketik 'HELP' untuk melihat daftar perintah yang tersedia.\n");
+	printf("\033[1mPerintah tidak valid\033[0m]. Ketik 'HELP' untuk melihat daftar perintah yang tersedia.\n");
 }
 
 void printExit() {
-	usleep(250 * 1000);
-	printf("Sampai jumpa lagi di aplikasi Rumah Sakit Nimons!\n");
+    usleep(250 * 1000);
+    
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⣶⣿⠿⠗⠚⠛⠋⠉⠉⠛⠛⠻⣿⡷⠾⠛⠛⠻⠶⢤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣼⣿⡿⠛⠉⠀⠀⣠⡤⠶⠒⠶⣤⣀⢀⡴⠉⣠⣶⣿⠿⣯⣕⠢⣌⠣⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣿⡿⠋⠀⠀⠀⣠⠊⢁⣴⣶⣶⣶⡶⣌⠙⠀⢰⠋⠀⠀⠀⠀⠈⠳⣝⡆⢹⡀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⡿⠋⠀⠀⠀⠀⣴⠃⣴⠋⠁⠀⠀⠀⠙⢪⣳⡄⢸⡀⣠⣤⣄⠀⠀⠀⢹⣡⠀⡇⠀⠀⠀⠀⠀⠀⠀⡞⣿⣻⠀⢀⣀⡀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⣴⡶⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⠁⠀⠀⠀⢠⣾⣯⠀⣿⠀⠀⣀⣤⣄⠀⠀⢻⡇⠀⢳⣿⣿⣿⡇⠀⠀⣸⠇⣼⠁⠀⠀⠀⢀⣤⣶⡞⠳⣬⣿⣤⡟⠉⣿⣄\033[0m\n");
+    printf("\033[0;33m⠀⢀⣹⡄⠘⠳⠿⠿⠦⠤⢤⣤⣄⠀⠀⠀⠀⢰⡇⠀⠀⢀⡴⢿⣿⣿⡄⠙⣄⠀⣿⣿⣿⡇⠀⣸⠇⣠⣄⡈⠛⠫⠤⠤⠞⣁⡼⠃⠀⠀⠀⣠⠞⠻⣦⣦⢤⣀⠀⢀⣀⡴⢏⡿\033[0m\n");
+    printf("\033[0;33m⠠⡾⠉⠻⢦⠀⠀⠀⠀⣶⣾⠏⠛⢦⣄⠀⠀⢸⠀⢀⡔⣋⡴⠛⣯⣿⣟⣦⡈⠓⢬⣿⣭⣤⡴⠋⣠⠿⣿⡿⣷⣶⣶⣶⠟⠋⣽⠀⠀⢠⠞⠁⢀⡾⠛⠋⠀⠉⠉⠉⠓⠚⠉⠁\033[0m\n");
+    printf("\033[0;33m⠀⠙⠦⠤⠾⠶⠶⠖⠋⠙⠿⠲⢤⡀⠈⠳⣦⣸⡷⣫⠞⢁⡴⠞⠉⠉⠻⣿⣏⣳⣶⣤⣤⣴⠶⠛⠁⠀⠀⠉⠉⠉⠉⠀⠀⠀⢹⡇⣰⠃⠀⣰⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠷⣄⠈⠛⢿⣤⣖⡁⠀⠀⠀⠀⠀⠀⠉⠙⠛⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⡀⢰⣷⠃⠀⡼⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢷⡀⠀⠙⢯⡉⠛⢶⣄⠀⠀⠀⠀⠀⠀⠀⣤⠤⠴⠦⠤⠤⣀⣤⠤⠴⣖⣉⡵⡇⠈⢻⣆⣼⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢳⡄⠀⠀⠙⢷⣄⡘⢷⡄⠀⠀⠀⠀⠀⢷⡜⠷⣦⡤⠤⠟⠲⣞⠋⠁⠀⢠⡇⠀⣾⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⡄⠀⠀⠀⠙⣷⠂⠙⣦⠀⠀⠀⠀⠈⠳⣄⠀⠉⠀⠀⠀⣿⢀⣀⣠⠞⠀⢠⡏⢿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⠀⠀⠀⠀⠈⢷⣄⠈⢷⣄⠀⠀⠀⠀⠈⠙⠲⠿⠭⠭⠭⠽⠛⠁⠀⢀⣾⡅⣼⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⡇⠀⠀⠀⠀⠈⢻⣶⠀⢻⣶⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⢿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⠀⢻⣷⣿⣿⡿⢿⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡾⠂⢿⣿⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⠀⠀⠀⠀⠀⠀⠈⡿⣿⡿⠁⠀⠈⠻⢷⣦⡤⣄⣀⣤⢤⡾⠏⠁⠀⠀⣿⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⠀⠀⠀⠀⠀⠀⠀⣿⠈⠁⠀⠀⠀⠀⠀⠈⠉⠙⠛⠙⠉⠀⠀⠀⠀⠀⣿⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⠀⠀⠀⣿⠃⠀⠀⠀⠀⢀⣀⠀⠀⠀⠀⠀⢀⣴⣧⠀⠀⠀⡟⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣧⣀⠀⠀⠀⠀⢀⣿⡄⠀⠀⠀⠀⢸⡏⠽⣖⣒⣲⣾⡝⠉⣿⡄⠀⠠⡧⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠁⠘⠿⠯⢗⢒⣒⣻⠃⠀⠀⠀⢀⢸⡇⠀⣠⣿⡿⣷⣦⠀⣿⡇⠀⠸⣿⡾⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢽⡇⠀⠀⠀⠀⠀⣶⡇⠀⠀⠀⠀⠘⣸⡇⠀⣿⢳⣶⣬⢿⣿⣿⡇⠀⢰⡆⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⡇⠀⠀⠀⠀⣰⡟⠀⠀⠀⠀⠀⠀⠹⣿⠀⢿⣧⣝⣣⣿⢏⡿⠁⠀⢸⣇⢀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣷⠀⢠⣠⡼⠟⠀⠀⠀⠀⠀⠀⠀⠀⠻⣷⡀⡉⢛⣋⣥⡾⠃⠀⠀⠈⢻⣼⣇⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⢻⣆⠈⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠙⠋⠉⠁⠀⠀⠀⣠⣴⣿⡿⠉⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⠃⡼⠙⢆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡤⢖⡻⢾⣿⡿⠀⢰⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⣿⣁⣀⣷⡀⠈⠙⢢⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⠤⠔⠒⠛⠉⢣⣠⠎⣠⣾⠛⣳⠶⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠁⠀⠉⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⡿⢉⡽⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+    printf("\033[0;33m⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣙⠋⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\033[0m\n");
+
+    printf("\nSampai jumpa lagi di aplikasi Rumah Sakit Nimons!\n");
+    printf("Terima kasih telah menggunakan layanan kami.\n");
 }
