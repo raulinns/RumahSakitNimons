@@ -150,7 +150,7 @@ void DaftarCheckup(){
     // Print list dokter
     int cnt = 0; int temp[MAX_USER];
     for(int i = 0 ; i < dokterList.neff ; i++){
-        if( strcmp(DOKTER(i).ruangKerja,"..") != 0 ){
+        if( strcmp(DOKTER(i).ruangKerja,"..") != 0 && DOKTER(i).queue_size < denah.maxPasien+denah.maxPerRoom ){
             temp[cnt] = i;
             cnt++;
             printf("%d. Dr. %s - Spesialisasi %s - Ruangan %s (Antrian: %d orang) - Aura %d - Biaya %d\n", 
