@@ -177,9 +177,16 @@ int load_obat(char* folder, ObatList* l) {
     char line[MAX_LINE_LENGTH];
     int cur = 0;
 
-    fields tempField[20];
+    // Skip header line first
+    if (fgets(line, sizeof(line), fp) != NULL) {
+        // Process header if needed
+        parser(line, OBAT(*l, cur).field, ';');
+        // Don't increment cur, we'll overwrite this with actual data
+    }
+
+    // Now process actual data
     while (fgets(line, sizeof(line), fp)) {
-        parser(line, OBAT(*l,cur).field, ';');
+        parser(line, OBAT(*l, cur).field, ';');
         cur++;
     }
     l->len = cur;
@@ -200,8 +207,16 @@ int load_penyakit(char* folder, PenyakitList* l) {
     char line[MAX_LINE_LENGTH];
     int cur = 0;
 
+    // Skip header line first
+    if (fgets(line, sizeof(line), fp) != NULL) {
+        // Process header if needed
+        parser(line, PENYAKIT(*l, cur).field, ';');
+        // Don't increment cur, we'll overwrite this with actual data
+    }
+
+    // Now process actual data
     while (fgets(line, sizeof(line), fp)) {
-        parser(line, PENYAKIT(*l, cur).field, ';'); // <- asumsi field[cur] valid
+        parser(line, PENYAKIT(*l, cur).field, ';');
         cur++;
     }
     l->len = cur;
@@ -220,11 +235,17 @@ int load_user(char* folder, UserList* l) {
     }
     
     char line[MAX_LINE_LENGTH];
-    int cur = 1;
+    int cur = 1;  // Start at 1 to maintain existing behavior
+
+    // Skip header line first
+    if (fgets(line, sizeof(line), fp) != NULL) {
+        // Process header if needed
+        // Don't increment cur as we're starting from 1
+    }
 
     while (fgets(line, sizeof(line), fp)) {
         int n = parser(line, USER(*l, cur).field, ';');
-        if( maxID < atoi(USER(*l, cur).field[0]) ) maxID = atoi(USER(*l, cur).field[0]);
+        if (maxID < atoi(USER(*l, cur).field[0])) maxID = atoi(USER(*l, cur).field[0]);
         for (int i = n; i < 16; i++) {
             strcpy(USER(*l, cur).field[i], "");
         }
@@ -232,13 +253,13 @@ int load_user(char* folder, UserList* l) {
         set_insertData(&setUser, username(USER(*l,cur)), atoi(id(USER(*l,cur))));
         l->len++;
         // Masukkan data user ke List berdasarkan role masing masing
-        if( strcmp(role(USER(*l, cur)), "dokter") == 0){
+        if (strcmp(role(USER(*l, cur)), "dokter") == 0) {
             AddDokterList(atoi(id(USER(*l,cur))));
         }
-        else if( strcmp(role(USER(*l,cur)), "pasien") == 0){
+        else if (strcmp(role(USER(*l,cur)), "pasien") == 0) {
            AddPasienList(atoi(id(USER(*l,cur))));
         }
-        else{
+        else {
             AddManagerList(atoi(id(USER(*l,cur))));
         }
         cur++;
@@ -250,16 +271,24 @@ int load_user(char* folder, UserList* l) {
 
 int load_obatpenyakit(char* folder, ObatPenyakitList* l) {
     char filePath[MAX_LINE_LENGTH];
-    path(filePath, folder, "obat-penyakit.csv");
+    path(filePath, folder, "obat_penyakit.csv");
     FILE *fp = fopen(filePath, "r");
     if (fp == NULL) {
-        perror("Error opening obat-penyakit.csv");
+        perror("Error opening obat_penyakit.csv");
         return 1;
     }
 
     char line[MAX_LINE_LENGTH];
     int cur = 0;
 
+    // Skip header line first
+    if (fgets(line, sizeof(line), fp) != NULL) {
+        // Process header if needed
+        parser(line, OBATPENYAKIT(*l, cur).field, ';');
+        // Don't increment cur, we'll overwrite this with actual data
+    }
+
+    // Now process actual data
     while (fgets(line, sizeof(line), fp)) {
         parser(line, OBATPENYAKIT(*l, cur).field, ';');
         cur++;
@@ -321,6 +350,10 @@ int save_user(UserList* l) {
 
     FILE* fp = fopen(filePath, "w");
     int fieldCount = 16;
+    
+    // Write header first
+    fprintf(fp, "id;username;password;role;riwayat_penyakit;suhu_tubuh;tekanan_darah_sistolik;tekanan_darah_diastolik;detak_jantung;saturasi_oksigen;kadar_gula_darah;berat_badan;tinggi_badan;kadar_kolesterol;trombosit\n");
+    
     // Tulis data ke file
     for (int i = 1; i < l->len; i++) {
         for (int j = 0; j < fieldCount; j++) {
@@ -349,6 +382,10 @@ int save_penyakit(PenyakitList* l) {
         return 1;
     }
     int fieldCount = 22;
+    
+    // Write header first
+    fprintf(fp, "id;nama_penyakit;suhu_tubuh_min;suhu_tubuh_max;tekanan_darah_sistolik_min;tekanan_darah_sistolik_max;tekanan_darah_diastolik_min;tekanan_darah_diastolik_max;detak_jantung_min;detak_jantung_max;saturasi_oksigen_min;saturasi_oksigen_max;kadar_gula_darah_min;kadar_gula_darah_max;berat_badan_min;berat_badan_max;tinggi_badan_min;tinggi_badan_max;kadar_kolesterol_min;kadar_kolesterol_max;trombosit_min;trombosit_max\n");
+    
     // Tulis data ke file
     for (int i = 0; i < l->len; i++) {
         for (int j = 0; j < fieldCount; j++) {
@@ -361,7 +398,6 @@ int save_penyakit(PenyakitList* l) {
     }
 
     fclose(fp);
-
     return 0;
 }
 
@@ -377,6 +413,10 @@ int save_obat(ObatList* l) {
         return 1;
     }
     int fieldCount = 2;
+    
+    // Write header first
+    fprintf(fp, "obat_id;nama_obat\n");
+    
     // Tulis data ke file
     for (int i = 0; i < l->len; i++) {
         for (int j = 0; j < fieldCount; j++) {
@@ -389,14 +429,13 @@ int save_obat(ObatList* l) {
     }
 
     fclose(fp);
-
     return 0;
 }
 
 int save_obatpenyakit(ObatPenyakitList* l) {
     char filePath[MAX_LINE_LENGTH];
     strcpy(filePath, fullFolderPath);
-    strcat(filePath, "/obat-penyakit.csv");
+    strcat(filePath, "/obat_penyakit.csv");
 
     FILE* fp = fopen(filePath, "w");
     if (fp == NULL) {
@@ -404,6 +443,10 @@ int save_obatpenyakit(ObatPenyakitList* l) {
         return 1;
     }
     int fieldCount = 3;
+    
+    // Write header first
+    fprintf(fp, "obat_id;penyakit_id;urutan_minum\n");
+    
     // Tulis data ke file
     for (int i = 0; i < l->len; i++) {
         for (int j = 0; j < fieldCount; j++) {
@@ -416,7 +459,6 @@ int save_obatpenyakit(ObatPenyakitList* l) {
     }
 
     fclose(fp);
-
     return 0;
 }
 

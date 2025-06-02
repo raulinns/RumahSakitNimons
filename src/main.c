@@ -304,7 +304,7 @@ int main(int argc, char* argv[])
 			else if (loggedIn == 1) LihatFinansial();
 			else printWrongRole(1);
 		}
-
+		
 		else {
 			printNotValid();
 		}
@@ -399,6 +399,10 @@ void help(int loggedIn) {
 			printf("%2s. %-44s: %s\n", "13", "LIHAT_DOMPET", "Melihat isi dompet pasien");
 			printf("%2s. %-44s: %s\n", "14", "EXIT", "Keluar dari aplikasi\n");
 			break;
+
+		default: 
+			printf("Tidak ada role yang sesuai");
+			printf("%d", loggedIn);
 	}
 	printf("\n");
 	
