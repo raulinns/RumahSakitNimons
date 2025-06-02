@@ -102,8 +102,8 @@ int load_config(char* folder, Denah* denah, UserList* Ulist){
 
     fgets(line, sizeof(line), fp);
     parser(line, temp, ' ');
-    denah->maxPasien = atoi(temp[0]);
-    denah->maxPerRoom = atoi(temp[1]);
+    denah->maxPasien = atoi(temp[1]);
+    denah->maxPerRoom = atoi(temp[0]);
 
     char ruang[3]; //ASUMSI: Kode ruangan hanya memiliki panjang 2
     ruang[2] = '\0';
@@ -129,6 +129,7 @@ int load_config(char* folder, Denah* denah, UserList* Ulist){
         }
     }
 
+    // Load inventory
     fgets(line, sizeof(line), fp);
     parser(line, temp, ' ');
     size = atoi(temp[0]);
@@ -137,7 +138,6 @@ int load_config(char* folder, Denah* denah, UserList* Ulist){
         fgets(line, sizeof(line), fp);
         int count = parser(line, temp, ' ');
         _id = atoi(temp[0]);
-
         for (int j = 0; j < count - 1; j++) {
             int obatID = atoi(temp[j + 1]);
             linked_insertEnd(&(USER(*Ulist,userPosByID(_id)).inventoryObat), obatID);
@@ -145,6 +145,22 @@ int load_config(char* folder, Denah* denah, UserList* Ulist){
         }
     }
 
+
+    //Load stack perut
+    fgets(line, sizeof(line), fp);
+    parser(line, temp, ' ');
+    size = atoi(temp[0]);
+
+    for (int i = 1; i <= size; i++) {
+        fgets(line, sizeof(line), fp);
+        int count = parser(line, temp, ' ');
+        _id = atoi(temp[0]);
+        for (int j = count-1; j > 0; j--) {
+            int obatID = atoi(temp[j]);
+            stack_push(&(USER(*Ulist,userPosByID(_id)).perut), obatID);
+            PASIEN(UserID_to_PasienID(_id)).sudahDiobati = 1;
+        }
+    }
     fclose(fp);
     return 0;
 }
@@ -421,6 +437,85 @@ void save_banarich() {
     fclose(fp);
 }
 
+void save_config() {
+    char filePath[MAX_LINE_LENGTH];
+    strcpy(filePath, fullFolderPath);
+    strcat(filePath, "/config.txt");
+
+    FILE *fp = fopen(filePath, "w");
+    if (fp == NULL) {
+        perror("Gagal membuka file untuk ditulis");
+        return 1;
+    }
+
+    fprintf(fp, "%d %d\n", denah.M.rows, denah.M.cols);
+    fprintf(fp, "%d %d\n", denah.maxPerRoom, denah.maxPasien);
+
+    for(int i = 0 ; i < denah.M.rows ; i++){
+        for(int j = 0 ; j < denah.M.cols ; j++){
+            int _id = denah.M.contents[i][j];
+            
+            if( _id == -1 ) {
+                fprintf(fp, "0\n");
+                continue;
+            }
+            
+            fprintf(fp, "%s", Ulist.contents[userPosByID(_id)].field[0]);
+            Node* tempq = DOKTER(UserID_to_DokterID(_id)).antrian->front;
+            
+            if( tempq == NULL ) fprintf(fp, " 0\n");
+            else{
+                while( tempq != NULL ){
+                    fprintf(fp, " %d", tempq->data);
+                    tempq = tempq->next;
+                }
+                fprintf(fp, "\n");
+            }
+        }
+    }
+
+    // Inventory
+    int cnt = 0;
+    for(int i = 0; i < Ulist.len ; i++){
+        if( Ulist.contents[i].inventoryObat.size > 0 ) cnt++;
+    }
+
+    fprintf(fp, "%d\n", cnt);
+    
+    for(int i = 0; i < Ulist.len ; i++){
+        if( Ulist.contents[i].inventoryObat.size > 0 ) {
+            fprintf(fp, "%s", Ulist.contents[i].field[0]);
+            Node* cur = Ulist.contents[i].inventoryObat.head;
+            while (cur != NULL) {
+                fprintf(fp, " %d", cur->data);
+                cur = cur->next;
+            }
+            fprintf(fp,"\n");
+        }
+    }
+    
+    // Perut
+    cnt = 0;
+    for(int i = 0; i < Ulist.len ; i++){
+        if( Ulist.contents[i].perut.size > 0 ) cnt++;
+    }
+
+    fprintf(fp, "%d\n", cnt);
+
+    for(int i = 0; i < Ulist.len ; i++){
+        if( Ulist.contents[i].perut.size > 0 ) {
+            fprintf(fp, "%s", Ulist.contents[i].field[0]);
+            Node* curr = Ulist.contents[i].perut.top;
+            while (curr != NULL) {
+                fprintf(fp, " %d", curr->data);
+                curr = curr->next;
+            }
+            fprintf(fp,"\n");
+        }
+    }
+    
+    fclose(fp);
+}
 
 // TODO : Simpan config
 int save_all(char* folderName,ObatList* obatList,ObatPenyakitList* obatPenyakitList,
@@ -455,6 +550,7 @@ int save_all(char* folderName,ObatList* obatList,ObatPenyakitList* obatPenyakitL
     save_penyakit(penyakitList);
     save_user(userList);
     save_banarich();
+    save_config();
     printf("Berhasil menyimpan data di folder %s!\n", fullFolderPath);
     return 0;
 }

@@ -63,12 +63,12 @@ int pulangdok() {
         arr1[i] = atoi(NewOPlist.contents[j].field[0]);
     }
 
-    Stack perut;
-    perut = Pasien->perut;
+    Stack* perut;
+    perut = &(Pasien->perut);
     int arr2[len];
     for (int i = len - 1; i != -1; i--) {
-        arr2[i] = perut.top->data;
-        stack_pop(&perut);
+        arr2[i] = perut->top->data;
+        stack_pop(perut);
     }
     int beda = 0;
     for (int i = 0; i != len && !beda; i++) {
@@ -76,7 +76,7 @@ int pulangdok() {
             beda = 1;
         }
     }
-
+    
     if (beda) {
         printf("Maaf, tapi kamu masih belum bisa pulang!\n\n");
         printf("Urutan peminuman obat yang diharapkan:\n");
