@@ -110,13 +110,6 @@ void PrintDenah(Denah denah) {
 }
 
 void PrintRuang(Denah denah, char* ruang, int diluar) {
-    int _row = ruang[0] - 'A';
-    int _col = ruang[1] - '1';
-    if( _row >= denah.M.rows || _col >= denah.M.cols ){
-        printf("\nRuangan tidak ditemukan!\n");
-        return;
-    }
-
     // Print heaeder
     if( diluar == 0 ){
         printf("\n--- Detail Ruangan %s ---\n", ruang);
@@ -281,7 +274,9 @@ void KeluarAntrian() {
     int idDokter = PASIEN(UserID_to_PasienID(masterID)).idDokter;
     if( idDokter == -1 ) {
         printf("Pembatalan antrian gagal! Anda tidak sedang terdaftar dalam antrian manapun!\n");
+        return;
     }
+    
     Queue* oldQueue = DOKTER(idDokter).antrian;
     Queue* newQueue = malloc(sizeof(Queue));
     queue_create(newQueue);

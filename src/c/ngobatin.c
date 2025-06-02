@@ -44,7 +44,7 @@ void NGOBATIN(User currentUser, ListRuangan ruangList, UserList* userList, ObatP
     User* pasien = &userList->contents[idxPasien];
     
     if( PASIEN(UserID_to_PasienID(atoi(pasien->field[0]))).sudahDiagnosis == 0 ){
-        printf("Pasien belum di diagnosis!\n");
+        printf("Pasien belum didiagnosis! Lakukan DIAGNOSIS terlebih dahulu\n");
         return;
     }
 
