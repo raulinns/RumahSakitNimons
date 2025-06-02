@@ -261,7 +261,7 @@ void AssignDokter(){
     }
     else if(  strcmp(tRuang,"..") == 0 && tMap != NULL ){     // Dokter belum di assign tetapi ruangan sudah diisi oleh dokter lain
         printf("Dokter %s sudah menempati ruangan %s!\n", username(USER(Ulist,userPosByID(tMap->value))),ruang);
-        printf("Silakan cari ruangan lain untuk dokter %s.\n", ruang);
+        printf("Silakan cari ruangan lain untuk dokter %s.\n", stream);
     }
     else if( strcmp(tRuang,"..") != 0 && tMap != NULL) { // Dokter sudah di assign dan ruangan juga sudah ditempati
         printf("Dokter %s sudah menempati ruangan %s!\n", stream, tRuang);
