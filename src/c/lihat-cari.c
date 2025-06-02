@@ -369,7 +369,16 @@ void CariUser (UserList uList, int pilihan) {
                 length(hasilCari)++;
             }
         }
-    }
+    } else if (basis == 3) {
+		char* lowerData = ToLower(data);
+		for (int i = 0; i < length(sortedList); i++) {
+			char *lowerRiwayat = ToLower(riwayat(sortedList.contents[i]));
+			if (strcmp(lowerRiwayat, lowerData) == 0) {
+				hasilCari.contents[length(hasilCari)] = sortedList.contents[i];
+				length(hasilCari)++;
+			}
+		}
+	}
 
     printf("\n");
     if (pilihan == 1) {
@@ -415,17 +424,6 @@ void CariUser (UserList uList, int pilihan) {
         }
 
 	} else if (pilihan == 3) {
-		if (basis == 3) {
-			char* lowerData = ToLower(data);
-			for (int i = 0; i < length(sortedList); i++) {
-				char *lowerRiwayat = ToLower(riwayat(sortedList.contents[i]));
-				if (strcmp(lowerRiwayat, lowerData) == 0) {
-					hasilCari.contents[length(hasilCari)] = sortedList.contents[i];
-					length(hasilCari)++;
-				}
-			}
-		}
-
         if (length(hasilCari) == 0) {
             printf("Tidak ditemukan pengguna dengan %s %s\n", basisCari, data);
         } else {
