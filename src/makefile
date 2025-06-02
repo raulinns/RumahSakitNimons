@@ -8,7 +8,7 @@ MAIN_SRC = main.c
 
 # Compiler and flags
 CC = gcc
-CFLAGS = -g -w -I$(HEADER_DIR) # tambahin -Wextra biar warningnya ilang
+CFLAGS = -g -Wall -Wextra -I$(HEADER_DIR) # tambahin -Wextra biar warningnya ilang
 
 # Find all source files
 SRCS = $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/adt/*.c)
