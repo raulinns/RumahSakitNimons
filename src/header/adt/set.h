@@ -1,12 +1,12 @@
 #ifndef SET_H
-#define SET_H
+#define MAP_H
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "../random.h"
 
 /* ADT set yang digunakan memiliki struktur treap */
-/* Setiap node pada treap memiliki key (kode ruang) dan prior unik, dan menyimpan sebuah idDokter */
+/* Setiap node pada treap memiliki key dan prior unik, dan menyimpan sebuah queue */
 
 /*  Pendefinisian node set yang berisikan:
     key -> value yang disimpan
@@ -15,7 +15,7 @@
     *r -> pointer ke node child dikanan
 */
 typedef struct NodeSet {
-    char key[100];
+    int key;
     long prior;
     struct NodeSet *l, *r;
 } NodeSet;
@@ -23,29 +23,37 @@ typedef struct NodeSet {
 typedef NodeSet* Set;
 typedef Set* pSet;
 
-/* Membuat node set baru dengan key dan prioritas berdasarkan id */
-void set_create(Set t, char *key, int id);
+/* Membuat set baru dengan key sesuai parameter */
+void set_create(Set t, int key);
 
-/* Mencari node set dengan key tertentu dalam tree t */
-Set set_findSet(Set t, char *key);
-
-/* Memisahkan tree t menjadi dua tree berdasarkan key:
-   - l: tree dengan key <= key parameter
-   - r: tree dengan key > key parameter
+/*
+    Mengembalikan pointer ke node set dengan key sesuai parameter.
+    Jika tree kosong atau node dengan key yang sesuai tidak ditemukan,
+    maka akan dikembalikan NULL.
 */
-void set_split(Set t, char *key, pSet l, pSet r);
+Set set_findSet(Set t,int key);
 
-/* Mengecek apakah tree t mengandung key tertentu.
-   Mengembalikan 1 jika ada, 0 jika tidak.
+/*
+    Melakukan split pada tree t, yang menghasilkan:
+    - Tree l yang berisikan node dengan key <= key parameter
+    - Tree r yang berisikan node dengan key > key parameter
+    I.S. t adalah node yang valid, key adalah id yang valid
+    F.S. Terbentuk tree l dan r sesuai kriteria diatas
 */
-int set_contains(Set t, char* key);
+void set_split(Set t, int key, pSet l, pSet r);
 
-/* Menyisipkan node baru it ke dalam tree t dengan mempertimbangkan prioritas */
+/*
+    Menyisipkan node set baru pada ADT set.
+    I.S. Set terinisialisasi
+    F.S. ADT Set berisi node baru, yakni node *it 
+*/
 void set_insertNewSet(pSet t, Set it);
 
-/* Menyisipkan data baru berupa nama dan id ke dalam tree t.
-   Jika key belum ada, membuat node baru dan menyisipkannya.
+/*
+    Memasukkan id baru ke antrian berdasarkan idDokter
+    I.S. idDokter valid
+    F.S. antrian idDokter mendapatkan data baru di akhir antrian
 */
-void set_insertData(pSet t, char* name, int id);
+void set_insertData(pSet t, int id);
 
 #endif
