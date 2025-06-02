@@ -12,6 +12,7 @@ void minumObat(){
     }
     
     printf("========== DAFTAR OBAT ==========\n");
+    printf("0. Keluar\n");
     Node* current = pasien->inventoryObat.head;
     List* tempNamaObat = malloc(sizeof(List));
     List* tempIdObat = malloc(sizeof(List));
@@ -36,13 +37,16 @@ void minumObat(){
     }
 
     int no_obat_hapus;
-    printf("Pilih obat untuk diminum: ");
-    scanf("%d", &no_obat_hapus);
-    while (no_obat_hapus <1 || no_obat_hapus >= nomor){
-        printf("Pilihan nomor tidak tersedia!\n");
-        printf("Pilih obat untuk diminum: ");
+    do {
+        printf("Pilih obat untuk diminum (masukkan 0 untuk keluar): ");
         scanf("%d", &no_obat_hapus);
-    }
+        if (no_obat_hapus == 0) {
+            printf("Tidak jadi minum obat.\n");
+            free(tempIdObat);
+            free(tempNamaObat);
+            return;
+        }
+    } while (no_obat_hapus < 1 || no_obat_hapus >= nomor);
     
     printf("GLEKGLEKGLEK...%s berhasil diminum!!\n", tempNamaObat->contents[no_obat_hapus-1]);
 
