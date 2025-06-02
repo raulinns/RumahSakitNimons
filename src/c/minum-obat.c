@@ -48,7 +48,7 @@ void minumObat(){
         }
     } while (no_obat_hapus < 1 || no_obat_hapus >= nomor);
     
-    printf("GLEKGLEKGLEK...%s berhasil diminum!!\n", tempNamaObat->contents[no_obat_hapus-1]);
+    printf("GLEKGLEKGLEK... %s berhasil diminum!!\n", tempNamaObat->contents[no_obat_hapus-1]);
 
     //Hapus id obat dari inventory pasien
     int id_obat_hapus = atoi(tempIdObat->contents[no_obat_hapus-1]);

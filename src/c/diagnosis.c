@@ -48,7 +48,8 @@ void DIAGNOSIS(User currentUser, ListRuangan ruangList, UserList *userList, Peny
     User *pasien = &userList->contents[idxPasien];
 
     if( strcmp(riwayat(*pasien),"-") != 0 && strlen(riwayat(*pasien)) > 0) {
-        printf("%s terdiagnosa penyakit %s!\n", username(*pasien), riwayat(*pasien));
+        printf("Pasien sudah pernah didiagnosis penyakit %s!\n", riwayat(*pasien));
+        printf("Silakan gunakan perintah 'NGOBATIN' untuk memberikan obat kepada pasien.\n");
         return;
     }
 

@@ -185,7 +185,6 @@ int main(int argc, char* argv[])
 					}
 				}
 				DIAGNOSIS(currentDokter, listRuangan, &Ulist, &Plist);
-
 			} else printWrongRole(2);
 		} 
 		

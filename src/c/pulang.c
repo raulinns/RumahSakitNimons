@@ -6,19 +6,24 @@
 int pulangdok() {
     printf("\n");
     
-    User* Pasien;
-    for (int i = 0; i != Ulist.len; i++) {
-        if ( atoi(Ulist.contents[i].field[0]) == masterID ) {
+    User* Pasien = NULL;
+    for (int i = 0; i < Ulist.len; i++) {
+        if (atoi(Ulist.contents[i].field[0]) == masterID) {
             Pasien = &Ulist.contents[i];
             break;
         }
     }
     
+    if (Pasien == NULL) {
+        printf("Error: User tidak ditemukan.\n");
+        return 0;
+    }
+    
     char* penyakit = riwayat(*Pasien);
     
-    if( PASIEN(UserID_to_PasienID(atoi(Pasien->field[0]))).sudahDiagnosis == 0 ){
+    if (PASIEN(UserID_to_PasienID(atoi(Pasien->field[0]))).sudahDiagnosis == 0) {
         printf("Kamu belum menerima diagnosis apapun dari dokter, jangan buru-buru pulang!\n");
-        return;
+        return 0;
     }
     
     printf("Dokter sedang memeriksa keadaanmu...\n\n");
@@ -28,50 +33,53 @@ int pulangdok() {
         return 1;
     }
     
-    
     if (Pasien->inventoryObat.size != 0) {
         printf("Masih ada obat yang belum kamu habiskan, minum semuanya dulu yukk!\n");
-        return;
+        return 0;
     }
     
-    int idx = 0;
     int idPenyakit = -1;
-
-    for(int i = 0 ; i < Plist.len ; i++){
-        if( strcmp(PENYAKIT(Plist,i).field[1],penyakit) == 0){
+    for (int i = 0; i < Plist.len; i++) {
+        if (strcmp(PENYAKIT(Plist,i).field[1], penyakit) == 0) {
             idPenyakit = atoi(PENYAKIT(Plist,i).field[0]);
+            break;
         }
     }
     
     ObatPenyakitList NewOPlist;
     NewOPlist.len = 0;
-    for (int i = 0; i != OPlist.len; i++) {
+    for (int i = 0; i < OPlist.len; i++) {
         if (atoi(OPlist.contents[i].field[1]) == idPenyakit) {
-            NewOPlist.contents[idx] = OPlist.contents[i];
-            NewOPlist.len++; idx++;
+            NewOPlist.contents[NewOPlist.len] = OPlist.contents[i];
+            NewOPlist.len++;
         }
     }
     
-    //Pindahkan id obat sesuai urutan
     int len = NewOPlist.len;
     int arr1[len];
-    for (int i = 0; i != len; i++) {
+    for (int i = 0; i < len; i++) {
         int j = 0;
-        while (atoi(NewOPlist.contents[j].field[2]) != i + 1) {
+        int found = 0;
+        while (j < NewOPlist.len) {
+            if (atoi(NewOPlist.contents[j].field[2]) == i + 1) {
+                arr1[i] = atoi(NewOPlist.contents[j].field[0]);
+                break;
+            }
             j++;
         }
-        arr1[i] = atoi(NewOPlist.contents[j].field[0]);
     }
 
-    Stack perut;
-    perut = Pasien->perut;
+    // Check if stack has enough elements
+    Stack perutCopy = Pasien->perut;
+    
     int arr2[len];
-    for (int i = len - 1; i != -1; i--) {
-        arr2[i] = perut.top->data;
-        stack_pop(&perut);
+    for (int i = len - 1; i >= 0; i--) {
+        arr2[i] = perutCopy.top->data;
+        stack_pop(&perutCopy);
     }
+    
     int beda = 0;
-    for (int i = 0; i != len && !beda; i++) {
+    for (int i = 0; i < len && !beda; i++) {
         if (arr1[i] != arr2[i]) {
             beda = 1;
         }
@@ -80,24 +88,42 @@ int pulangdok() {
     if (beda) {
         printf("Maaf, tapi kamu masih belum bisa pulang!\n\n");
         printf("Urutan peminuman obat yang diharapkan:\n");
-        for (int i = 0; i != len; i++) {
+        for (int i = 0; i < len; i++) {
             int j = 0;
-            while ( atoi(Olist.contents[j].field[0]) != arr1[i]) {
+            int found = 0;
+            while (j < Olist.len) {
+                if (atoi(Olist.contents[j].field[0]) == arr1[i]) {
+                    found = 1;
+                    break;
+                }
                 j++;
             }
-            printf("%s", Olist.contents[j].field[1]);
+            if (!found) {
+                printf("[Obat tidak ditemukan]");
+            } else {
+                printf("%s", Olist.contents[j].field[1]);
+            }
             if (i != len - 1) {
                 printf(" -> ");
             }
         }
         printf("\n\n");
         printf("Urutan obat yang kamu minum:\n");
-        for (int i = 0; i != len; i++) {
+        for (int i = 0; i < len; i++) {
             int j = 0;
-            while ( atoi(Olist.contents[j].field[0]) != arr2[i]) {
+            int found = 0;
+            while (j < Olist.len) {
+                if (atoi(Olist.contents[j].field[0]) == arr2[i]) {
+                    found = 1;
+                    break;
+                }
                 j++;
             }
-            printf("%s", Olist.contents[j].field[1]);
+            if (!found) {
+                printf("[Obat tidak ditemukan]");
+            } else {
+                printf("%s", Olist.contents[j].field[1]);
+            }
             if (i != len - 1) {
                 printf(" -> ");
             }
@@ -108,13 +134,15 @@ int pulangdok() {
     }
 
     int idDokter = PASIEN(UserID_to_PasienID(atoi(Pasien->field[0]))).idDokter;
-    queue_pop(DOKTER(idDokter).antrian);
+    if (DOKTER(idDokter).antrian->size > 0) {
+        queue_pop(DOKTER(idDokter).antrian);
+    }
     DOKTER(idDokter).aura++;
     PASIEN(UserID_to_PasienID(atoi(Pasien->field[0]))).idDokter = -1;
     
     // Reset data user.csv
-    for(int i = 4; i < 16 ; i++){
-        strcpy(Pasien->field[i],"");
+    for (int i = 4; i < 16; i++) {
+        strcpy(Pasien->field[i], "");
     }
 
     printf("Selamat! Kamu sudah dinyatakan sembuh oleh dokter. Silahkan pulang dan semoga sehat selalu!\n");
