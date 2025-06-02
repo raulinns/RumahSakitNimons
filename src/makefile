@@ -8,12 +8,12 @@ MAIN_SRC = main.c
 
 # Compiler and flags
 CC = gcc
-CFLAGS = -g -w -I$(HEADER_DIR) # tambahin -Wextra biar warningnya ilang
+CFLAGS = -g -w -I$(HEADER_DIR) # Use -Wall -Wextra for more warnings
 
 # Find all source files
 SRCS = $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/adt/*.c)
 OBJS = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
-TARGET = main
+TARGET = $(BUILD_DIR)/main.exe
 MAIN_OBJ = $(BUILD_DIR)/main.o
 
 # This is default target that is used to compile the project.
