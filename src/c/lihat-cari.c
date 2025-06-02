@@ -223,7 +223,7 @@ void LihatUser (UserList uList, int pilihan) {
 		
 		for (int i = 0; i < length(sortedList); i++) {
 			if(strlen(username(sortedList.contents[i])) == 0) continue;
-			if ((strcmp(role(sortedList.contents[i]), "Dokter") == 0) || (strcmp(role(sortedList.contents[i]), "Manager") == 0)) {
+			if ((strcmp(role(sortedList.contents[i]), "dokter") == 0) || (strcmp(role(sortedList.contents[i]), "manager") == 0)) {
 				printf("| %.2d | %-12s | %-8s |       -        |\n", atoi(id(sortedList.contents[i])), username(sortedList.contents[i]), role(sortedList.contents[i]));
 			} else {
 				printf("| %.2d | %-12s | %-8s | %-14s |\n", atoi(id(sortedList.contents[i])), username(sortedList.contents[i]), role(sortedList.contents[i]), riwayat(sortedList.contents[i]));
@@ -236,7 +236,7 @@ void LihatUser (UserList uList, int pilihan) {
 		printf("--------------------------------------\n");
 
 		for (int i = 0; i < length(sortedList); i++) {
-			if (strcmp(role(sortedList.contents[i]), "Pasien") == 0 && strlen(username(sortedList.contents[i])) != 0) {
+			if (strcmp(role(sortedList.contents[i]), "pasien") == 0 && strlen(username(sortedList.contents[i])) != 0) {
 				printf("| %.2d | %-12s | %-14s |\n", atoi(id(sortedList.contents[i])), username(sortedList.contents[i]), riwayat(sortedList.contents[i]));
 			}
 		}
@@ -247,7 +247,7 @@ void LihatUser (UserList uList, int pilihan) {
 		printf("---------------------\n");
 
 		for (int i = 0; i < length(sortedList); i++) {
-			if (strcmp(role(sortedList.contents[i]), "Dokter") == 0 && strlen(username(sortedList.contents[i])) != 0) {
+			if (strcmp(role(sortedList.contents[i]), "dokter") == 0 && strlen(username(sortedList.contents[i])) != 0) {
 				printf("| %.2d | %-12s |\n", atoi(id(sortedList.contents[i])), username(sortedList.contents[i]));
 			}
 		}
@@ -260,12 +260,11 @@ void LihatPasien (UserList uList) {
 	length(pasienList) = 0;
 
 	for (int i = 0; i < length(uList); i++) {
-		if (strcmp(role(uList.contents[i]), "Pasien") == 0) {
+		if (strcmp(role(uList.contents[i]), "pasien") == 0) {
 			pasienList.contents[pasienList.len] = uList.contents[i];
 			length(pasienList)++;
 		}
 	}
-
 	LihatUser(pasienList, 2);
 }
 
@@ -274,7 +273,7 @@ void LihatDokter (UserList uList) {
 	length(dokterList) = 0;
 
 	for (int i = 0; i < length(uList); i++) {
-		if (strcmp(role(uList.contents[i]), "Dokter") == 0) {
+		if (strcmp(role(uList.contents[i]), "dokter") == 0) {
 			dokterList.contents[dokterList.len] = uList.contents[i];
 			length(dokterList)++;
 		}
@@ -317,11 +316,19 @@ void MenuCari (int *basis, char *basisCari, char *data, int pilihan) {
         printf("3. Penyakit\n");
     }
 
-    do {
+	if (pilihan != 3) {
+		do {
         printf(">>> Pilihan: ");
         scanf("%d", basis);
-        if (*basis != 1 && *basis != 2 && *basis != 3) printf("Pilihan tidak valid\n");
-    } while (*basis != 1 && *basis != 2 && *basis != 3);
+        if (*basis != 1 && *basis != 2) printf("Pilihan tidak valid\n");
+    } while (*basis != 1 && *basis != 2);
+	} else {
+		do {
+			printf(">>> Pilihan: ");
+			scanf("%d", basis);
+			if (*basis != 1 && *basis != 2 && *basis != 3) printf("Pilihan tidak valid\n");
+		} while (*basis != 1 && *basis != 2 && *basis != 3);
+	}
 
     if (*basis == 1) strcpy(basisCari, "nomor ID");
     else if (*basis == 2) strcpy(basisCari, "nama");
@@ -361,15 +368,6 @@ void CariUser (UserList uList, int pilihan) {
                 length(hasilCari)++;
             }
         }
-    } else if (basis == 3) {
-        char* lowerData = ToLower(data);
-        for (int i = 0; i < length(sortedList); i++) {
-            char *lowerRiwayat = ToLower(riwayat(sortedList.contents[i]));
-            if (strcmp(lowerRiwayat, lowerData) == 0) {
-                hasilCari.contents[length(hasilCari)] = sortedList.contents[i];
-                length(hasilCari)++;
-            }
-        }
     }
 
     printf("\n");
@@ -385,7 +383,7 @@ void CariUser (UserList uList, int pilihan) {
             
 
             for (int i = 0; i < length(hasilCari); i++) {
-                if ((strcmp(role(hasilCari.contents[i]), "Dokter") == 0) || (strcmp(role(hasilCari.contents[i]), "Manager") == 0)) {
+                if ((strcmp(role(hasilCari.contents[i]), "dokter") == 0) || (strcmp(role(hasilCari.contents[i]), "Manager") == 0)) {
                     printf("| %.2d | %-12s | %-8s |       -        |\n", atoi(id(hasilCari.contents[i])), username(hasilCari.contents[i]), role(hasilCari.contents[i]));
                 } else {
                     printf("| %.2d | %-12s | %-8s | %-14s |\n", atoi(id(hasilCari.contents[i])), username(hasilCari.contents[i]), role(hasilCari.contents[i]), riwayat(hasilCari.contents[i]));
@@ -408,7 +406,7 @@ void CariUser (UserList uList, int pilihan) {
             printf("--------------------------------------\n");
 
             for (int i = 0; i < length(hasilCari); i++) {
-                if (strcmp(role(hasilCari.contents[i]), "Pasien") == 0) {
+                if (strcmp(role(hasilCari.contents[i]), "pasien") == 0) {
                     printf("| %.2d | %-12s | %-14s |\n", atoi(id(hasilCari.contents[i])), username(hasilCari.contents[i]), riwayat(hasilCari.contents[i]));
                 }
             }
@@ -416,6 +414,17 @@ void CariUser (UserList uList, int pilihan) {
         }
 
 	} else if (pilihan == 3) {
+		if (basis == 3) {
+			char* lowerData = ToLower(data);
+			for (int i = 0; i < length(sortedList); i++) {
+				char *lowerRiwayat = ToLower(riwayat(sortedList.contents[i]));
+				if (strcmp(lowerRiwayat, lowerData) == 0) {
+					hasilCari.contents[length(hasilCari)] = sortedList.contents[i];
+					length(hasilCari)++;
+				}
+			}
+		}
+
         if (length(hasilCari) == 0) {
             printf("Tidak ditemukan pengguna dengan %s %s\n", basisCari, data);
         } else {
@@ -424,7 +433,7 @@ void CariUser (UserList uList, int pilihan) {
             printf("---------------------\n");
 
             for (int i = 0; i < length(hasilCari); i++) {
-                if (strcmp(role(hasilCari.contents[i]), "Dokter") == 0) {
+                if (strcmp(role(hasilCari.contents[i]), "dokter") == 0) {
                     printf("| %.2d | %-12s |\n", atoi(id(hasilCari.contents[i])), username(hasilCari.contents[i]));
                 }
             }
@@ -438,7 +447,7 @@ void CariPasien (UserList uList) {
 	length(pasienList) = 0;
 
 	for (int i = 0; i < length(uList); i++) {
-		if (strcmp(role(uList.contents[i]), "Pasien") == 0) {
+		if (strcmp(role(uList.contents[i]), "pasien") == 0) {
 			pasienList.contents[pasienList.len] = uList.contents[i];
 			length(pasienList)++;
 		}
@@ -452,7 +461,7 @@ void CariDokter (UserList uList) {
 	length(dokterList) = 0;
 
 	for (int i = 0; i < length(uList); i++) {
-		if (strcmp(role(uList.contents[i]), "Dokter") == 0) {
+		if (strcmp(role(uList.contents[i]), "dokter") == 0) {
 			dokterList.contents[dokterList.len] = uList.contents[i];
 			length(dokterList)++;
 		}

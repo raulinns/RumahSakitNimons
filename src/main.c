@@ -162,7 +162,7 @@ int main(int argc, char* argv[])
 			} else printWrongRole(1);
 		}
 		
-		else if (strcmp(prompt,"TAMBAH_DOKTER") == 0) {
+		else if (strcmp(prompt,"TAMBAH_DOKTER") == 0) { 
 			if (loggedIn == 0) printNotLoggedIn();
 			else if (loggedIn == 1) AddDokter(&Ulist);
 			else printWrongRole(1);
@@ -340,63 +340,63 @@ void help(int loggedIn) {
 	printf("========================================================   HELP   ========================================================\n");
 	switch (loggedIn) {
 		case 0: // loggedIn == 0 -> Belum login
-			printf("Kamu belum login sebagai role apapun. Silahkan login terlebih dahulu.\n\n");
-			printf("    %2s. %-44s: %s\n", "1", "LOGIN", "Masuk ke dalam akun yang sudah terdaftar");
-			printf("    %2s. %-44s: %s\n", "2", "REGISTER", "Membuat akun baru");
-			printf("    %2s. %-44s: %s\n", "3", "HELP", "Menampilkan daftar perintah yang tersedia");
-			printf("    %2s. %-44s: %s\n", "4", "LUPA_PASSWORD", "Mengubah password akun");
-			printf("    %2s. %-44s: %s\n", "5", "EXIT", "Keluar dari aplikasi\n");
+			printf("Kamu belum login sebagai role apapun. Silahkan login terlebih dahulu.\n");
+			printf("%2s. %-44s: %s\n", "1", "LOGIN", "Masuk ke dalam akun yang sudah terdaftar");
+			printf("%2s. %-44s: %s\n", "2", "REGISTER", "Membuat akun baru");
+			printf("%2s. %-44s: %s\n", "3", "HELP", "Menampilkan daftar perintah yang tersedia");
+			printf("%2s. %-44s: %s\n", "4", "LUPA_PASSWORD", "Mengubah password akun");
+			printf("%2s. %-44s: %s\n", "5", "EXIT", "Keluar dari aplikasi\n");
 			break;
 		
 		case 1: // loggedIn == 1 -> Manager
 			printf("Halo Manager %s. Kenapa kamu memanggil command HELP? Kan kamu manager, tapi yasudahlah kamu pasti sedang kebingungan. Berikut adalah hal-hal yang dapat kamu lakukan sekarang:\n", user);
-			printf("    %2s. %-44s: %s\n", "1", "LOGOUT", "Keluar dari akun yang sedang digunakan");
-			printf("    %2s. %-44s: %s\n", "2", "LUPA_PASSWORD", "Mengubah password akun");
-			printf("    %2s. %-44s: %s\n", "3", "LIHAT_DENAH", "Menampilkan denah berisikan ruangan-ruangan yang ada di rumah sakit");
-			printf("    %2s. %-44s: %s\n", "4", "LIHAT_RUANGAN <nomorRuangan>", "Menampilkan detail suatu ruangan");
-			printf("    %2s. %-44s: %s\n", "5", "UBAH_DENAH <baris> <kolom>", "Mengubah tampilan denah rumah sakit");
-			printf("    %2s. %-44s: %s\n", "6", "LIHAT_USER", "Melihat daftar user yang terdaftar");
-			printf("    %2s. %-44s: %s\n", "7", "LIHAT_DOKTER", "Melihat daftar dokter yang terdaftar");
-			printf("    %2s. %-44s: %s\n", "8", "LIHAT_PASIEN", "Melihat daftar pasien yang terdaftar");
-			printf("    %2s. %-44s: %s\n", "9", "CARI_USER", "Mencari user berdasarkan ID atau nama");
-			printf("    %2s. %-44s: %s\n", "10", "CARI_DOKTER", "Mencari dokter berdasarkan ID atau nama");
-			printf("    %2s. %-44s: %s\n", "11", "CARI_PASIEN", "Mencari pasien berdasarkan ID, nama, atau penyakit");
-			printf("    %2s. %-44s: %s\n", "12", "LIHAT_SEMUA_ANTRIAN", "Melihat semua antrian yang ada di rumah sakit");
-			printf("    %2s. %-44s: %s\n", "13", "TAMBAH_DOKTER", "Menambahkan dokter baru ke dalam sistem");
-			printf("    %2s. %-44s: %s\n", "14", "ASSIGN_DOKTER", "Menugaskan dokter ke ruangan tertentu");
-			printf("    %2s. %-44s: %s\n", "15", "PINDAH_DOKTER <ruangLama> <ruangBaru>", "Memindahkan dokter dari satu ruangan ke ruangan lain");
-			printf("	%2s. %-44s: %s\n", "16", "LIHAT_FINANSIAL", "Melihat laporan keuangan rumah sakit");
-			printf("    %2s. %-44s: %s\n", "17", "EXIT", "Keluar dari aplikasi\n");
+			printf("%2s. %-44s: %s\n", "1", "LOGOUT", "Keluar dari akun yang sedang digunakan");
+			printf("%2s. %-44s: %s\n", "2", "LUPA_PASSWORD", "Mengubah password akun");
+			printf("%2s. %-44s: %s\n", "3", "LIHAT_DENAH", "Menampilkan denah berisikan ruangan-ruangan yang ada di rumah sakit");
+			printf("%2s. %-44s: %s\n", "4", "LIHAT_RUANGAN <nomorRuangan>", "Menampilkan detail suatu ruangan");
+			printf("%2s. %-44s: %s\n", "5", "UBAH_DENAH <baris> <kolom>", "Mengubah tampilan denah rumah sakit");
+			printf("%2s. %-44s: %s\n", "6", "LIHAT_USER", "Melihat daftar user yang terdaftar");
+			printf("%2s. %-44s: %s\n", "7", "LIHAT_DOKTER", "Melihat daftar dokter yang terdaftar");
+			printf("%2s. %-44s: %s\n", "8", "LIHAT_PASIEN", "Melihat daftar pasien yang terdaftar");
+			printf("%2s. %-44s: %s\n", "9", "CARI_USER", "Mencari user berdasarkan ID atau nama");
+			printf("%2s. %-44s: %s\n", "10", "CARI_DOKTER", "Mencari dokter berdasarkan ID atau nama");
+			printf("%2s. %-44s: %s\n", "11", "CARI_PASIEN", "Mencari pasien berdasarkan ID, nama, atau penyakit");
+			printf("%2s. %-44s: %s\n", "12", "LIHAT_SEMUA_ANTRIAN", "Melihat semua antrian yang ada di rumah sakit");
+			printf("%2s. %-44s: %s\n", "13", "TAMBAH_DOKTER", "Menambahkan dokter baru ke dalam sistem");
+			printf("%2s. %-44s: %s\n", "14", "ASSIGN_DOKTER", "Menugaskan dokter ke ruangan tertentu");
+			printf("%2s. %-44s: %s\n", "15", "PINDAH_DOKTER <ruangLama> <ruangBaru>", "Memindahkan dokter dari satu ruangan ke ruangan lain");
+			printf("%2s. %-44s: %s\n", "16", "LIHAT_FINANSIAL", "Melihat laporan keuangan rumah sakit");
+			printf("%2s. %-44s: %s\n", "17", "EXIT", "Keluar dari aplikasi\n");
 			break;
 		
 		case 2: // loggedIn == 2 -> Dokter
-			printf("Halo Dokter %s. Kamu memanggil command HELP. Kamu pasti sedang kebingungan. Berikut adalah hal-hal yang dapat kamu lakukan sekarang:\n\n", user);
-			printf("    %2s. %-44s: %s\n", "1", "LOGOUT", "Keluar dari akun yang sedang digunakan");
-			printf("    %2s. %-44s: %s\n", "2", "LUPA_PASSWORD", "Mengubah password akun");
-			printf("    %2s. %-44s: %s\n", "3", "LIHAT_DENAH", "Menampilkan denah berisikan ruangan-ruangan yang ada di rumah sakit");
-			printf("    %2s. %-44s: %s\n", "4", "LIHAT_RUANGAN <nomorRuangan>", "Menampilkan detail suatu ruangan");
-			printf("    %2s. %-44s: %s\n", "5", "DIAGNOSIS", "Melakukan diagnosis terhadap pasien");
-			printf("    %2s. %-44s: %s\n", "6", "NGOBATIN", "Memberikan obat kepada pasien");
-			printf("    %2s. %-44s: %s\n", "8", "LIHAT_DOMPET", "Melihat isi dompet dokter");
-			printf("    %2s. %-44s: %s\n", "9", "EXIT", "Keluar dari aplikasi\n");
+			printf("Halo Dokter %s. Kamu memanggil command HELP. Kamu pasti sedang kebingungan. Berikut adalah hal-hal yang dapat kamu lakukan sekarang:\n", user);
+			printf("%2s. %-44s: %s\n", "1", "LOGOUT", "Keluar dari akun yang sedang digunakan");
+			printf("%2s. %-44s: %s\n", "2", "LUPA_PASSWORD", "Mengubah password akun");
+			printf("%2s. %-44s: %s\n", "3", "LIHAT_DENAH", "Menampilkan denah berisikan ruangan-ruangan yang ada di rumah sakit");
+			printf("%2s. %-44s: %s\n", "4", "LIHAT_RUANGAN <nomorRuangan>", "Menampilkan detail suatu ruangan");
+			printf("%2s. %-44s: %s\n", "5", "DIAGNOSIS", "Melakukan diagnosis terhadap pasien");
+			printf("%2s. %-44s: %s\n", "6", "NGOBATIN", "Memberikan obat kepada pasien");
+			printf("%2s. %-44s: %s\n", "8", "LIHAT_DOMPET", "Melihat isi dompet dokter");
+			printf("%2s. %-44s: %s\n", "9", "EXIT", "Keluar dari aplikasi\n");
 			break;
 		
 		case 3: // loggedIn == 3 -> Pasien
-			printf("Selamat datang, %s. Kamu memanggil command HELP. Kamu pasti sedang kebingungan. Berikut adalah hal-hal yang dapat kamu lakukan sekarang:\n\n", user);
-			printf("    %2s. %-44s: %s\n", "1", "LOGOUT", "Keluar dari akun yang sedang digunakan");
-			printf("    %2s. %-44s: %s\n", "2", "LUPA_PASSWORD", "Mengubah password akun");
-			printf("    %2s. %-44s: %s\n", "3", "LIHAT_DENAH", "Menampilkan denah berisikan ruangan-ruangan yang ada di rumah sakit");
-			printf("    %2s. %-44s: %s\n", "4", "LIHAT_RUANGAN <nomorRuangan>", "Menampilkan detail suatu ruangan");
-			printf("    %2s. %-44s: %s\n", "5", "PULANGDOK", "Mengecek status kepulangan pasien (Apakah sudah boleh pulang atau belum?)");
-			printf("    %2s. %-44s: %s\n", "6", "DAFTAR_CHECKUP", "Mendaftarkan diri untuk melakukan checkup");
-			printf("    %2s. %-44s: %s\n", "7", "ANTRIAN", "Melihat posisi antrian pasien saat ini");
-			printf("    %2s. %-44s: %s\n", "8", "MINUM_OBAT", "Meminum obat yang harus diberikan oleh dokter");
-			printf("    %2s. %-44s: %s\n", "9", "PENAWAR", "Meminum penawar untuk mengeluarkan obat terakhir yang diminum dan memasukkannya ke inventory");
-			printf("    %2s. %-44s: %s\n", "10", "SKIP_ANTRIAN", "Melewati antrian dan langsung mendapatkan giliran");
-			printf("    %2s. %-44s: %s\n", "11", "CANCEL_ANTRIAN", "Membatalkan antrian yang sudah didaftarkan");
-			printf("	%2s. %-44s: %s\n", "12", "GACHA_GAMING", "Melakukan gacha untuk mendapatkan banarich tambahan");
-			printf("	%2s. %-44s: %s\n", "13", "LIHAT_DOMPET", "Melihat isi dompet pasien");
-			printf("    %2s. %-44s: %s\n", "14", "EXIT", "Keluar dari aplikasi\n");
+			printf("Selamat datang, %s. Kamu memanggil command HELP. Kamu pasti sedang kebingungan. Berikut adalah hal-hal yang dapat kamu lakukan sekarang:\n", user);
+			printf("%2s. %-44s: %s\n", "1", "LOGOUT", "Keluar dari akun yang sedang digunakan");
+			printf("%2s. %-44s: %s\n", "2", "LUPA_PASSWORD", "Mengubah password akun");
+			printf("%2s. %-44s: %s\n", "3", "LIHAT_DENAH", "Menampilkan denah berisikan ruangan-ruangan yang ada di rumah sakit");
+			printf("%2s. %-44s: %s\n", "4", "LIHAT_RUANGAN <nomorRuangan>", "Menampilkan detail suatu ruangan");
+			printf("%2s. %-44s: %s\n", "5", "PULANGDOK", "Mengecek status kepulangan pasien (Apakah sudah boleh pulang atau belum?)");
+			printf("%2s. %-44s: %s\n", "6", "DAFTAR_CHECKUP", "Mendaftarkan diri untuk melakukan checkup");
+			printf("%2s. %-44s: %s\n", "7", "ANTRIAN", "Melihat posisi antrian pasien saat ini");
+			printf("%2s. %-44s: %s\n", "8", "MINUM_OBAT", "Meminum obat yang harus diberikan oleh dokter");
+			printf("%2s. %-44s: %s\n", "9", "PENAWAR", "Meminum penawar untuk mengeluarkan obat terakhir yang diminum dan memasukkannya ke inventory");
+			printf("%2s. %-44s: %s\n", "10", "SKIP_ANTRIAN", "Melewati antrian dan langsung mendapatkan giliran");
+			printf("%2s. %-44s: %s\n", "11", "CANCEL_ANTRIAN", "Membatalkan antrian yang sudah didaftarkan");
+			printf("%2s. %-44s: %s\n", "12", "GACHA_GAMING", "Melakukan gacha untuk mendapatkan banarich tambahan");
+			printf("%2s. %-44s: %s\n", "13", "LIHAT_DOMPET", "Melihat isi dompet pasien");
+			printf("%2s. %-44s: %s\n", "14", "EXIT", "Keluar dari aplikasi\n");
 			break;
 	}
 	printf("\n");
