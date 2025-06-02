@@ -112,12 +112,12 @@ void PrintDenah(Denah denah) {
 void PrintRuang(Denah denah, char* ruang, int diluar) {
     // Print heaeder
     if( diluar == 0 ){
-        printf("\n--- Detail Ruangan %s ---\n", ruang);
-        printf("Kapasitas  : %d\n", denah.maxPerRoom);     
-    }
-    else{
+        printf("\n--- Detail Ruangan %s ---\n", ruang);   
+    } else {
         printf("============ %s ============\n", ruang);
     }
+    
+    printf("Kapasitas  : %d\n", denah.maxPerRoom);  
     
     Map temp = map_findMap(RuangtoDokter, ruang);
     
@@ -276,7 +276,7 @@ void KeluarAntrian() {
         printf("Pembatalan antrian gagal! Anda tidak sedang terdaftar dalam antrian manapun!\n");
         return;
     }
-    
+
     Queue* oldQueue = DOKTER(idDokter).antrian;
     Queue* newQueue = malloc(sizeof(Queue));
     queue_create(newQueue);
