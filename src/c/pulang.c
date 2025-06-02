@@ -104,11 +104,17 @@ int pulangdok() {
         }
         printf("\n\n");
         printf("Silahkan kunjungi dokter untuk meminta penawar yang sesuai!\n");
+        
+        for (int i = len - 1; i != -1; i--) {
+            stack_push(perut,arr1[i]);
+        
+        }
         return 0;
     }
 
     int idDokter = PASIEN(UserID_to_PasienID(atoi(Pasien->field[0]))).idDokter;
     queue_pop(DOKTER(idDokter).antrian);
+    DOKTER(idDokter).queue_size--;
     DOKTER(idDokter).aura++;
     PASIEN(UserID_to_PasienID(atoi(Pasien->field[0]))).idDokter = -1;
     
