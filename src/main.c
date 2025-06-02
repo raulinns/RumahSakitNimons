@@ -55,6 +55,7 @@ int main(int argc, char* argv[])
     
 	do {
 		printf("\n");
+		clearScreen();
 		printLogo(); 
 		printf("\n");
 		printf("=======================================================================================================================\n");
@@ -308,6 +309,7 @@ int main(int argc, char* argv[])
 			printNotValid();
 		}
 
+		waitEnter();
 	} while (exit == 0);
 	printExit();
 }
@@ -528,4 +530,14 @@ void printExit() {
 
     printf("\nSampai jumpa lagi di aplikasi Rumah Sakit Nimons!\n");
     printf("Terima kasih telah menggunakan layanan kami.\n");
+}
+
+void clearScreen() {
+    printf("\033[2J\033[H");
+}
+
+void waitEnter() {
+    printf("\nTekan Enter untuk melanjutkan...");
+    while (getchar() != '\n');
+    getchar();
 }
