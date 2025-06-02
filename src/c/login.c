@@ -78,6 +78,7 @@ int Register(UserList* uList){
 
     /* Menambahkan data user baru pada user.csv */
     maxID++;
+    set_insertData(&setUser, user, maxID);
     AddUser(user,pass, uList);
     AddPasienList(maxID);
     masterID = maxID;

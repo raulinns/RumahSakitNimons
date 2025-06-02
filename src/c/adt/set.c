@@ -9,15 +9,13 @@ void set_create(Set t, char *key,int id){
 }
 
 Set set_findSet(Set t, char *key){
-    /* Jika t == NULL, maka key tidak ditemukan */
-    if( t == NULL ) {
-        return NULL;
-    }
-    /* Jika key sama, berarti prior ditemukan */
-    if( strcmp(t->key,key) == 0 ) return t;
+    if (t == NULL) return NULL;
+    if (strcmp(t->key, key) == 0) return t;
 
-    if( strcmp(t->key,key) >= 0 ) return set_findSet(t->l,key);
-    else return set_findSet(t->r,key);
+    if (strcmp(t->key, key) > 0) 
+        return set_findSet(t->l, key);
+    else 
+        return set_findSet(t->r, key);
 }
 
 void set_split(Set t, char *key, pSet l, pSet r) {

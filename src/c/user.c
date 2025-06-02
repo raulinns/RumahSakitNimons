@@ -89,7 +89,7 @@ int AddDokter(UserList* uList){
     scanf("%s", user);
     if( set_contains(setUser, user) == 1 ) // User dengan nama yang sama sudah ada
     {
-        printf("Sudah ada Dokter bernama %s!\n", user);
+        printf("Sudah ada user bernama %s!\n", user);
         return 0;
     }
 
@@ -101,7 +101,7 @@ int AddDokter(UserList* uList){
     int len = uList->len;
     char* temp = to_string(maxID);
     User* newUser = &uList->contents[uList->len];
-    set_insertData(&setUser, user, uList->len);
+    set_insertData(&setUser, user, maxID);
 
     strcpy( &newUser->field[0] , to_string(maxID) );
     strcpy( &newUser->field[1] , user );
