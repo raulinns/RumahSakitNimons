@@ -1,10 +1,11 @@
 #include "../../header/adt/linkedlist.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-void linked_create(LinkedList* newLinked){
+void linked_create(LinkedList* newLinked) {
     newLinked->size = 0;
     newLinked->head = NULL;
     newLinked->tail = NULL;
-    return newLinked;
 }
 
 void linked_insertEnd(LinkedList* list, int data) {
@@ -12,61 +13,62 @@ void linked_insertEnd(LinkedList* list, int data) {
     if (list->head == NULL) {
         list->head = newNode;
         list->tail = newNode;
-        list->size = list->size + 1;
-        return;
+    } else {
+        list->tail->next = newNode;
+        list->tail = newNode;
     }
-    list->tail->next = newNode;
-    list->tail = newNode;
-    list->size = list->size + 1;
+    list->size++;
 }
 
 void linked_print(LinkedList list) {
     Node* cur = list.head;
     while (cur != NULL) {
-        printf("%d,", cur->data);
+        printf("%d", cur->data);
+        if (cur->next != NULL) printf(", ");
         cur = cur->next;
     }
+    printf("\n");
 }
 
 void linked_free(LinkedList* list) {
     Node* cur = list->head;
-    Node* temp;
     while (cur != NULL) {
-        temp = cur;
+        Node* temp = cur;
         cur = cur->next;
         free(temp);
     }
-    free(list);
-    list->size = list->size - 1;
+    list->head = NULL;
+    list->tail = NULL;
+    list->size = 0;
 }
 
-int linked_isEmpty(LinkedList head){
-    return head.size == 0;
+int linked_isEmpty(LinkedList list) {
+    return list.size == 0;
 }
 
-void linked_delete(LinkedList* head,int idx){
-    if( idx >= head->size ) return;
-    // Jika idx adalah elemen pertama
-    Node* temp;
-    Node* prev;
-    temp = head->head;
-    if( idx == 0 ){
-        head->head = temp->next;
+void linked_delete(LinkedList* list, int idx) {
+    if (idx < 0 || idx >= list->size) return;
+
+    Node* temp = list->head;
+
+    // Delete head
+    if (idx == 0) {
+        list->head = temp->next;
+        if (list->tail == temp) list->tail = NULL; // if only one element
         free(temp);
-        head->size = head->size - 1;
+        list->size--;
         return;
     }
-    // Jika idx > 0
-    while(idx > 0){
-        if( idx == 1 ) prev = temp;
+
+    // Delete node at index > 0
+    Node* prev = NULL;
+    for (int i = 0; i < idx; i++) {
+        prev = temp;
         temp = temp->next;
-        idx--;
     }
-    // Jika idx indeks terakhir
-    if(head->tail == temp){
-        head->tail =  prev;
-    }
+
     prev->next = temp->next;
-    head->size = head->size - 1;
+    if (temp == list->tail) list->tail = prev;
     free(temp);
+    list->size--;
 }
