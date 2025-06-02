@@ -316,12 +316,13 @@ void MenuCari (int *basis, char *basisCari, char *data, int pilihan) {
         printf("3. Penyakit\n");
     }
 
-	if (pilihan != 3) {
+	if (pilihan != 2) {
 		do {
-        printf(">>> Pilihan: ");
-        scanf("%d", basis);
-        if (*basis != 1 && *basis != 2) printf("Pilihan tidak valid\n");
-    } while (*basis != 1 && *basis != 2);
+			printf(">>> Pilihan: ");
+			scanf("%d", basis);
+			if (*basis != 1 && *basis != 2) printf("Pilihan tidak valid\n");
+    	} while (*basis != 1 && *basis != 2);
+
 	} else {
 		do {
 			printf(">>> Pilihan: ");
