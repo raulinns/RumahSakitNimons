@@ -45,10 +45,10 @@ Membangun sistem manajemen rumah sakit yang menangani:
 | `F17`      | Minum penawar (Stack reversal) |
 | `F18`      | Keluar dari sistem             |
 | `B02`      | Denah dinamis                  |
-| 'B03'      | Aura                           |
-| 'B04'      | Banarich                       |
-| 'B06'      | Mainin antrian                 |
-| 'B0X'      | Kreativitas                    |
+| `B03`      | Aura                           |
+| `B04`      | Banarich                       |
+| `B06`      | Mainin antrian                 |
+| `B0X`      | Kreativitas                    |
 
 ---
 
@@ -63,5 +63,5 @@ make
 2. Run main.exe
 
 ```bash
-./main <file_name>
+./main <folder_name>
 ```
