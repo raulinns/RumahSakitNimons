@@ -2,6 +2,12 @@
 
 "Nimons Hospital", sebuah simulasi sistem manajemen rumah sakit dengan berbagai fitur peran: **Manager**, **Dokter**, dan **Pasien**. Proyek ini dibuat untuk memenuhi tugas besar mata kuliah IF1210 dengan pendekatan _command-based interface_.
 
+**Dibuat oleh Mahasiswa Semester 2 Teknik Informatika ITB pada Mata Kuliah IF1210 Algoritma dan Pemrograman 1 K02-D:**
+1. Kloce Paul William Saragih		  13524040
+2. Suryani Mulia Utami		        13524042
+3. Narendra Dharma Wistara M.	    13524044
+4. Bernhard Aprillio Pramana		  13524074
+5. Dylan Gregory Tondang		      13524118 
 ---
 
 ## 🎯 Tujuan
